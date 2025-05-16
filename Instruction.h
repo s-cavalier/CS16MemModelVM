@@ -10,7 +10,7 @@
 // Macros exist for cleaner code
 // --------------------------------------------------------------------------
 
-std::unique_ptr<Hardware::Instruction> instructionFactory(const Word& binary_instruction, int& programCounter, int* registerFile, std::unordered_map<Word, int>& RAM);
+std::unique_ptr<Hardware::Instruction> instructionFactory(const Word& binary_instruction, Word& programCounter, int* registerFile, Hardware::Memory& RAM, bool& kill_flag);
 
 // -------------------
 // R-Type Instructions
@@ -96,7 +96,7 @@ public:
 // LUI is special, needs its own class (only two inputs)
 // --------------------------------------------------------
 
-struct LoadUpperImmediate : public IGenericInstruction {
+struct LoadUpperImmediate : public IInstruction {
     LoadUpperImmediate(int& rt, const short& imm);
 
     void run();
@@ -135,10 +135,10 @@ I_GEN_INSTR(SetLessThanImmediateUnsigned);
 // mem holds reference to specific memory address
 // ----------------------------------------------
 
-#define I_MEM_INSTR_ARGS I_GEN_INSTR_ARGS, int& mem 
+#define I_MEM_INSTR_ARGS I_GEN_INSTR_ARGS, Hardware::Memory& mem
 class IMemoryInstruction : public IGenericInstruction {
 protected:
-    int& mem;
+    Hardware::Memory& mem;
 
 public:
     IMemoryInstruction(I_MEM_INSTR_ARGS);
@@ -165,10 +165,10 @@ I_MEM_INSTR(StoreWord);
 // Branch Instructions
 // -------------------
 
-#define I_BRANCH_INSTR_ARGS I_GEN_INSTR_ARGS, int& pc
+#define I_BRANCH_INSTR_ARGS I_GEN_INSTR_ARGS, Word& pc
 class IBranchInstruction : public IGenericInstruction {
 protected:
-    int& pc;
+    Word& pc;
 
 public:
     IBranchInstruction(I_BRANCH_INSTR_ARGS);
@@ -204,8 +204,11 @@ public:
 // Each branch instr is pretty different, so each once gets their own class
 // ------------------------------------------------------------------------
 
-struct Jump : public JInstruction {
-    Jump(J_INSTR_ARGS);
+class Jump : public JInstruction {
+    int target;
+
+public:
+    Jump(J_INSTR_ARGS, const int& offset);
     void run();
 };
 
@@ -233,10 +236,18 @@ class Syscall : public Hardware::Instruction {
     int& v0;
     int& a0;
     int& a1;
+    bool& kill_flag;
 
 public:
-    Syscall();
+    Syscall(int& v0, int& a0, int& a1, bool& kill_flag);
     void run();
+};
+
+// -----
+// No-Op
+// -----
+struct NoOp : public Hardware::Instruction {
+    void run() {}
 };
 
 

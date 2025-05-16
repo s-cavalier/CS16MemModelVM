@@ -1,8 +1,8 @@
 CXX = g++
-CXXFLAGS = -Werror -Wall -Wextra -Wno-unused-parameter -g
+CXXFLAGS = -g
 
-mipstracer: main.o Utils.o
+spimulator: main.o Hardware.o Instruction.o
 	$(CXX) $(CXXFLAGS) $^ -o $@
 
 clean:
-	rm -f mipstracer ../mipstracer *.o branch.trace ../branch.trace
+	rm -f *.o spimulator

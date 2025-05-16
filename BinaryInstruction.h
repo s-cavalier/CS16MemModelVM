@@ -2,6 +2,7 @@
 #define __BINARYINSTRUCTION_H__
 
 // TODO: ADD MORE INSTRUCTIONS
+// Maybe put in namespace to clear up global namespace?
 
 enum Opcode : unsigned char {
     R_TYPE = 0x0,

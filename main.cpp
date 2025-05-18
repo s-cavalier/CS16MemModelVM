@@ -6,6 +6,8 @@
 #include "Instruction.h"
 #include "BinaryUtils.h"
 
+// FUTURE: watch out for delay slots?
+
 using namespace std;
 
 template <typename T>
@@ -25,24 +27,19 @@ int main(int argc, char** argv) {
     std::vector<Word> instructions;
     loadFromExecutable(argv[1], instructions);
 
-    // cout << "Loaded instructions:\n";
-    // for (const auto & instr: instructions) cout << hex << "Instruction: " << instr << '\n';
-    // cout << '\n';
+    instructions[0] |= stoul(argv[2]);
 
     Hardware::Machine machine;
     machine.loadInstructions(instructions);
+    machine.run();
 
-    while (!machine.killProcess()) {
-        machine.runInstruction();
-    }
-
-    cout << "REGISTERS:\n";
-    for (int i = 0; i < 32; ++i) cout << '$' << Binary::regToString[i] << " = " << hex << machine.readRegister(i) << '\n';
-    cout << "MEMORY:\n";
-    for (const auto& kv : machine.readMemory()) {
-        if (kv.first <= 0x10000000) continue;
-        cout << hex << kv.first << " = 0x" << setw(2) << setfill('0') << Word(kv.second) << '\n';
-    }
+    // cout << "REGISTERS:\n";
+    // for (int i = 0; i < 32; ++i) cout << '$' << Binary::regToString[i] << " = " << hex << machine.readRegister(i) << '\n';
+    // cout << "MEMORY:\n";
+    // for (const auto& kv : machine.readMemory()) {
+    //     if (kv.first <= 0x10000000) continue;
+    //     cout << hex << kv.first << " = 0x" << setw(2) << setfill('0') << Word(kv.second) << '\n';
+    // }
 
     return 0;
 }

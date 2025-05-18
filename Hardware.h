@@ -15,12 +15,6 @@ namespace Hardware {
 
     class Memory {
         std::unordered_map<Word, char> RAM;
-        struct memBounds {
-            Word textBound;
-            Word staticBound;
-            Word dynamicBound;
-            Word stackBound;
-        };
     
     public:
         class Iterator {
@@ -46,10 +40,20 @@ namespace Hardware {
             bool operator!=(const Iterator& other) const;
         };
 
+        struct boundRegisters {
+            Word textBound;
+            Word staticBound;
+            Word dynamicBound;
+            Word stackBound;
+        };
+
+        boundRegisters memoryBounds;
+
         Iterator begin() const;
         Iterator end() const;
 
         Memory();
+        Memory(const boundRegisters& bounds);
 
         Word getWord(const Word& addr);
         HalfWord getHalfWord(const Word& addr);
@@ -66,7 +70,6 @@ namespace Hardware {
         int registerFile[32];
         std::unordered_map<Word, std::unique_ptr<Instruction>> instructionCache;
         Memory RAM;
-        bool kill;
 
     public:
         Machine();
@@ -74,11 +77,14 @@ namespace Hardware {
         const Word& readProgramCounter() const;
         const int& readRegister(const Byte& reg) const;
         const Memory& readMemory() const;
-        const bool& killProcess() const;
+        bool killed;
 
         void loadInstructions(const std::vector<Word>& instructions);
 
         void runInstruction();
+
+        // Just calls a loop on runInstruction until kill flag is set
+        void run();
     };
 
     struct Instruction {

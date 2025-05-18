@@ -204,18 +204,19 @@ public:
 // ------------------------------------------------------------------------
 
 class Jump : public JInstruction {
-    int target;
+    Word target;
 
 public:
-    Jump(J_INSTR_ARGS, const int& offset);
+    Jump(J_INSTR_ARGS, const Word& target);
     void run();
 };
 
 class JumpAndLink : public JInstruction {
+    Word target;
     int& ra;
 
 public:
-    JumpAndLink(J_INSTR_ARGS, int& ra);
+    JumpAndLink(J_INSTR_ARGS, const Word& target, int& ra);
     void run();
 };
 

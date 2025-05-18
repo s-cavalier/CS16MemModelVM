@@ -2,6 +2,7 @@
 #include "Instruction.h"
 #include "BinaryUtils.h"
 #include <iostream>
+#include <iomanip>
 
 Hardware::Memory::Iterator::Iterator(const std::unordered_map<Word, char>::const_iterator& src) {
     it = new std::unordered_map<Word, char>::const_iterator(src);
@@ -49,6 +50,9 @@ Hardware::Memory::Iterator Hardware::Memory::end() const {
 // we using big endian around here
 
 Hardware::Memory::Memory() {}
+Hardware::Memory::Memory(const boundRegisters& bounds) {
+    memoryBounds = bounds;
+}
 
 Word Hardware::Memory::getWord(const Word& addr) {
     Byte word[4] = {
@@ -70,10 +74,10 @@ void Hardware::Memory::setWord(const Word& addr, const Word& word) {
 
 Hardware::Machine::Machine() {
     for (int i = 0; i < 32; ++i) registerFile[i] = 0;
-    programCounter = 0x00400024;
-    registerFile[Binary::SP] = 0x7ffffffc;
+    programCounter = 0x00400000;
+    registerFile[Binary::SP] = 0x7fffffff;
     registerFile[Binary::GP] = 0x10008000; 
-    kill = false;
+    killed = false;
 }
 
 const Word& Hardware::Machine::readProgramCounter() const {
@@ -88,23 +92,33 @@ const Hardware::Memory& Hardware::Machine::readMemory() const {
     return RAM;
 }
 
-const bool& Hardware::Machine::killProcess() const {
-    return kill;
-}
-
 void Hardware::Machine::loadInstructions(const std::vector<Word>& instructions) {
     // for right now, just load according to mips for no patricular reason
     // will figure out exact specifications later
 
-    Word at = 0x00400024;
+    Word at = 0x00400000;
     for (const auto& instr : instructions) {
         RAM.setWord(at, instr);
         at += 4;
     }
+    
+    RAM.memoryBounds.textBound = at;
+    RAM.memoryBounds.stackBound = 0x7fffe000;
+    RAM.memoryBounds.dynamicBound = 0x70000000;
+    RAM.memoryBounds.staticBound = 0; // tbd 
 }
 
 void Hardware::Machine::runInstruction() {
-    //std::cout << "READING PC " << programCounter << std::endl;
+    
+
+    if (programCounter >= RAM.memoryBounds.textBound) {
+        std::cout << "Reading past text memory. Killing process..." << std::endl;
+        killed = true;
+        return;
+    }
+
+    std::cout << "READING INSTUCTION: " << std::hex << RAM.getWord(programCounter) << std::endl;
+
     auto it = instructionCache.find(programCounter);
     if (it != instructionCache.end()) {
         it->second->run();
@@ -113,8 +127,12 @@ void Hardware::Machine::runInstruction() {
     }
 
     (
-        instructionCache[programCounter] = instructionFactory( RAM.getWord(programCounter), programCounter, registerFile, RAM, kill )
+        instructionCache[programCounter] = instructionFactory( RAM.getWord(programCounter), programCounter, registerFile, RAM, killed )
     )->run(); // cool syntax
 
     programCounter += 4;
+}
+
+void Hardware::Machine::run() {
+    while (!killed) runInstruction();
 }

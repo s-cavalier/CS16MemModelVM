@@ -1,7 +1,6 @@
 #ifndef __INSTRUCTION_H__
 #define __INSTRUCTION_H__
 #include "Hardware.h"
-#include "BinaryInstruction.h"
 #include <memory>
 
 // --------------------------------------------------------------------------

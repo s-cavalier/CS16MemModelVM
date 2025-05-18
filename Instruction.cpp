@@ -1,7 +1,8 @@
 #include "Instruction.h"
-#include "BinaryInstruction.h"
+#include "BinaryUtils.h"
 #include <iostream>
 #include <iomanip>
+using namespace Binary;
 
 // TODO: Add better error handling
 
@@ -24,7 +25,7 @@ std::unique_ptr<Hardware::Instruction> instructionFactory(const Word& binary_ins
 
     // Return instruction
 
-    std::cout << "READING INSTRUCTION " << std::hex << std::setw(8) << std::setfill('0') << binary_instruction << std::endl;
+    // std::cout << "READING INSTRUCTION " << std::hex << std::setw(8) << std::setfill('0') << binary_instruction << std::endl;
     
     #define R_VAR_INIT(x) std::make_unique<x>(registerFile[rd], registerFile[rt], registerFile[rs])
     #define R_SHFT_INIT(x) std::make_unique<x>(registerFile[rd], registerFile[rt], shamt)
@@ -57,6 +58,7 @@ std::unique_ptr<Hardware::Instruction> instructionFactory(const Word& binary_ins
             case SYSCALL:
                 return std::make_unique<Syscall>(registerFile[V0], registerFile[A0], registerFile[A1], kill_flag);
             default:
+                std::cout << "hello from bad funct " << std::hex << Word(binary_instruction) << std::endl;
                 throw 1;
         }
     }
@@ -75,6 +77,10 @@ std::unique_ptr<Hardware::Instruction> instructionFactory(const Word& binary_ins
             return I_GEN_INIT(AddImmediateUnsigned);
         case ANDI:
             return I_GEN_INIT(AndImmediate);
+        case SLTI:
+            return I_GEN_INIT(SetLessThanImmediate);
+        case SLTIU:
+            return I_GEN_INIT(SetLessThanImmediateUnsigned);
         case ORI:
             return I_GEN_INIT(OrImmediate);
         case LW:
@@ -88,6 +94,7 @@ std::unique_ptr<Hardware::Instruction> instructionFactory(const Word& binary_ins
         case LUI:
             return std::make_unique<LoadUpperImmediate>(registerFile[rt], immediate);
         default:
+            std::cout << "hello from bad opcode " << std::hex << Word(binary_instruction) << std::endl;
             throw 2;
     }
 
@@ -193,11 +200,10 @@ void Syscall::run() {
             std::cout << a0;
             return;
         case 10:        // exit
-            std::cout << "EXITING\n";
-            exit(0);
+            kill_flag = true;
             return;
         default:
-            std::cout << "hello from bad syscall" << v0 << std::endl;
+            std::cout << "hello from bad syscall " << v0 << std::endl;
             throw 4;
     }
 }

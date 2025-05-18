@@ -1,6 +1,6 @@
 #include "Hardware.h"
 #include "Instruction.h"
-#include "BinaryInstruction.h"
+#include "BinaryUtils.h"
 #include <iostream>
 
 Hardware::Memory::Iterator::Iterator(const std::unordered_map<Word, char>::const_iterator& src) {
@@ -58,7 +58,7 @@ Word Hardware::Memory::getWord(const Word& addr) {
         (Byte)RAM.try_emplace(addr + 3, 0).first->second
     };
 
-    return loadBigEndian(word);
+    return Binary::loadBigEndian(word);
 }
 
 void Hardware::Memory::setWord(const Word& addr, const Word& word) {
@@ -71,8 +71,8 @@ void Hardware::Memory::setWord(const Word& addr, const Word& word) {
 Hardware::Machine::Machine() {
     for (int i = 0; i < 32; ++i) registerFile[i] = 0;
     programCounter = 0x00400024;
-    registerFile[SP] = 0x7ffffffc;
-    registerFile[GP] = 0x10008000; 
+    registerFile[Binary::SP] = 0x7ffffffc;
+    registerFile[Binary::GP] = 0x10008000; 
     kill = false;
 }
 
@@ -108,6 +108,7 @@ void Hardware::Machine::runInstruction() {
     auto it = instructionCache.find(programCounter);
     if (it != instructionCache.end()) {
         it->second->run();
+        programCounter += 4;
         return;
     }
 

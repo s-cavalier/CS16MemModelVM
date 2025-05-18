@@ -22,9 +22,9 @@ std::unique_ptr<Hardware::Instruction> instructionFactory(const Word& binary_ins
 
     short immediate = binary_instruction & 0xFFFF;                  // For I
 
-    std::cout << "READING INSTRUCTION " << std::hex << std::setw(8) << std::setfill('0') << binary_instruction << std::endl;
-
     // Return instruction
+
+    std::cout << "READING INSTRUCTION " << std::hex << std::setw(8) << std::setfill('0') << binary_instruction << std::endl;
     
     #define R_VAR_INIT(x) std::make_unique<x>(registerFile[rd], registerFile[rt], registerFile[rs])
     #define R_SHFT_INIT(x) std::make_unique<x>(registerFile[rd], registerFile[rt], shamt)
@@ -193,7 +193,8 @@ void Syscall::run() {
             std::cout << a0;
             return;
         case 10:        // exit
-            kill_flag = true;  
+            std::cout << "EXITING\n";
+            exit(0);
             return;
         default:
             std::cout << "hello from bad syscall" << v0 << std::endl;

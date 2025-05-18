@@ -4,6 +4,7 @@
 #include <iomanip>
 #include "Hardware.h"
 #include "Instruction.h"
+#include "BinaryInstruction.h"
 
 using namespace std;
 
@@ -16,25 +17,31 @@ int main(int argc, char** argv) {
     if (executable.bad()) exit(1);
  
     std::vector<Word> instructions;
-    Byte buffer[4];
 
+    Byte buffer[4];
     while (executable.read((char*)buffer, 4)) {
-        Word instruction =  (Word(buffer[0]) << 24) |
-                            (Word(buffer[1]) << 16) |
-                            (Word(buffer[2]) << 8)  |
-                            (Word(buffer[3]));
+        Word instruction = loadBigEndian(buffer);
         instructions.push_back(instruction);
     }
-    
+
+    cout << "Loaded instructions:\n";
+    for (const auto & instr: instructions) cout << hex << "Instruction: " << instr << '\n';
+    cout << '\n';
+
     Hardware::Machine machine;
     machine.loadInstructions(instructions);
 
-    while (!machine.killProcess()) machine.runInstruction();
+    while (!machine.killProcess()) {
+        machine.runInstruction();
+    }
 
     cout << "REGISTERS:\n";
     for (int i = 0; i < 32; ++i) cout << '$' << i << " = " << machine.readRegister(i) << '\n';
-    // cout << "MEMORY:\n";
-    // for (const auto& kv : machine.readMemory()) cout << hex << kv.first << " = 0x" << setw(2) << setfill('0') << Word(kv.second) << '\n';
+    cout << "MEMORY:\n";
+    for (const auto& kv : machine.readMemory()) {
+        //if (kv.first <= 0x10000000) continue;
+        cout << hex << kv.first << " = 0x" << setw(2) << setfill('0') << Word(kv.second) << '\n';
+    }
 
     return 0;
 }

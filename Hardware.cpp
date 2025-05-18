@@ -1,5 +1,7 @@
 #include "Hardware.h"
 #include "Instruction.h"
+#include "BinaryInstruction.h"
+#include <iostream>
 
 Hardware::Memory::Iterator::Iterator(const std::unordered_map<Word, char>::const_iterator& src) {
     it = new std::unordered_map<Word, char>::const_iterator(src);
@@ -49,12 +51,14 @@ Hardware::Memory::Iterator Hardware::Memory::end() const {
 Hardware::Memory::Memory() {}
 
 Word Hardware::Memory::getWord(const Word& addr) {
-    Byte b0 = (Byte)RAM.try_emplace(addr,     0).first->second;
-    Byte b1 = (Byte)RAM.try_emplace(addr + 1, 0).first->second;
-    Byte b2 = (Byte)RAM.try_emplace(addr + 2, 0).first->second;
-    Byte b3 = (Byte)RAM.try_emplace(addr + 3, 0).first->second;
+    Byte word[4] = {
+        (Byte)RAM.try_emplace(addr,     0).first->second,
+        (Byte)RAM.try_emplace(addr + 1, 0).first->second,
+        (Byte)RAM.try_emplace(addr + 2, 0).first->second,
+        (Byte)RAM.try_emplace(addr + 3, 0).first->second
+    };
 
-    return Word( (Word(b0) << 24) | (Word(b1) << 16) | (Word(b2) << 8) | Word(b3) );
+    return loadBigEndian(word);
 }
 
 void Hardware::Memory::setWord(const Word& addr, const Word& word) {
@@ -67,8 +71,8 @@ void Hardware::Memory::setWord(const Word& addr, const Word& word) {
 Hardware::Machine::Machine() {
     for (int i = 0; i < 32; ++i) registerFile[i] = 0;
     programCounter = 0x00400024;
-    registerFile[29] = 0x7ffffffc;  // sp
-    registerFile[28] = 0x10008000;  // gp ?
+    registerFile[SP] = 0x7ffffffc;
+    registerFile[GP] = 0x10008000; 
     kill = false;
 }
 
@@ -100,13 +104,16 @@ void Hardware::Machine::loadInstructions(const std::vector<Word>& instructions) 
 }
 
 void Hardware::Machine::runInstruction() {
+    //std::cout << "READING PC " << programCounter << std::endl;
     auto it = instructionCache.find(programCounter);
     if (it != instructionCache.end()) {
         it->second->run();
         return;
     }
 
-    (instructionCache[programCounter] = instructionFactory( RAM.getWord(programCounter), programCounter, registerFile, RAM, kill ))->run(); // cool syntax
+    (
+        instructionCache[programCounter] = instructionFactory( RAM.getWord(programCounter), programCounter, registerFile, RAM, kill )
+    )->run(); // cool syntax
 
     programCounter += 4;
 }

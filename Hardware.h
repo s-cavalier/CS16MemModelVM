@@ -15,6 +15,12 @@ namespace Hardware {
 
     class Memory {
         std::unordered_map<Word, char> RAM;
+        struct memBounds {
+            Word textBound;
+            Word staticBound;
+            Word dynamicBound;
+            Word stackBound;
+        };
     
     public:
         class Iterator {

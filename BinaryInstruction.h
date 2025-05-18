@@ -4,6 +4,13 @@
 // TODO: ADD MORE INSTRUCTIONS
 // Maybe put in namespace to clear up global namespace?
 
+inline unsigned int loadBigEndian(const unsigned char bytes[4]) {
+    return (((unsigned int)(bytes[0])) << 24) |
+           (((unsigned int)(bytes[1])) << 16) |
+           (((unsigned int)(bytes[2])) << 8)  |
+           (((unsigned int)(bytes[3]))); 
+}
+
 enum Opcode : unsigned char {
     R_TYPE = 0x0,
     J = 0x2,

@@ -55,10 +55,14 @@ R_VAR_INSTR(AddUnsigned);
 R_VAR_INSTR(And);
 R_VAR_INSTR(Nor);
 R_VAR_INSTR(Or);
+R_VAR_INSTR(Xor);
 R_VAR_INSTR(SetLessThan);
 R_VAR_INSTR(SetLessThanUnsigned);
 R_VAR_INSTR(Subtract);
 R_VAR_INSTR(SubtractUnsigned);
+R_VAR_INSTR(ShiftLeftLogicalVariable);
+R_VAR_INSTR(ShiftRightLogicalVariable);
+R_VAR_INSTR(ShiftRightArithmeticVariable);
 
 // ------------------------------
 // R Shift Instruction Prototypes
@@ -66,5 +70,6 @@ R_VAR_INSTR(SubtractUnsigned);
 #define R_SHFT_INSTR(x) struct x : public RShiftInstruction { x(R_SHFT_INSTR_ARGS); void run(); }
 R_SHFT_INSTR(ShiftLeftLogical);
 R_SHFT_INSTR(ShiftRightLogical);
+R_SHFT_INSTR(ShiftRightArithmetic);
 
 #endif

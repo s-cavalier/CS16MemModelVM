@@ -54,15 +54,29 @@ Hardware::Memory::Memory(const boundRegisters& bounds) {
     memoryBounds = bounds;
 }
 
-Word Hardware::Memory::getWord(const Word& addr) {
+Word Hardware::Memory::getWord(const Word& addr) const {
     Byte word[4] = {
-        (Byte)RAM.try_emplace(addr,     0).first->second,
-        (Byte)RAM.try_emplace(addr + 1, 0).first->second,
-        (Byte)RAM.try_emplace(addr + 2, 0).first->second,
-        (Byte)RAM.try_emplace(addr + 3, 0).first->second
+        getByte(addr),
+        getByte(addr + 1),
+        getByte(addr + 2),
+        getByte(addr + 3)
     };
 
     return Binary::loadBigEndian(word);
+}
+
+HalfWord Hardware::Memory::getHalfWord(const Word& addr) const {
+    Byte halfword[2] = {
+        getByte(addr),
+        getByte(addr + 1),
+    };
+
+    return (halfword[0] << 8) | halfword[1];
+}
+
+Byte Hardware::Memory::getByte(const Word& addr) const {
+    auto ret = RAM.find(addr);
+    return ret != RAM.end() ? ret->second : 0;
 }
 
 void Hardware::Memory::setWord(const Word& addr, const Word& word) {
@@ -70,6 +84,15 @@ void Hardware::Memory::setWord(const Word& addr, const Word& word) {
     RAM[addr + 1] = (word >> 16) & 0xFF;
     RAM[addr + 2] = (word >> 8) & 0xFF;
     RAM[addr + 3] =  word & 0xFF;
+}
+
+void Hardware::Memory::setHalfWord(const Word& addr, const HalfWord& halfword) {
+    RAM[addr]     = (halfword >> 8);
+    RAM[addr + 1] =  halfword & 0xFF;
+}
+
+void Hardware::Memory::setByte(const Word& addr, const Byte& byte) {
+    RAM[addr] = byte;
 }
 
 Hardware::Machine::Machine() {

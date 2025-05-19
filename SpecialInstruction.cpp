@@ -19,6 +19,8 @@ void JumpRegister::run() { pc = ra; }
 JumpAndLinkRegister::JumpAndLinkRegister(J_INSTR_ARGS, int& rd, const int& rs) : JInstruction(pc), rd(rd), rs(rs) {}
 void JumpAndLinkRegister::run() { rd = pc; pc = rs; }
 
+HiLoInstruction::HiLoInstruction(long* hi_lo) : hi_lo(hi_lo) {}
+
 Syscall::Syscall(int& v0, int& a0, int& a1, bool& kill_flag) : v0(v0), a0(a0), a1(a1), kill_flag(kill_flag) {}
 void Syscall::run() {
     switch (v0) {

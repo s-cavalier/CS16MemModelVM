@@ -56,6 +56,51 @@ public:
     void run();
 };
 
+// --------------------------------------
+// Instructions that use Hi, Lo registers
+// --------------------------------------
+class HiLoInstruction : public Hardware::Instruction {
+protected:
+    long* hi_lo;
+
+public:
+    HiLoInstruction(long* hi_lo);
+    virtual void run() = 0;
+};
+
+#define HL_MOVE_INSTR_ARGS int& rd, long* hi_lo
+class HLMoveInstruction : public Hardware::Instruction {
+protected:
+    int& rd;
+
+public:
+    HLMoveInstruction(HL_MOVE_INSTR_ARGS);
+    virtual void run() = 0;
+};
+
+#define HL_OP_INSTR_ARGS int& rs, int& rt, long* hi_lo
+class HLOpInstruction : public Hardware::Instruction {
+protected:
+    int& rs;
+    int& rt;
+
+public:
+    HLOpInstruction(HL_OP_INSTR_ARGS);
+    virtual void run() = 0;
+};
+
+#define HL_MOVE_INSTR(x) struct x : public HLMoveInstruction { x(HL_MOVE_INSTR_ARGS); void run(); }
+HL_MOVE_INSTR(MoveFromHi);
+HL_MOVE_INSTR(MoveFromLo);
+HL_MOVE_INSTR(MoveToHi);
+HL_MOVE_INSTR(MoveToLo);
+
+#define HL_OP_INSTR(x) struct x : public HLOpInstruction { x(HL_OP_INSTR_ARGS); void run(); }
+HL_OP_INSTR(Multiply);
+HL_OP_INSTR(MultiplyUnsigned);
+HL_OP_INSTR(Divide);
+HL_OP_INSTR(DivideUnsigned);
+
 // -------
 // Syscall
 // -------

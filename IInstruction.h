@@ -43,6 +43,7 @@ I_GEN_INSTR(AddImmediate);
 I_GEN_INSTR(AddImmediateUnsigned);
 I_GEN_INSTR(AndImmediate);
 I_GEN_INSTR(OrImmediate);
+I_GEN_INSTR(XorImmediate);
 I_GEN_INSTR(SetLessThanImmediate);
 I_GEN_INSTR(SetLessThanImmediateUnsigned);
 
@@ -58,7 +59,6 @@ protected:
 
 public:
     IMemoryInstruction(I_MEM_INSTR_ARGS);
-
     virtual void run() = 0;
 };
 
@@ -68,14 +68,17 @@ public:
 // -------------------------------------------------------------
 
 #define I_MEM_INSTR(x) struct x : public IMemoryInstruction { x(I_MEM_INSTR_ARGS); void run(); }
+I_MEM_INSTR(LoadByte);
 I_MEM_INSTR(LoadByteUnsigned);
+I_MEM_INSTR(LoadHalfword);
 I_MEM_INSTR(LoadHalfwordUnsigned);
-I_MEM_INSTR(LoadLinked);
 I_MEM_INSTR(LoadWord);
 I_MEM_INSTR(StoreByte);
-I_MEM_INSTR(StoreConditional);
 I_MEM_INSTR(StoreHalfword);
 I_MEM_INSTR(StoreWord);
+
+I_MEM_INSTR(LoadLinked);        // not needed until later
+I_MEM_INSTR(StoreConditional);  // until working on OS
 
 // -------------------
 // Branch Instructions
@@ -88,7 +91,6 @@ protected:
 
 public:
     IBranchInstruction(I_BRANCH_INSTR_ARGS);
-
     virtual void run() = 0;
 };
 
@@ -101,16 +103,38 @@ I_BRANCH_INSTR(BranchOnEqual);
 I_BRANCH_INSTR(BranchOnNotEqual);
 
 // --------------------------------------------------------
-// LUI is special, needs its own class (only two inputs)
+// Single Argument Immediates
+// follows op, reg, imm
 // --------------------------------------------------------
-
-class LoadUpperImmediate : public IInstruction {
+class ISingleInstruction : public IInstruction {
 protected:
-    int& rt;
+    int& arg0;
 
 public:
-    LoadUpperImmediate(int& rt, const short& imm);
+    ISingleInstruction(int& arg0, const short& imm);
+    virtual void run() = 0;
+};
 
+struct LoadUpperImmediate : public ISingleInstruction {
+    LoadUpperImmediate(int& rt, const short& imm);
+    void run();
+};
+
+class BranchOnLessThanZero : public ISingleInstruction {
+protected:
+    Word& pc;
+
+public:
+    BranchOnLessThanZero(int& rs, const short& imm, Word& pc);
+    void run();
+};
+
+class BranchOnGreaterThanZero : public ISingleInstruction {
+protected:
+    Word& pc;
+
+public:
+    BranchOnGreaterThanZero(int& rs, const short& imm, Word& pc);
     void run();
 };
 

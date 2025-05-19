@@ -55,18 +55,19 @@ namespace Hardware {
         Memory();
         Memory(const boundRegisters& bounds);
 
-        Word getWord(const Word& addr);
-        HalfWord getHalfWord(const Word& addr);
-        inline const Byte& getByte(const Byte& addr);
+        Word getWord(const Word& addr) const;
+        HalfWord getHalfWord(const Word& addr) const;
+        Byte getByte(const Word& addr) const;
 
         void setWord(const Word& addr, const Word& word);
         void setHalfWord(const Word& addr, const HalfWord& halfword);
-        inline void setByte(const Word& addr, const Byte& byte);
+        void setByte(const Word& addr, const Byte& byte);
 
     };
 
     class Machine {
         Word programCounter;
+        Word hi_lo[2];
         int registerFile[32];
         std::unordered_map<Word, std::unique_ptr<Instruction>> instructionCache;
         Memory RAM;

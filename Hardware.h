@@ -91,6 +91,8 @@ namespace Hardware {
         virtual void run() = 0;
     };
 
+    std::unique_ptr<Instruction> instructionFactory(const Word& binary_instruction, Word& programCounter, int* registerFile, Hardware::Memory& RAM, bool& kill_flag);
+
 };
 
 #endif

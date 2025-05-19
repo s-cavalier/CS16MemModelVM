@@ -3,8 +3,6 @@
 #include <vector>
 #include <iomanip>
 #include "Hardware.h"
-#include "Instruction.h"
-#include "BinaryUtils.h"
 #include "Loader.h"
 
 // FUTURE: watch out for delay slots?
@@ -18,6 +16,11 @@ int main(int argc, char** argv) {
     ios_base::sync_with_stdio(false);
  
     FileLoader::ExecutableParser exe(argv[1]);
+    if (exe.bad()) {
+        cout << "Failed to load file '" << argv[1] << '\'' << endl;
+        return 1;
+    }
+
     exe.readText()[0] |= stoul(argv[2]);
 
     Hardware::Machine machine;

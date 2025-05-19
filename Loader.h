@@ -30,7 +30,7 @@ namespace FileLoader {
         ExecutableParser(const std::string& path);
     };
 
-    struct AssemblyParser : public Parser {     // todo
+    struct AssemblyParser : public Parser {
         AssemblyParser(const std::string& path);
     };
 

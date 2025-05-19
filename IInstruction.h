@@ -1,0 +1,117 @@
+#ifndef __IINSTRUCTION_H__
+#define __IINSTRUCTION_H__
+#include "Hardware.h"
+
+// -------------------
+// I-Type Instructions
+// Follows op rt, rs, imm
+// -------------------
+
+class IInstruction : public Hardware::Instruction {
+protected:
+    short imm;
+
+public:
+    IInstruction(const short& imm);
+
+    virtual void run() = 0;
+};
+
+// --------------------------
+// Generic I-Type Instruction
+// Follows op rt, rs, imm
+// --------------------------
+
+#define I_GEN_INSTR_ARGS int& rt, int& rs, const short& imm
+class IGenericInstruction : public IInstruction {
+protected:
+    int& rt;
+    int& rs;
+
+public:
+    IGenericInstruction(I_GEN_INSTR_ARGS);
+
+    virtual void run() = 0;
+};
+
+// -------------------------------------
+// Generic I-Type Instruction Prototypes
+// -------------------------------------
+
+#define I_GEN_INSTR(x) struct x : public IGenericInstruction { x(I_GEN_INSTR_ARGS); void run(); }
+I_GEN_INSTR(AddImmediate);
+I_GEN_INSTR(AddImmediateUnsigned);
+I_GEN_INSTR(AndImmediate);
+I_GEN_INSTR(OrImmediate);
+I_GEN_INSTR(SetLessThanImmediate);
+I_GEN_INSTR(SetLessThanImmediateUnsigned);
+
+// ----------------------------------------------
+// Memory Instructions
+// mem holds reference to specific memory address
+// ----------------------------------------------
+
+#define I_MEM_INSTR_ARGS I_GEN_INSTR_ARGS, Hardware::Memory& mem
+class IMemoryInstruction : public IGenericInstruction {
+protected:
+    Hardware::Memory& mem;
+
+public:
+    IMemoryInstruction(I_MEM_INSTR_ARGS);
+
+    virtual void run() = 0;
+};
+
+// -------------------------------------------------------------
+// Memory Instruction Prototypes
+// Maybe split into load/store types later? Probably unnecessary
+// -------------------------------------------------------------
+
+#define I_MEM_INSTR(x) struct x : public IMemoryInstruction { x(I_MEM_INSTR_ARGS); void run(); }
+I_MEM_INSTR(LoadByteUnsigned);
+I_MEM_INSTR(LoadHalfwordUnsigned);
+I_MEM_INSTR(LoadLinked);
+I_MEM_INSTR(LoadWord);
+I_MEM_INSTR(StoreByte);
+I_MEM_INSTR(StoreConditional);
+I_MEM_INSTR(StoreHalfword);
+I_MEM_INSTR(StoreWord);
+
+// -------------------
+// Branch Instructions
+// -------------------
+
+#define I_BRANCH_INSTR_ARGS I_GEN_INSTR_ARGS, Word& pc
+class IBranchInstruction : public IGenericInstruction {
+protected:
+    Word& pc;
+
+public:
+    IBranchInstruction(I_BRANCH_INSTR_ARGS);
+
+    virtual void run() = 0;
+};
+
+// -----------------------------
+// Branch Instruction Prototypes
+// -----------------------------
+
+#define I_BRANCH_INSTR(x) struct x : public IBranchInstruction { x(I_BRANCH_INSTR_ARGS); void run(); }
+I_BRANCH_INSTR(BranchOnEqual);
+I_BRANCH_INSTR(BranchOnNotEqual);
+
+// --------------------------------------------------------
+// LUI is special, needs its own class (only two inputs)
+// --------------------------------------------------------
+
+class LoadUpperImmediate : public IInstruction {
+protected:
+    int& rt;
+
+public:
+    LoadUpperImmediate(int& rt, const short& imm);
+
+    void run();
+};
+
+#endif

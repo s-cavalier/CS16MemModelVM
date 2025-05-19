@@ -7,42 +7,61 @@
 namespace Binary {
     enum Opcode : unsigned char {
         R_TYPE = 0x0,
-        J = 0x2,
-        JAL = 0x3,
+        J = 0x2,            //
+        JAL = 0x3,          //
 
-        ADDI = 0x8,
-        ADDIU = 0x9,
-        SLTI = 0xa,
-        SLTIU = 0xb,
-        ANDI = 0xc,
-        BEQ = 0x4,
-        BNE = 0x5,
+        ADDI = 0x8,         //
+        ADDIU = 0x9,        //
+        SLTI = 0xa,         //
+        SLTIU = 0xb,        //
+        ANDI = 0xc,         //
+        BEQ = 0x4,          //
+        BNE = 0x5,          //
+        BLEZ = 0x6,
+        BGTZ = 0x7,
+        LB = 0x20,          
         LBU = 0x24,
+        LH = 0x21,
         LHU = 0x25,
-        LL = 0x30,
-        LUI = 0xf,
-        LW = 0x23,
-        ORI = 0xd,
-        SB = 0x28,
-        SC = 0x38,
+        LUI = 0xf,          //
+        LW = 0x23,          //
+        ORI = 0xd,          //
+        XORI = 0xe,
+        SB = 0x28,  
         SH = 0x29,
-        SW = 0x2b
+        SW = 0x2b,          //
+        LL = 0x30,  // not important rn
+        SC = 0x38   // only useful when implementing OS or multithreading (green threads)
     };
 
     enum Funct : unsigned char {
-        SYSCALL = 0xc,
-        ADD = 0x20,
-        ADDU = 0x21,
-        AND = 0x24,
-        JR = 0x8,
-        NOR = 0x27,
-        OR = 0x25,
-        SLT = 0x2a,
-        SLTU = 0x2b,
-        SLL = 0x0,
-        SRL = 0x2,
-        SUB = 0x22,
-        SUBU = 0x23
+        SYSCALL = 0xc,      //
+        ADD = 0x20,         //
+        ADDU = 0x21,        //
+        AND = 0x24,         //
+        JR = 0x8,           //
+        JALR = 0x9,         //
+        NOR = 0x27,         //
+        OR = 0x25,          //
+        SLT = 0x2a,         //
+        SLTU = 0x2b,        //
+        SLL = 0x0,          //
+        SRL = 0x2,          //
+        SRA = 0x3,
+        SLLV = 0x4,
+        SRLV = 0x6,
+        SRAV = 0x7,
+        SUB = 0x22,         //
+        SUBU = 0x23,        //
+        MULT = 0x18,        
+        DIV = 0x1a,
+        MULTU = 19,
+        DIVU = 0x1b,
+        MFHI = 0x10,
+        MFLO = 0x12,
+        MTHI = 0x11,
+        MTLO = 0x13,
+        XOR = 0x26
     };
 
     enum Register : unsigned char {

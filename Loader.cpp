@@ -18,7 +18,7 @@ const bool& FileLoader::Parser::bad() const {
 
 FileLoader::ExecutableParser::ExecutableParser(const std::string& path) : Parser() {
     std::ifstream file(path);
-    if (file.bad()) {
+    if (file.fail()) {
         _bad = true;
         return;
     }

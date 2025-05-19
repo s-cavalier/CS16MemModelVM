@@ -1,6 +1,8 @@
 #include "Hardware.h"
-#include "Instruction.h"
 #include "BinaryUtils.h"
+#include "IInstruction.h"
+#include "RInstruction.h"
+#include "SpecialInstruction.h"
 #include <iostream>
 #include <iomanip>
 
@@ -133,4 +135,106 @@ void Hardware::Machine::runInstruction() {
 
 void Hardware::Machine::run() {
     while (!killed) runInstruction();
+}
+
+// TODO: Add better error handling
+
+std::unique_ptr<Hardware::Instruction> Hardware::instructionFactory(const Word& binary_instruction, Word& programCounter, int* registerFile, Hardware::Memory& RAM, bool& kill_flag) {
+    // DECODE
+    using namespace Binary;
+    
+    Opcode opcode = Opcode((binary_instruction >> 26) & 0b111111);  // For All
+
+    Word address = binary_instruction & 0x1FFFFFF;                  // For Jump
+
+    Register rs = Register((binary_instruction >> 21) & 0b11111);   // For I/R
+    Register rt = Register((binary_instruction >> 16) & 0b11111);   // For I/R
+
+
+    Register rd = Register((binary_instruction >> 11) & 0b11111);   // For R
+    Byte shamt = (binary_instruction >> 6) & 0b11111;               // For R
+    Funct funct = Funct(binary_instruction & 0b111111);             // For R
+
+    short immediate = binary_instruction & 0xFFFF;                  // For I
+
+    // Return instruction
+
+    #define R_VAR_INIT(x) std::make_unique<x>(registerFile[rd], registerFile[rt], registerFile[rs])
+    #define R_SHFT_INIT(x) std::make_unique<x>(registerFile[rd], registerFile[rt], shamt)
+    if (!opcode) {  // Is an R-Type Instruction
+        switch (funct) {
+            case ADD:
+                return R_VAR_INIT(Add);
+            case ADDU:
+                return R_VAR_INIT(AddUnsigned);
+            case AND:
+                return R_VAR_INIT(And);
+            case NOR:
+                return R_VAR_INIT(Nor);
+            case OR:
+                return R_VAR_INIT(Or);
+            case SLT:
+                return R_VAR_INIT(SetLessThan);
+            case SLTU:
+                return R_VAR_INIT(SetLessThanUnsigned);
+            case SLL:
+                return R_SHFT_INIT(ShiftLeftLogical);
+            case SRL:
+                return R_SHFT_INIT(ShiftRightLogical);
+            case SUB:
+                return R_VAR_INIT(Subtract);
+            case SUBU:
+                return R_VAR_INIT(SubtractUnsigned);
+            case JR:
+                return std::make_unique<JumpRegister>(programCounter, registerFile[RA]);
+            case SYSCALL:
+                return std::make_unique<Syscall>(registerFile[V0], registerFile[A0], registerFile[A1], kill_flag);
+            default:
+                std::cout << "hello from bad funct " << std::hex << Word(binary_instruction) << std::endl;
+                throw 1;
+        }
+    }
+
+    // TODO: Figure out how address works for J/JAL
+    // TODO: Make offset work for branch
+    // TODO: More memory instr
+
+    #define I_GEN_INIT(x) std::make_unique<x>(registerFile[rt], registerFile[rs], immediate)
+    #define I_MEM_INIT(x) std::make_unique<x>(registerFile[rt], registerFile[rs], immediate, RAM)
+    #define I_BRANCH_INIT(x) std::make_unique<x>(registerFile[rt], registerFile[rs], immediate, programCounter)
+    switch (opcode) {
+        case ADDI:
+            return I_GEN_INIT(AddImmediate);
+        case ADDIU:
+            return I_GEN_INIT(AddImmediateUnsigned);
+        case ANDI:
+            return I_GEN_INIT(AndImmediate);
+        case SLTI:
+            return I_GEN_INIT(SetLessThanImmediate);
+        case SLTIU:
+            return I_GEN_INIT(SetLessThanImmediateUnsigned);
+        case ORI:
+            return I_GEN_INIT(OrImmediate);
+        case LW:
+            return I_MEM_INIT(LoadWord);
+        case SW:
+            return I_MEM_INIT(StoreWord);
+        case BEQ:
+            return I_BRANCH_INIT(BranchOnEqual);
+        case BNE:
+            return I_BRANCH_INIT(BranchOnNotEqual);
+        case J:
+            return std::make_unique<Jump>(programCounter, address);
+        case JAL:
+            return std::make_unique<JumpAndLink>(programCounter, address, registerFile[RA]);
+        case LUI:
+            return std::make_unique<LoadUpperImmediate>(registerFile[rt], immediate);
+        default:
+            std::cout << "hello from bad opcode " << std::hex << Word(binary_instruction) << std::endl;
+            throw 2;
+    }
+
+    throw 3;
+    return nullptr;
+    
 }

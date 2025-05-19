@@ -5,6 +5,7 @@
 #include "Hardware.h"
 #include "Instruction.h"
 #include "BinaryUtils.h"
+#include "Loader.h"
 
 // FUTURE: watch out for delay slots?
 
@@ -13,24 +14,14 @@ using namespace std;
 template <typename T>
 using SafeVector = vector<unique_ptr<T>>;
 
-void loadFromExecutable(const string& path, vector<Word>& storage) {
-    ifstream executable(path, ios::binary);
-    if (executable.bad()) return;
-
-    Byte buffer[4];
-    while (executable.read((char*)buffer, 4)) storage.push_back(Binary::loadBigEndian(buffer));
-}
-
 int main(int argc, char** argv) {
     ios_base::sync_with_stdio(false);
  
-    std::vector<Word> instructions;
-    loadFromExecutable(argv[1], instructions);
-
-    instructions[0] |= stoul(argv[2]);
+    FileLoader::ExecutableParser exe(argv[1]);
+    exe.readText()[0] |= stoul(argv[2]);
 
     Hardware::Machine machine;
-    machine.loadInstructions(instructions);
+    machine.loadInstructions(exe.readText());
     machine.run();
 
     // cout << "REGISTERS:\n";

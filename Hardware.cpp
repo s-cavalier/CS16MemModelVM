@@ -1,8 +1,6 @@
 #include "Hardware.h"
 #include "BinaryUtils.h"
-#include "IInstruction.h"
-#include "RInstruction.h"
-#include "SpecialInstruction.h"
+#include "Instruction.h"
 #include <iostream>
 #include <iomanip>
 

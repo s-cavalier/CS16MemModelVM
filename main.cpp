@@ -2,8 +2,8 @@
 #include <fstream>
 #include <vector>
 #include <iomanip>
-#include "Hardware.h"
-#include "Loader.h"
+#include "machine/Hardware.h"
+#include "machine/Loader.h"
 
 // FUTURE: watch out for delay slots?
 
@@ -13,6 +13,8 @@ template <typename T>
 using SafeVector = vector<unique_ptr<T>>;
 
 int main(int argc, char** argv) {
+    if (argc != 3) return 1;
+
     ios_base::sync_with_stdio(false);
  
     FileLoader::ExecutableParser exe(argv[1]);

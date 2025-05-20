@@ -2,8 +2,6 @@
 #include "BinaryUtils.h"
 #include <fstream>
 
-FileLoader::Parser::Parser() : _bad(false) {}
-
  std::vector<unsigned char>& FileLoader::Parser::readData()  {
     return data;
 }

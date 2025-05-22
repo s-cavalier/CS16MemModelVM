@@ -54,14 +54,14 @@ namespace Binary {
         SUB = 0x22,         //
         SUBU = 0x23,        //
         XOR = 0x26,         //
-        MULT = 0x18,        //
-        DIV = 0x1a,         //
-        MULTU = 0x19,       //
-        DIVU = 0x1b,        //
-        MFHI = 0x10,        //
-        MFLO = 0x12,        //
-        MTHI = 0x11,        //
-        MTLO = 0x13,        //
+        MULT = 0x18,        
+        DIV = 0x1a,
+        MULTU = 19,
+        DIVU = 0x1b,
+        MFHI = 0x10,
+        MFLO = 0x12,
+        MTHI = 0x11,
+        MTLO = 0x13,
     };
 
     enum Register : unsigned char {

@@ -96,8 +96,11 @@ void Hardware::Memory::setByte(const Word& addr, const Byte& byte) {
 }
 
 Hardware::Machine::Machine() {
-    for (int i = 0; i < 32; ++i) registerFile[i] = 0;
-    programCounter = 0x00400024;
+    for (int i = 0; i < 32; ++i) {
+        registerFile[i] = 0;
+        fpRegisterFile[i] = 0;
+    }
+        programCounter = 0x00400024;
     registerFile[Binary::SP] = 0x7fffffff;
     registerFile[Binary::GP] = 0x10008000; 
     killed = false;
@@ -148,7 +151,7 @@ void Hardware::Machine::runInstruction() {
     }
 
     (
-        instructionCache[programCounter] = instructionFactory( RAM.getWord(programCounter), programCounter, registerFile, RAM, killed )
+        instructionCache[programCounter] = instructionFactory( RAM.getWord(programCounter), programCounter, registerFile, RAM, hiLo, killed )
     )->run(); // cool syntax
 
     programCounter += 4;
@@ -160,7 +163,7 @@ void Hardware::Machine::run() {
 
 // TODO: Add better error handling
 
-std::unique_ptr<Hardware::Instruction> Hardware::instructionFactory(const Word& binary_instruction, Word& programCounter, int* registerFile, Hardware::Memory& RAM, bool& kill_flag) {
+std::unique_ptr<Hardware::Instruction> Hardware::instructionFactory(const Word& binary_instruction, Word& programCounter, int* registerFile, Hardware::Memory& RAM, Hardware::Machine::HiLoRegisters& hiLo, bool& kill_flag) {
     // DECODE
     using namespace Binary;
     
@@ -182,6 +185,8 @@ std::unique_ptr<Hardware::Instruction> Hardware::instructionFactory(const Word& 
 
     #define R_VAR_INIT(x) std::make_unique<x>(registerFile[rd], registerFile[rt], registerFile[rs])
     #define R_SHFT_INIT(x) std::make_unique<x>(registerFile[rd], registerFile[rt], shamt)
+    #define HL_MOVE_INIT(x, reg) std::make_unique<x>(registerFile[reg], hiLo)
+    #define HL_OP_INIT(x) std::make_unique<x>(registerFile[rs], registerFile[rt], hiLo)
     if (!opcode) {  // Is an R-Type Instruction
         switch (funct) {
             case ADD:
@@ -202,12 +207,40 @@ std::unique_ptr<Hardware::Instruction> Hardware::instructionFactory(const Word& 
                 return R_SHFT_INIT(ShiftLeftLogical);
             case SRL:
                 return R_SHFT_INIT(ShiftRightLogical);
+            case SRA:
+                return R_SHFT_INIT(ShiftRightArithmetic);
+            case SLLV:
+                return R_VAR_INIT(ShiftLeftLogicalVariable);
+            case SRLV:
+                return R_VAR_INIT(ShiftRightLogicalVariable);
+            case SRAV:
+                return R_VAR_INIT(ShiftRightArithmeticVariable);
             case SUB:
                 return R_VAR_INIT(Subtract);
             case SUBU:
                 return R_VAR_INIT(SubtractUnsigned);
+            case XOR:
+                return R_VAR_INIT(Xor);
+            case MULT:
+                return HL_OP_INIT(Multiply);
+            case DIV:
+                return HL_OP_INIT(Divide);
+            case MULTU:
+                return HL_OP_INIT(MultiplyUnsigned);
+            case DIVU:
+                return HL_OP_INIT(DivideUnsigned);
+            case MFHI:
+                return HL_MOVE_INIT(MoveFromHi, rd);
+            case MFLO:
+                return HL_MOVE_INIT(MoveFromLo, rd);
+            case MTHI:
+                return HL_MOVE_INIT(MoveToHi, rs);
+            case MTLO:
+                return HL_MOVE_INIT(MoveToLo, rs);
             case JR:
                 return std::make_unique<JumpRegister>(programCounter, registerFile[RA]);
+            case JALR:
+                return std::make_unique<JumpAndLinkRegister>(programCounter, registerFile[rd], registerFile[rs]);
             case SYSCALL:
                 return std::make_unique<Syscall>(registerFile[V0], registerFile[A0], registerFile[A1], kill_flag);
             default:

@@ -6,6 +6,7 @@
 
 // TODO: Implement memory access guards
 
+using DoubleWord = unsigned long long;
 using Word = unsigned int;
 using HalfWord = unsigned short;
 using Byte = unsigned char;
@@ -66,11 +67,17 @@ namespace Hardware {
     };
 
     class Machine {
+    public:
+        struct HiLoRegisters { Word hi; Word lo; };
+
+    private:
         Word programCounter;
-        Word hi_lo[2];
-        int registerFile[32];
+        int registerFile[32];       // Maybe use a union between int/unsigned int? Probnot
+        float fpRegisterFile[32];
+        HiLoRegisters hiLo;
         std::unordered_map<Word, std::unique_ptr<Instruction>> instructionCache;
         Memory RAM;
+        
 
     public:
         Machine();
@@ -92,7 +99,7 @@ namespace Hardware {
         virtual void run() = 0;
     };
 
-    std::unique_ptr<Instruction> instructionFactory(const Word& binary_instruction, Word& programCounter, int* registerFile, Hardware::Memory& RAM, bool& kill_flag);
+    std::unique_ptr<Instruction> instructionFactory(const Word& binary_instruction, Word& programCounter, int* registerFile, Hardware::Memory& RAM, Hardware::Machine::HiLoRegisters& hiLo, bool& kill_flag);
 
 };
 

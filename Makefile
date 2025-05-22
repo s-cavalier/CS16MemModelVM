@@ -3,7 +3,7 @@ CXX := g++
 CXXFLAGS := -g -Wall -Wextra -Werror -Wno-unused-variable
 
 # Directories
-SRC_DIRS := machine compiler
+SRC_DIRS := machine
 SRC := $(wildcard main.cpp $(addsuffix /*.cpp, $(SRC_DIRS)))
 OBJ := $(SRC:.cpp=.o)
 

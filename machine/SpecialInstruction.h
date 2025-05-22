@@ -61,25 +61,27 @@ public:
 // --------------------------------------
 class HiLoInstruction : public Hardware::Instruction {
 protected:
-    long* hi_lo;
+    Hardware::Machine::HiLoRegisters& hiLo;
 
 public:
-    HiLoInstruction(long* hi_lo);
+    HiLoInstruction(Hardware::Machine::HiLoRegisters& hiLo);
     virtual void run() = 0;
 };
 
-#define HL_MOVE_INSTR_ARGS int& rd, long* hi_lo
-class HLMoveInstruction : public Hardware::Instruction {
+#define HL_MOVE_INSTR_ARGS int& storage_register, Hardware::Machine::HiLoRegisters& hiLo
+// MoveFrom uses rd, MoveTo uses rs
+class HLMoveInstruction : public HiLoInstruction {
 protected:
-    int& rd;
+    // MoveTo uses rd, MoveTo uses rs
+    int& storage_register;
 
 public:
     HLMoveInstruction(HL_MOVE_INSTR_ARGS);
     virtual void run() = 0;
 };
 
-#define HL_OP_INSTR_ARGS int& rs, int& rt, long* hi_lo
-class HLOpInstruction : public Hardware::Instruction {
+#define HL_OP_INSTR_ARGS int& rs, int& rt, Hardware::Machine::HiLoRegisters& hiLo
+class HLOpInstruction : public HiLoInstruction {
 protected:
     int& rs;
     int& rt;

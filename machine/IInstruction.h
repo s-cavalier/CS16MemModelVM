@@ -2,10 +2,11 @@
 #define __IINSTRUCTION_H__
 #include "Hardware.h"
 
-// -------------------
+// ---------------------------------
 // I-Type Instructions
 // Follows op rt, rs, imm
-// -------------------
+// Consider refactoring with Union?
+// --------------------------------
 
 class IInstruction : public Hardware::Instruction {
 protected:

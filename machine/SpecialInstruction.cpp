@@ -1,5 +1,6 @@
 #include "SpecialInstruction.h"
 #include <iostream>
+#include <cassert>
 
 JInstruction::JInstruction(J_INSTR_ARGS) : pc(pc) {}
 
@@ -19,7 +20,21 @@ void JumpRegister::run() { pc = ra; }
 JumpAndLinkRegister::JumpAndLinkRegister(J_INSTR_ARGS, int& rd, const int& rs) : JInstruction(pc), rd(rd), rs(rs) {}
 void JumpAndLinkRegister::run() { rd = pc; pc = rs; }
 
-HiLoInstruction::HiLoInstruction(long* hi_lo) : hi_lo(hi_lo) {}
+HiLoInstruction::HiLoInstruction(Hardware::Machine::HiLoRegisters& hiLo) : hiLo(hiLo) { }
+HLMoveInstruction::HLMoveInstruction(HL_MOVE_INSTR_ARGS) : HiLoInstruction(hiLo), storage_register(storage_register) {}
+HLOpInstruction::HLOpInstruction(HL_OP_INSTR_ARGS) : HiLoInstruction(hiLo), rs(rs), rt(rt) {}
+
+#define HL_MOVE_CNSTCTR_INIT(arg) arg::arg(HL_MOVE_INSTR_ARGS) : HLMoveInstruction(storage_register, hiLo) {} void arg::run()
+HL_MOVE_CNSTCTR_INIT(MoveFromHi) { storage_register = hiLo.hi; }
+HL_MOVE_CNSTCTR_INIT(MoveFromLo) { storage_register = hiLo.lo; }
+HL_MOVE_CNSTCTR_INIT(MoveToHi) { hiLo.hi = storage_register; }
+HL_MOVE_CNSTCTR_INIT(MoveToLo) { hiLo.lo = storage_register; }
+
+#define HL_OP_CNSTCTR_INIT(arg) arg::arg(HL_OP_INSTR_ARGS) : HLOpInstruction(rs, rt, hiLo) {} void arg::run()
+HL_OP_CNSTCTR_INIT(Multiply) { DoubleWord res = rs * rt; hiLo.lo = Word(res); res >>= 32; hiLo.hi = Word(res); }
+HL_OP_CNSTCTR_INIT(MultiplyUnsigned) { DoubleWord res = Word(rs) * Word(rt); hiLo.lo = Word(res); res >>= 32; hiLo.hi = Word(res); }
+HL_OP_CNSTCTR_INIT(Divide) { hiLo.hi = rs % rt; hiLo.lo = rs / rt; }
+HL_OP_CNSTCTR_INIT(DivideUnsigned) { hiLo.hi = Word(rs) % Word(rt); hiLo.lo = Word(rs) / Word(rt); }
 
 Syscall::Syscall(int& v0, int& a0, int& a1, bool& kill_flag) : v0(v0), a0(a0), a1(a1), kill_flag(kill_flag) {}
 void Syscall::run() {

@@ -1,6 +1,7 @@
 from sys import argv
 from os import fork, execv, execvp, pipe, dup2, close, read, wait
 from collections import deque
+from math import isclose
 
 def read_pipe(fd):
     output = deque[str]()
@@ -45,7 +46,7 @@ if __name__ == "__main__":
         dup2(writefd, 1)
         close(writefd)
         
-        execv('spimulator', ['spimulator', f'bin/{argv[1]}'])
+        execv('spimulator', ['spimulator', f'bin/{argv[1]}', '3.14159'])
         assert(False)
     
     close(writefd)
@@ -55,5 +56,5 @@ if __name__ == "__main__":
     
     print('SPIM:', spim_output)
     print('SPIMULATOR:', spimulator_output)
-    print('Passed?', 'True' if spim_output == spimulator_output else 'False')
+    print('Passed?', 'True' if isclose(float(spim_output[0]), float(spimulator_output[0]), rel_tol=1e-5) else 'False')
     

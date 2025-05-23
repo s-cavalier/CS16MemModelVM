@@ -1,24 +1,25 @@
 #include "Memory.h"
 #include "BinaryUtils.h"
+#include <cstring>
 
 Hardware::Memory::Iterator::Iterator(const std::unordered_map<Word, char>::const_iterator& src) {
-    it = new std::unordered_map<Word, char>::const_iterator(src);
+    it = src;
 }
 
 Hardware::Memory::Iterator::~Iterator() {
-    delete it;
+
 }
 
 const std::pair<const Word, char>& Hardware::Memory::Iterator::operator*() const {
-    return *(*it);
+    return *it;
 }
 
 const std::pair<const Word, char>* Hardware::Memory::Iterator::operator->() const {
-    return (*it).operator->();
+    return it.operator->();
 }
 
 Hardware::Memory::Iterator& Hardware::Memory::Iterator::operator++() {
-    ++(*it);
+    ++it;
     return *this;
 }
 
@@ -29,11 +30,11 @@ Hardware::Memory::Iterator Hardware::Memory::Iterator::operator++(int) {
 }
 
 bool Hardware::Memory::Iterator::operator==(const Iterator& other) const {
-    return (*it) == *other.it;
+    return it == other.it;
 }
 
 bool Hardware::Memory::Iterator::operator!=(const Iterator& other) const {
-    return (*it) != *other.it;
+    return it != other.it;
 }
 
 Hardware::Memory::Iterator Hardware::Memory::begin() const {
@@ -90,4 +91,17 @@ void Hardware::Memory::setHalfWord(const Word& addr, const HalfWord& halfword) {
 
 void Hardware::Memory::setByte(const Word& addr, const Byte& byte) {
     RAM[addr] = byte;
+}
+
+float Hardware::Memory::getSingle(const Word& addr) const {
+    Word tmpw = getWord(addr);
+    float tmpf = 0;
+    memcpy(&tmpf, &tmpw, 4);
+    return tmpf;
+}
+
+void Hardware::Memory::setSingle(const Word& addr, const float& single) {
+    Word tmpw = 0;
+    memcpy(&tmpw, &single, 4);
+    setWord(addr, tmpw);
 }

@@ -13,7 +13,7 @@ namespace Hardware {
     
     public:
         class Iterator {
-            std::unordered_map<Word, char>::const_iterator* it;
+            std::unordered_map<Word, char>::const_iterator it;
 
         public:
             using value_type = const std::pair<const Word, char>;
@@ -58,6 +58,11 @@ namespace Hardware {
         void setHalfWord(const Word& addr, const HalfWord& halfword);
         void setByte(const Word& addr, const Byte& byte);
 
+        float getSingle(const Word& addr) const;
+        double getDouble(const Word& addr) const;
+
+        void setSingle(const Word& addr, const float& single);
+        void setDouble(const Word& addr, const double& dble);
     };
 
 };

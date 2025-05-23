@@ -31,6 +31,12 @@ namespace Binary {
         SB = 0x28,          //
         SH = 0x29,          //
         SW = 0x2b,          //
+
+        LWC1 = 0x31,        //
+        LDC1 = 0x35,        
+        SWC1 = 0x39,        //
+        SDC1 = 0x3d,        
+
         LL = 0x30,  // not important rn
         SC = 0x38   // only useful when implementing OS or multithreading (green threads)
     };
@@ -76,13 +82,14 @@ namespace Binary {
 
     // Single/Double Instructions have same Funct, so just decide what to return based on FMT, these functs are stricly generic to either S or D
     enum FPFunct : unsigned char {
+        FPABS = 0x5,
         FPADD = 0,
         FPCEQ = 0x32,
         FPCLT = 0x3c,
         FPCLE = 0x3e,
         FPDIV = 3,
         FPMUL = 2,
-        FBSUB = 1
+        FPSUB = 1
     };
 
     enum Register : unsigned char {

@@ -1,6 +1,6 @@
 # Compiler and flags
 CXX := g++
-CXXFLAGS := -g -Wall -Wextra -Werror -Wno-unused-variable
+CXXFLAGS := -O3 -Wall -Wextra -Werror -Wno-unused-variable
 
 # Directories
 SRC_DIRS := machine

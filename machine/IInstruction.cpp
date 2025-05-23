@@ -16,14 +16,14 @@ I_GEN_CONSTRCTR_INIT(SetLessThanImmediate) { rt = (rs < imm ? 1 : 0); }
 I_GEN_CONSTRCTR_INIT(SetLessThanImmediateUnsigned) { rt = (Word(rs) < Word(HalfWord(imm)) ? 1 : 0); }
 
 #define I_MEM_CONSTRCTR_INIT(x) x::x(I_MEM_INSTR_ARGS) : IMemoryInstruction(rt, rs, imm, mem) {} void x::run()
-I_MEM_CONSTRCTR_INIT(LoadByte) { rt = char(mem.getByte(rs + int(imm))); }
-I_MEM_CONSTRCTR_INIT(LoadByteUnsigned) { rt = Word(mem.getByte(rs + int(imm))); }
-I_MEM_CONSTRCTR_INIT(LoadHalfword) { rt = short(mem.getHalfWord(rs + int(imm))); }
-I_MEM_CONSTRCTR_INIT(LoadHalfwordUnsigned) { rt = Word(mem.getHalfWord(rs + int(imm))); }
-I_MEM_CONSTRCTR_INIT(LoadWord) { rt = mem.getWord(rs + int(imm)); }
-I_MEM_CONSTRCTR_INIT(StoreByte) { mem.setByte(rs + int(imm), Byte(rt)); }
-I_MEM_CONSTRCTR_INIT(StoreHalfword) { mem.setHalfWord(rs + int(imm), HalfWord(rt)); }
-I_MEM_CONSTRCTR_INIT(StoreWord) { mem.setWord(rs + int(imm), rt); }
+I_MEM_CONSTRCTR_INIT(LoadByte) { rt = char(mem.getByte(Word(rs) + int(imm))); }
+I_MEM_CONSTRCTR_INIT(LoadByteUnsigned) { rt = Word(mem.getByte(Word(rs) + int(imm))); }
+I_MEM_CONSTRCTR_INIT(LoadHalfword) { rt = short(mem.getHalfWord(Word(rs) + int(imm))); }
+I_MEM_CONSTRCTR_INIT(LoadHalfwordUnsigned) { rt = Word(mem.getHalfWord(Word(rs) + int(imm))); }
+I_MEM_CONSTRCTR_INIT(LoadWord) { rt = mem.getWord(Word(rs) + int(imm)); }
+I_MEM_CONSTRCTR_INIT(StoreByte) { mem.setByte(Word(rs) + int(imm), Byte(rt)); }
+I_MEM_CONSTRCTR_INIT(StoreHalfword) { mem.setHalfWord(Word(rs) + int(imm), HalfWord(rt)); }
+I_MEM_CONSTRCTR_INIT(StoreWord) { mem.setWord(Word(rs) + int(imm), rt); }
 
 
 #define I_BRANCH_CONSTRCTR_INIT(x) x::x(I_BRANCH_INSTR_ARGS) : IBranchInstruction(rt, rs, imm, pc) {} void x::run()

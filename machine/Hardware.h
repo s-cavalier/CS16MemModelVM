@@ -17,17 +17,20 @@ namespace Hardware {
 
     class Machine {
     public:
-        struct HiLoRegisters { Word hi; Word lo; };
+        struct HiLoRegisters { Word hi; Word lo; }; // If a system is big endian, speedups could be done here?
+        struct RegisterFile {
+            Word programCounter;
+            int registerFile[32];       // Maybe use a union between int/unsigned int? Probnot
+            float fpRegisterFile[32];
+            HiLoRegisters hiLo;
+            Memory RAM;
+            bool FPcond;
+        };
 
     private:
-        Word programCounter;
-        int registerFile[32];       // Maybe use a union between int/unsigned int? Probnot
-        float fpRegisterFile[32];
-        HiLoRegisters hiLo;
+        RegisterFile registers;
         std::unordered_map<Word, std::unique_ptr<Instruction>> instructionCache;
-        Memory RAM;
         
-
     public:
         Machine();
 
@@ -49,7 +52,7 @@ namespace Hardware {
         virtual void run() = 0;
     };
 
-    std::unique_ptr<Instruction> instructionFactory(const Word& binary_instruction, Word& programCounter, int* registerFile, float* fpRegisterFile, Hardware::Memory& RAM, Hardware::Machine::HiLoRegisters& hiLo, bool& kill_flag);
+    std::unique_ptr<Instruction> instructionFactory(const Word& binary_instruction, Hardware::Machine::RegisterFile& registers, bool& kill_flag);
 
 };
 

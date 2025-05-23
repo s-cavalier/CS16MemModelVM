@@ -111,10 +111,11 @@ class Syscall : public Hardware::Instruction {
     int& v0;
     int& a0;
     int& a1;
+    float& f12;
     bool& kill_flag;
 
 public:
-    Syscall(int& v0, int& a0, int& a1, bool& kill_flag);
+    Syscall(int& v0, int& a0, int& a1, float& f12, bool& kill_flag);
     void run();
 };
 

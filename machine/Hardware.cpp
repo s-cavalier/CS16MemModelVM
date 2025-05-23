@@ -4,103 +4,17 @@
 #include <iostream>
 #include <iomanip>
 
-Hardware::Memory::Iterator::Iterator(const std::unordered_map<Word, char>::const_iterator& src) {
-    it = new std::unordered_map<Word, char>::const_iterator(src);
-}
-
-Hardware::Memory::Iterator::~Iterator() {
-    delete it;
-}
-
-const std::pair<const Word, char>& Hardware::Memory::Iterator::operator*() const {
-    return *(*it);
-}
-
-const std::pair<const Word, char>* Hardware::Memory::Iterator::operator->() const {
-    return (*it).operator->();
-}
-
-Hardware::Memory::Iterator& Hardware::Memory::Iterator::operator++() {
-    ++(*it);
-    return *this;
-}
-
-Hardware::Memory::Iterator Hardware::Memory::Iterator::operator++(int) {
-    auto tmp = *this;
-    ++*this;
-    return tmp;
-}
-
-bool Hardware::Memory::Iterator::operator==(const Iterator& other) const {
-    return (*it) == *other.it;
-}
-
-bool Hardware::Memory::Iterator::operator!=(const Iterator& other) const {
-    return (*it) != *other.it;
-}
-
-Hardware::Memory::Iterator Hardware::Memory::begin() const {
-    return Iterator(RAM.cbegin());
-}
-
-Hardware::Memory::Iterator Hardware::Memory::end() const {
-    return Iterator(RAM.cend());
-}
-
-// we using big endian around here
-
-Hardware::Memory::Memory() {}
-Hardware::Memory::Memory(const boundRegisters& bounds) {
-    memoryBounds = bounds;
-}
-
-Word Hardware::Memory::getWord(const Word& addr) const {
-    Byte word[4] = {
-        getByte(addr),
-        getByte(addr + 1),
-        getByte(addr + 2),
-        getByte(addr + 3)
-    };
-
-    return Binary::loadBigEndian(word);
-}
-
-HalfWord Hardware::Memory::getHalfWord(const Word& addr) const {
-    Byte halfword[2] = {
-        getByte(addr),
-        getByte(addr + 1),
-    };
-
-    return (halfword[0] << 8) | halfword[1];
-}
-
-Byte Hardware::Memory::getByte(const Word& addr) const {
-    auto ret = RAM.find(addr);
-    return ret != RAM.end() ? ret->second : 0;
-}
-
-void Hardware::Memory::setWord(const Word& addr, const Word& word) {
-    RAM[addr] =     (word >> 24);
-    RAM[addr + 1] = (word >> 16) & 0xFF;
-    RAM[addr + 2] = (word >> 8) & 0xFF;
-    RAM[addr + 3] =  word & 0xFF;
-}
-
-void Hardware::Memory::setHalfWord(const Word& addr, const HalfWord& halfword) {
-    RAM[addr]     = (halfword >> 8);
-    RAM[addr + 1] =  halfword & 0xFF;
-}
-
-void Hardware::Memory::setByte(const Word& addr, const Byte& byte) {
-    RAM[addr] = byte;
-}
-
 Hardware::Machine::Machine() {
     for (int i = 0; i < 32; ++i) {
-        registerFile[i] = 0;
-        fpRegisterFile[i] = 0;
+        registerFile[i] = 0.0f;
+        fpRegisterFile[i] = 0.0f;
     }
-        programCounter = 0x00400024;
+
+    // temp for testing
+    fpRegisterFile[1] = 3.14159f;
+    fpRegisterFile[2] = 2.71828f;
+
+    programCounter = 0x00400024;
     registerFile[Binary::SP] = 0x7fffffff;
     registerFile[Binary::GP] = 0x10008000; 
     killed = false;
@@ -116,6 +30,10 @@ const int& Hardware::Machine::readRegister(const Byte& reg) const {
 
 const Hardware::Memory& Hardware::Machine::readMemory() const {
     return RAM;
+}
+
+const float& Hardware::Machine::readFPRegister(const Byte& reg) const {
+    return fpRegisterFile[reg];
 }
 
 void Hardware::Machine::loadInstructions(const std::vector<Word>& instructions) {
@@ -150,8 +68,10 @@ void Hardware::Machine::runInstruction() {
         return;
     }
 
+    std::cout << "RUNNING INSTRUCTION: " << std::hex <<  RAM.getWord(programCounter) << std::endl;
+
     (
-        instructionCache[programCounter] = instructionFactory( RAM.getWord(programCounter), programCounter, registerFile, RAM, hiLo, killed )
+        instructionCache[programCounter] = instructionFactory( RAM.getWord(programCounter), programCounter, registerFile, fpRegisterFile, RAM, hiLo, killed )
     )->run(); // cool syntax
 
     programCounter += 4;
@@ -163,7 +83,7 @@ void Hardware::Machine::run() {
 
 // TODO: Add better error handling
 
-std::unique_ptr<Hardware::Instruction> Hardware::instructionFactory(const Word& binary_instruction, Word& programCounter, int* registerFile, Hardware::Memory& RAM, Hardware::Machine::HiLoRegisters& hiLo, bool& kill_flag) {
+std::unique_ptr<Hardware::Instruction> Hardware::instructionFactory(const Word& binary_instruction, Word& programCounter, int* registerFile, float* fpRegisterFile, Hardware::Memory& RAM, Hardware::Machine::HiLoRegisters& hiLo, bool& kill_flag) {
     // DECODE
     using namespace Binary;
     
@@ -174,10 +94,15 @@ std::unique_ptr<Hardware::Instruction> Hardware::instructionFactory(const Word& 
     Register rs = Register((binary_instruction >> 21) & 0b11111);   // For I/R
     Register rt = Register((binary_instruction >> 16) & 0b11111);   // For I/R
 
-
     Register rd = Register((binary_instruction >> 11) & 0b11111);   // For R
     Byte shamt = (binary_instruction >> 6) & 0b11111;               // For R
     Funct funct = Funct(binary_instruction & 0b111111);             // For R
+
+    FMT fmt = FMT(rs);  // uses the same space, so just copy bits   // For FP
+    std::cout << "RS: " << Word(rs) << ", FMT:" << Word(fmt) << '\n';
+    Byte ft = Byte(rt);                                             // For FP
+    Byte fs = Byte(rd);                                             // For FP
+    Byte fd = Byte(shamt);                                          // For FP
 
     short immediate = binary_instruction & 0xFFFF;                  // For I
 
@@ -249,9 +174,16 @@ std::unique_ptr<Hardware::Instruction> Hardware::instructionFactory(const Word& 
         }
     }
 
-    // TODO: Figure out how address works for J/JAL
-    // TODO: Make offset work for branch
-    // TODO: More memory instr
+    #define FR_INIT(x) std::make_unique<x>(fpRegisterFile[ft], fpRegisterFile[fs], fpRegisterFile[fd])
+    if (opcode == FP_TYPE) {
+        switch (funct) {
+            case FPADD:
+                return FR_INIT(FPAddSingle);
+            default:
+                std::cout << "Not implemented yet" << std::endl;
+                throw 3;
+        }
+    }
 
     #define I_GEN_INIT(x) std::make_unique<x>(registerFile[rt], registerFile[rs], immediate)
     #define I_MEM_INIT(x) std::make_unique<x>(registerFile[rt], registerFile[rs], immediate, RAM)

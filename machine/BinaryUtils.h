@@ -7,6 +7,7 @@
 namespace Binary {
     enum Opcode : unsigned char {
         R_TYPE = 0x0,
+        FP_TYPE = 0x11,
         J = 0x2,            //
         JAL = 0x3,          //
 
@@ -62,6 +63,26 @@ namespace Binary {
         MFLO = 0x12,        //
         MTHI = 0x11,        //
         MTLO = 0x13,        //
+    };
+
+    // Maybe consider extended/quad precision
+    enum FMT : unsigned char {
+        BC = 0x8,
+        S = 0x10,
+        D = 0x11,
+        W = 0x14,
+        L = 0x15,
+    };
+
+    // Single/Double Instructions have same Funct, so just decide what to return based on FMT, these functs are stricly generic to either S or D
+    enum FPFunct : unsigned char {
+        FPADD = 0,
+        FPCEQ = 0x32,
+        FPCLT = 0x3c,
+        FPCLE = 0x3e,
+        FPDIV = 3,
+        FPMUL = 2,
+        FBSUB = 1
     };
 
     enum Register : unsigned char {

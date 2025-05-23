@@ -30,6 +30,8 @@ int main(int argc, char** argv) {
 
     cout << "REGISTERS:\n";
     for (int i = 0; i < 32; ++i) cout << '$' << Binary::regToString[i] << " = " << hex << machine.readRegister(i) << '\n';
+    cout <<"FP REGISTERs:\n";
+    for (int i = 0; i < 32; ++i) cout << "$f" << i << " = " << machine.readFPRegister(i) << '\n'; 
     cout << "MEMORY:\n";
     for (const auto& kv : machine.readMemory()) {
         if (kv.first <= 0x10000000) continue;

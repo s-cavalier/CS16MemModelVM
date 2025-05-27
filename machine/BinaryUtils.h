@@ -127,12 +127,11 @@ namespace Binary {
         RA = 31
     };
 
-    inline unsigned int loadBigEndian(const unsigned char bytes[4]) {
-        return (((unsigned int)(bytes[0])) << 24) |
-            (((unsigned int)(bytes[1])) << 16) |
-            (((unsigned int)(bytes[2])) << 8)  |
-            (((unsigned int)(bytes[3]))); 
-    }
+    unsigned int loadBigEndian(const unsigned char bytes[4]);
+
+    void storeDoubleBE(float* loc, const double& dble);
+
+    double loadDoubleBE(const float* vals);
 
     static char regToString[32][3] = {
         "0\0",  // null terminator so it ends earlier

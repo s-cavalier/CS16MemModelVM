@@ -17,7 +17,7 @@ namespace FileLoader {
         bool _bad;
 
     public:
-        Parser() : _bad(false) {}
+        Parser();
         
         Section<Byte>& readData();
         Section<Word>& readText();
@@ -26,8 +26,12 @@ namespace FileLoader {
         const bool& bad() const;
     };
 
-    struct ExecutableParser : public Parser {
-        ExecutableParser(const std::string& path);
+    struct SpimLoader : public Parser {
+        SpimLoader(const std::string& path);
+    };
+
+    struct ELFLoader : public Parser {
+        ELFLoader(const std::string& path);
     };
 }
 

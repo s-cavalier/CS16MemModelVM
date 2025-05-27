@@ -18,14 +18,14 @@ int main(int argc, char** argv) {
 
     ios_base::sync_with_stdio(false);
  
-    FileLoader::ExecutableParser exe(argv[1]);
-    if (exe.bad()) {
+    unique_ptr<FileLoader::Parser> exe = make_unique<FileLoader::ELFLoader>(argv[1]); 
+    if (exe->bad()) {
         cout << "Failed to load file '" << argv[1] << '\'' << endl;
         return 1;
     }
 
     Hardware::Machine machine;
-    machine.loadInstructions(exe.readText());
+    machine.loadInstructions(exe->readText());
     machine.run();
 
     cout << "REGISTERS:\n";

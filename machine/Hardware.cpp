@@ -1,8 +1,11 @@
 #include "Hardware.h"
 #include "BinaryUtils.h"
-#include "Instruction.h"
+#include "instructions/Instruction.h"
 #include <iostream>
 #include <iomanip>
+
+#define TEXT_ENTRY 0x004002c0
+#define DATA_ENTRY 0x10008000
 
 // TODO: add some debugging ability
 // -------------------------------------------------------------
@@ -15,10 +18,10 @@ Hardware::Machine::Machine() {
         registers.fpRegisterFile[i] = 0.0f;
     }
 
-    registers.programCounter = 0x00400024;
+    registers.programCounter = TEXT_ENTRY;
     registers.registerFile[Binary::SP] = 0x7fffffff;
     registers.registerFile[Binary::FP] = 0x7fffffff;
-    registers.registerFile[Binary::GP] = 0x10008000; 
+    registers.registerFile[Binary::GP] = DATA_ENTRY; 
     killed = false;
     registers.FPcond = false;
 }
@@ -40,9 +43,8 @@ const float& Hardware::Machine::readFPRegister(const Byte& reg) const {
 }
 
 void Hardware::Machine::loadData(const std::vector<Byte>& bytes) {
-    std::cout << "Loaded Data Section: " << bytes.size() << " bytes loaded" << std::endl;
 
-    Word at = 0x10008000;
+    Word at = DATA_ENTRY;
     for (const auto& byte : bytes) {
         registers.RAM.setByte(at, byte);
         ++at;
@@ -54,9 +56,7 @@ void Hardware::Machine::loadInstructions(const std::vector<Word>& instructions) 
     // for right now, just load according to mips for no patricular reason
     // will figure out exact specifications later
 
-    std::cout << "Loaded Text Section: " << instructions.size() * 4 << " bytes loaded" << std::endl;
-
-    Word at = 0x00400024;
+    Word at = TEXT_ENTRY;
     for (const auto& instr : instructions) {
         registers.RAM.setWord(at, instr);
         at += 4;
@@ -64,16 +64,13 @@ void Hardware::Machine::loadInstructions(const std::vector<Word>& instructions) 
     
     Memory::boundRegisters& bounds = registers.RAM.memoryBounds;
     bounds.textBound = at;
-    std::cout << "Placed PC bound at: " << std::hex << at << std::endl;
     bounds.stackBound = 0x7fffe000;
     bounds.dynamicBound = 0x70000000;
 }
 
 void Hardware::Machine::runInstruction() {
-    std::cout << "At program counter " << std::hex << registers.programCounter << std::endl;
 
     if (registers.programCounter >= registers.RAM.memoryBounds.textBound) {
-        std::cout << "Reading past text memory. Killing process..." << std::endl;
         killed = true;
         return;
     }

@@ -1,5 +1,5 @@
 #include "SpecialInstruction.h"
-#include "BinaryUtils.h"
+#include "../BinaryUtils.h"
 #include <iostream>
 #include <cassert>
 

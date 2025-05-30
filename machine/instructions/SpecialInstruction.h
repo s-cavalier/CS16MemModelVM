@@ -1,6 +1,6 @@
 #ifndef __SPECIAL_INSTRUCTION_H__
 #define __SPECIAL_INSTRUCTION_H__
-#include "Hardware.h"
+#include "../Hardware.h"
 
 // -----------------
 // Jump Instructions

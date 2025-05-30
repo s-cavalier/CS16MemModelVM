@@ -1,5 +1,5 @@
 #include "Hardware.h"
-#include "Instruction.h"
+#include "instructions/Instruction.h"
 #include "BinaryUtils.h"
 #include <iostream>
 

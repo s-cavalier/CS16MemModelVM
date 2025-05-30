@@ -1,6 +1,6 @@
 #ifndef __IINSTRUCTION_H__
 #define __IINSTRUCTION_H__
-#include "Hardware.h"
+#include "../Hardware.h"
 
 // ---------------------------------
 // I-Type Instructions

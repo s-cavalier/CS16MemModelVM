@@ -1,6 +1,6 @@
 #ifndef __RINSTRUCTION_H__
 #define __RINSTRUCTION_H__
-#include "Hardware.h"
+#include "../Hardware.h"
 
 // -------------------
 // R-Type Instructions

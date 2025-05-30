@@ -5,7 +5,7 @@
 #include <iomanip>
 #include "machine/Hardware.h"
 #include "machine/BinaryUtils.h"
-#include "machine/Loader.h"
+#include "loader/Loader.h"
 
 // FUTURE: watch out for delay slots?
 

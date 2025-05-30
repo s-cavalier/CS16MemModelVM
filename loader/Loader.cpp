@@ -1,7 +1,13 @@
 #include "Loader.h"
-#include "BinaryUtils.h"
 #include <fstream>
 #include <elfio/elfio.hpp>
+
+inline unsigned int loadBigEndian(const unsigned char bytes[4]) {
+    return (((unsigned int)(bytes[0])) << 24) |
+        (((unsigned int)(bytes[1])) << 16) |
+        (((unsigned int)(bytes[2])) << 8)  |
+        (((unsigned int)(bytes[3]))); 
+}
 
 FileLoader::Parser::Parser() : _bad(false) {}
 
@@ -25,7 +31,7 @@ FileLoader::SpimLoader::SpimLoader(const std::string& path) : Parser() {
     }
 
     Byte buffer[4];
-    while (file.read((char*)buffer, 4)) text.push_back(Binary::loadBigEndian(buffer));
+    while (file.read((char*)buffer, 4)) text.push_back(loadBigEndian(buffer));
 }
 
 FileLoader::ELFLoader::ELFLoader(const std::string& path) : Parser() {

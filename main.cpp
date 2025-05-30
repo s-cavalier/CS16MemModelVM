@@ -7,7 +7,13 @@
 #include "machine/BinaryUtils.h"
 #include "loader/Loader.h"
 
-// FUTURE: watch out for delay slots?
+// dynamic debug loading
+#ifdef DEBUG
+    #include "debug/debughooks.cpp"
+    #define DBGHOOK(hook) hook
+#else
+    #define DBGHOOK(hook) nullptr
+#endif
 
 using namespace std;
 
@@ -16,9 +22,13 @@ using SafeVector = vector<unique_ptr<T>>;
 
 int main(int argc, char** argv) {
     if (argc < 2 || argc > 3) return 1;
-
     ios_base::sync_with_stdio(false);
- 
+
+    #ifdef DEBUG
+        std::ofstream out("dbgout.tmp", std::ios::out | std::ios::trunc);
+        dbg_output_stream = &out;
+    #endif
+
     unique_ptr<FileLoader::Parser> exe;
 
     if (argc == 3 && string(argv[2]) == "-spim") exe = make_unique<FileLoader::SpimLoader>(argv[1]);
@@ -32,17 +42,9 @@ int main(int argc, char** argv) {
     Hardware::Machine machine;
     machine.loadData(exe->readData());
     machine.loadInstructions(exe->readText());
-    machine.run();
-
-    cout << "REGISTERS:\n";
-    for (int i = 0; i < 32; ++i) cout << '$' << Binary::regToString[i] << " = " << hex << machine.readRegister(i) << '\n';
-    cout <<"FP REGISTERs:\n";
-    for (int i = 0; i < 32; ++i) cout << "$f" << i << " = " << machine.readFPRegister(i) << '\n'; 
-    cout << "MEMORY:\n";
-    for (const auto& kv : machine.readMemory()) {
-        if (kv.first <= 0x10000000) continue;
-        cout << hex << kv.first << " = 0x" << setw(2) << setfill('0') << Word(kv.second) << '\n';
-    }
+    machine.run(DBGHOOK((
+        makeCombinedHook<printMem<0x10008000>>()
+    )));
 
     return 0;
 }

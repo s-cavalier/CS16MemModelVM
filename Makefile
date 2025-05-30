@@ -1,6 +1,6 @@
 # Compiler and flags
 CXX := g++
-CXXFLAGS := -O3 -Wall -Wextra -Werror -Wno-unused-variable
+CXXFLAGS := -O3 -Wall -Wextra -Werror -Wno-unused-parameter -Wno-unused-variable -D DEBUG
 
 # Directories
 SRC_DIRS := machine machine/instructions loader

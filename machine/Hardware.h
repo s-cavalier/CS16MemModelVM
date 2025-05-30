@@ -41,6 +41,7 @@ namespace Hardware {
         bool killed;
 
         void loadInstructions(const std::vector<Word>& instructions);
+        void loadData(const std::vector<Byte>& bytes);
 
         void runInstruction();
 

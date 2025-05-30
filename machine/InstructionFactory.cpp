@@ -69,7 +69,7 @@ std::unique_ptr<Hardware::Instruction> Hardware::instructionFactory(const Word& 
             HL_MOVE_INIT(MTLO, MoveToLo, rs);
             case JR: return std::make_unique<JumpRegister>(programCounter, registerFile[RA]);
             case JALR: return std::make_unique<JumpAndLinkRegister>(programCounter, registerFile[rd], registerFile[rs]);
-            case SYSCALL: return std::make_unique<Syscall>(registerFile[V0], registerFile[A0], registerFile[A1], fpRegisterFile[13], kill_flag);
+            case SYSCALL: return std::make_unique<Syscall>(registers, kill_flag);
             default:
                 std::cout << "hello from bad funct " << std::hex << Word(binary_instruction) << std::endl;
                 throw 1;

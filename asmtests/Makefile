@@ -5,8 +5,8 @@ LD = mips-linux-gnu-ld
 OBJDUMP = mips-linux-gnu-objdump
 OBJCOPY = mips-linux-gnu-objcopy
 
-ASFLAGS = -EL        # Little-endian
-LDFLAGS = -Ttext 0x00400024 -Tdata 0x10008000 -EL -nostdlib
+ASFLAGS = 
+LDFLAGS = -Ttext 0x00400024 -Tdata 0x10008000 -nostdlib
 
 # Derive names from the input file
 BASE = $(basename $(FILE))

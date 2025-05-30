@@ -8,4 +8,4 @@ main:
     syscall             # 1128fffd
 
     li $v0, 10          #
-    syscall             # 
+    syscall             

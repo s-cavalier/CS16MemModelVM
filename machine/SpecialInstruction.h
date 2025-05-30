@@ -108,14 +108,11 @@ HL_OP_INSTR(DivideUnsigned);
 // -------
 
 class Syscall : public Hardware::Instruction {
-    int& v0;
-    int& a0;
-    int& a1;
-    float& f12;
+    Hardware::Machine::RegisterFile& rf;
     bool& kill_flag;
 
 public:
-    Syscall(int& v0, int& a0, int& a1, float& f12, bool& kill_flag);
+    Syscall(Hardware::Machine::RegisterFile& rf, bool& kill_flag);
     void run();
 };
 

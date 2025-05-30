@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <string>
 #include <iomanip>
 #include "machine/Hardware.h"
 #include "machine/BinaryUtils.h"
@@ -14,17 +15,22 @@ template <typename T>
 using SafeVector = vector<unique_ptr<T>>;
 
 int main(int argc, char** argv) {
-    if (argc != 2) return 1;
+    if (argc < 2 || argc > 3) return 1;
 
     ios_base::sync_with_stdio(false);
  
-    unique_ptr<FileLoader::Parser> exe = make_unique<FileLoader::ELFLoader>(argv[1]); 
+    unique_ptr<FileLoader::Parser> exe;
+
+    if (argc == 3 && string(argv[2]) == "-spim") exe = make_unique<FileLoader::SpimLoader>(argv[1]);
+    else exe = make_unique<FileLoader::ELFLoader>(argv[1]);
+
     if (exe->bad()) {
         cout << "Failed to load file '" << argv[1] << '\'' << endl;
         return 1;
     }
 
     Hardware::Machine machine;
+    machine.loadData(exe->readData());
     machine.loadInstructions(exe->readText());
     machine.run();
 

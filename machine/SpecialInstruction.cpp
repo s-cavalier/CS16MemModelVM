@@ -1,4 +1,5 @@
 #include "SpecialInstruction.h"
+#include "BinaryUtils.h"
 #include <iostream>
 #include <cassert>
 
@@ -36,23 +37,27 @@ HL_OP_CNSTCTR_INIT(MultiplyUnsigned) { DoubleWord res = Word(rs) * Word(rt); hiL
 HL_OP_CNSTCTR_INIT(Divide) { hiLo.hi = rs % rt; hiLo.lo = rs / rt; }
 HL_OP_CNSTCTR_INIT(DivideUnsigned) { hiLo.hi = Word(rs) % Word(rt); hiLo.lo = Word(rs) / Word(rt); }
 
-Syscall::Syscall(int& v0, int& a0, int& a1, float& f12, bool& kill_flag) : v0(v0), a0(a0), a1(a1), f12(f12), kill_flag(kill_flag) {}
+Syscall::Syscall(Hardware::Machine::RegisterFile& rf, bool& kill_flag) : rf(rf), kill_flag(kill_flag) {}
 void Syscall::run() {
-    switch (v0) {
+    using namespace Binary;
+    switch (rf.registerFile[V0]) {
         case 1:         // Print integer
-            std::cout << a0;
+            std::cout << rf.registerFile[A0];
             return;
         case 2:
-            std::cout << f12;
+            std::cout << rf.fpRegisterFile[12];
             return;
+        case 4:
+            for (Word i = rf.registerFile[A0]; rf.RAM.getByte(i) != '\0'; ++i) std::cout << rf.RAM.getByte(i);
+            return; 
         case 10:        // exit
             kill_flag = true;
             return;
         case 11:
-            std::cout << char(a0);
+            std::cout << char(rf.registerFile[A0]);
             return;
         default:
-            std::cout << "hello from bad syscall " << v0 << std::endl;
+            std::cout << "hello from bad syscall " << rf.registerFile[V0] << std::endl;
             throw 4;
     }
 }

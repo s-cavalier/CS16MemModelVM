@@ -1,8 +1,7 @@
 #include "Loader.h"
 #include "BinaryUtils.h"
 #include <fstream>
-#include <elf.h>
-#include <iostream>
+#include <elfio/elfio.hpp>
 
 FileLoader::Parser::Parser() : _bad(false) {}
 
@@ -30,34 +29,52 @@ FileLoader::SpimLoader::SpimLoader(const std::string& path) : Parser() {
 }
 
 FileLoader::ELFLoader::ELFLoader(const std::string& path) : Parser() {
-    std::ifstream file(path, std::ios::in | std::ios::binary);
-    if (!file) {
+    ELFIO::elfio reader;
+
+    if (!reader.load(path)) {
         _bad = true;
         return;
     }
 
-    // Read ELF header
-    Elf32_Ehdr ehdr;
-    file.read(reinterpret_cast<char*>(&ehdr), sizeof(ehdr));
-    if (!file) {
-        _bad = true;
-        return;
+    // 2) Load .text section into vector<unsigned int>
+    const ELFIO::section* text_sec = reader.sections[".text"];
+    if (text_sec) {
+        const char*       bytes = text_sec->get_data();
+        std::size_t       sz    = text_sec->get_size();
+        std::size_t       count = sz / sizeof(unsigned int);
+        text.reserve(count);
+
+        for (std::size_t i = 0; i < count; ++i) {
+            const unsigned char* p = reinterpret_cast<const unsigned char*>(bytes + i * sizeof(unsigned int));
+            unsigned int         w;
+
+            if (reader.get_encoding() == ELFIO::ELFDATA2LSB) {
+                // little-endian
+                w =  (unsigned int)p[0]
+                   | (unsigned int)p[1] <<  8
+                   | (unsigned int)p[2] << 16
+                   | (unsigned int)p[3] << 24;
+            } else {
+                // big-endian
+                w =  (unsigned int)p[0] << 24
+                   | (unsigned int)p[1] << 16
+                   | (unsigned int)p[2] <<  8
+                   | (unsigned int)p[3];
+            }
+
+            text.push_back(w);
+        }
     }
 
-    // Verify ELF magic number
-    if (ehdr.e_ident[EI_MAG0] != ELFMAG0 || 
-        ehdr.e_ident[EI_MAG1] != ELFMAG1 ||
-        ehdr.e_ident[EI_MAG2] != ELFMAG2 || 
-        ehdr.e_ident[EI_MAG3] != ELFMAG3) {
-        _bad = true;
-        return;
+    // 3) Load .data section into vector<unsigned char>
+    const ELFIO::section* data_sec = reader.sections[".data"];
+    if (data_sec) {
+        const char*       bytes = data_sec->get_data();
+        std::size_t       sz    = data_sec->get_size();
+        
+        data.assign(
+            reinterpret_cast<const unsigned char*>(bytes),
+            reinterpret_cast<const unsigned char*>(bytes) + sz
+        );
     }
-
-    std::cout << "Valid ELF file.\n";
-    std::cout << "Entry point: 0x" << std::hex << ehdr.e_entry << '\n';
-    std::cout << "Program header offset: " << std::dec << ehdr.e_phoff << '\n';
-    std::cout << "Section header offset: " << ehdr.e_shoff << '\n';
-    std::cout << "Number of section headers: " << ehdr.e_shnum << '\n';
-    std::cout << "Section header string table index: " << ehdr.e_shstrndx << '\n';
-
 }

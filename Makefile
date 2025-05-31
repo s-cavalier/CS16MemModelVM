@@ -1,27 +1,54 @@
-# Compiler and flags
-CXX := g++
-CXXFLAGS := -O3 -Wall -Wextra -Werror -Wno-unused-parameter -Wno-unused-variable -D DEBUG
+# ----------------------------------------------------------------------
+# Compiler and “release” flags
+# ----------------------------------------------------------------------
+CXX       := g++
+CXXFLAGS  := -Wall -Wextra -Werror -Wno-unused-parameter -Wno-unused-variable
+             
+# (Remove the hard‐coded -DDEBUG here; we’ll only add it in debug mode.)
+#
+#CXXFLAGS += -DDEBUG
 
-# Directories
-SRC_DIRS := machine machine/instructions loader
-SRC := $(wildcard main.cpp $(addsuffix /*.cpp, $(SRC_DIRS)))
-OBJ := $(SRC:.cpp=.o)
+# ----------------------------------------------------------------------
+# Source directories and file lists
+# ----------------------------------------------------------------------
+SRC_DIRS  := machine machine/instructions loader
+SRC       := $(wildcard main.cpp $(addsuffix /*.cpp,$(SRC_DIRS)))
+OBJ       := $(SRC:.cpp=.o)
 
-# Target executable
-TARGET := spimulator
+# ----------------------------------------------------------------------
+# Final executable name
+# ----------------------------------------------------------------------
+TARGET    := spimulator
 
+# ----------------------------------------------------------------------
+# “all” (default) builds the optimized/release version
+# ----------------------------------------------------------------------
+.PHONY: all
+all: CXXFLAGS += -O3
 all: $(TARGET)
 
-# Link object files into final executable
+# Link object files into the final executable
 $(TARGET): $(OBJ)
 	$(CXX) $(OBJ) -o $@
 
-# Compile each .cpp into .o
+# Compile each .cpp → .o
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-# Clean up build files
+# ----------------------------------------------------------------------
+# “debug” target
+# ----------------------------------------------------------------------
+# Running “make debug” will:
+#   1. append -DDEBUG (and any other debug flags)
+#   2. build the same $(TARGET)
+#
+.PHONY: debug
+debug: CXXFLAGS += -D DEBUG -g -O0
+debug: $(TARGET)
+
+# ----------------------------------------------------------------------
+# Clean up build artifacts
+# ----------------------------------------------------------------------
+.PHONY: clean
 clean:
 	rm -f $(OBJ) $(TARGET)
-
-.PHONY: all clean

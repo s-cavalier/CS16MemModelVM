@@ -43,7 +43,7 @@ int main(int argc, char** argv) {
     machine.loadData(exe->readData());
     machine.loadInstructions(exe->readText());
     machine.run(DBGHOOK((
-        makeCombinedHook<printMem<0x10008000>>()
+        makeConditionalCombinedHook<onKilled, printRegs, printFPRegs, printMem<0x10008000>>()
     )));
 
     return 0;

@@ -1,28 +1,6 @@
+REGISTERS:
+$0:0 $at:-65536 $v0:10 $v1:0 $a0:0 $a1:0 $a2:0 $a3:0 $t0:10 $t1:3 $t2:-10 $t3:4 $t4:30 $t5:0 $t6:3 $t7:1 $s0:-2 $s1:-2 $s2:1234 $s3:5678 $s4:0 $s5:0 $s6:0 $s7:0 $t8:1234 $t9:5678 $k0:0 $k1:0 $gp:268468224 $sp:2147483647 $fp:2147483647 $ra:0 
+FP REGISTERS:
+$f0:0 $f1:0 $f2:0 $f3:0 $f4:0 $f5:0 $f6:0 $f7:0 $f8:0 $f9:0 $f10:0 $f11:0 $f12:0 $f13:0 $f14:0 $f15:0 $f16:0 $f17:0 $f18:0 $f19:0 $f20:0 $f21:0 $f22:0 $f23:0 $f24:0 $f25:0 $f26:0 $f27:0 $f28:0 $f29:0 $f30:0 $f31:0 
 MEMORY:
 
-MEMORY:
-
-MEMORY:
-
-MEMORY:
-
-MEMORY:
-0x7ffffffe:166 0x7ffffffb:64 0x7ffffffc:73 0x7ffffffd:14 
-MEMORY:
-0x7ffffffa:182 0x7ffffff9:243 0x7ffffff8:45 0x7ffffffe:166 0x7ffffffb:64 0x7ffffffc:73 0x7ffffffd:14 0x7ffffff7:64 
-MEMORY:
-0x7ffffffa:182 0x7ffffff9:243 0x7ffffff8:45 0x7ffffffe:166 0x7ffffffb:64 0x7ffffffc:73 0x7ffffffd:14 0x7ffffff7:64 
-MEMORY:
-0x7ffffffa:182 0x7ffffff9:243 0x7ffffff8:45 0x7ffffffe:166 0x7ffffffb:64 0x7ffffffc:73 0x7ffffffd:14 0x7ffffff7:64 
-MEMORY:
-0x7ffffffa:182 0x7ffffff9:243 0x7ffffff8:45 0x7ffffffe:166 0x7ffffffb:64 0x7ffffffc:73 0x7ffffffd:14 0x7ffffff7:64 
-MEMORY:
-0x7ffffffa:182 0x7ffffff9:243 0x7ffffff8:45 0x7ffffffe:166 0x7ffffffb:64 0x7ffffffc:73 0x7ffffffd:14 0x7ffffff7:64 
-MEMORY:
-0x7ffffffa:182 0x7ffffff9:243 0x7ffffff8:45 0x7ffffffe:166 0x7ffffffb:64 0x7ffffffc:73 0x7ffffffd:14 0x7ffffff7:64 
-MEMORY:
-0x7ffffffa:182 0x7ffffff9:243 0x7ffffff8:45 0x7ffffffe:166 0x7ffffffb:64 0x7ffffffc:73 0x7ffffffd:14 0x7ffffff7:64 
-MEMORY:
-0x7ffffffa:182 0x7ffffff9:243 0x7ffffff8:45 0x7ffffffe:166 0x7ffffffb:64 0x7ffffffc:73 0x7ffffffd:14 0x7ffffff7:64 
-MEMORY:
-0x7ffffffa:182 0x7ffffff9:243 0x7ffffff8:45 0x7ffffffe:166 0x7ffffffb:64 0x7ffffffc:73 0x7ffffffd:14 0x7ffffff7:64 

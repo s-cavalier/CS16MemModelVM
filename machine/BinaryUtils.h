@@ -125,6 +125,7 @@ namespace Binary {
         SP = 29,
         FP = 30,
         RA = 31
+
     };
 
     unsigned int loadBigEndian(const unsigned char bytes[4]);

@@ -69,11 +69,11 @@ void Hardware::Machine::loadInstructions(const std::vector<Word>& instructions) 
 }
 
 void Hardware::Machine::runInstruction() {
-
     if (registers.programCounter >= registers.RAM.memoryBounds.textBound) {
         killed = true;
         return;
     }
+
 
     auto it = instructionCache.find(registers.programCounter);
     if (it != instructionCache.end()) {
@@ -89,6 +89,9 @@ void Hardware::Machine::runInstruction() {
     registers.programCounter += 4;
 }
 
-void Hardware::Machine::run() {
-    while (!killed) runInstruction();
+void Hardware::Machine::run(instrDebugHook hook) {
+    while (!killed) {
+        runInstruction();
+        if (hook) hook(*this);
+    }
 }

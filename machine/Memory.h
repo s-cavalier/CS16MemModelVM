@@ -65,6 +65,10 @@ namespace Hardware {
         void setDouble(const Word& addr, const double& dble);
     };
 
+    class VirtualMemory {
+
+    };
+
 };
 
 #endif

@@ -39,7 +39,7 @@ HOOK_TEMPLATE(printRegs) {
 
 HOOK_TEMPLATE(printFPRegs) {
     DBG_OUT << "FP REGISTERS:\n";
-    for (int i = 0; i < 32; ++i) DBG_OUT << "$f" << i << ":" << machine.readCoprocessor(0)->readRegister(i).f << ' ';
+    for (int i = 0; i < 32; ++i) DBG_OUT << "$f" << i << ":" << machine.readCoprocessor(1)->readRegister(i).f << ' ';
     DBG_OUT << DBG_END;
 }
 

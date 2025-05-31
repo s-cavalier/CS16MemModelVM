@@ -18,7 +18,20 @@ Hardware::Machine::Machine() : cpu(*this), killed(false) {
     cpu.accessRegister(Binary::SP).ui = 0x7fffffff;
     cpu.accessRegister(Binary::FP).ui = 0x7fffffff;
     cpu.accessRegister(Binary::GP).ui = DATA_ENTRY; 
-    coprocessors.front() = std::make_unique<FloatingPointUnit>(*this);
+    coprocessors[0] = std::make_unique<SystemControlUnit>(*this);
+    coprocessors[1] = std::make_unique<FloatingPointUnit>(*this);
+}
+
+void Hardware::Machine::raiseTrap(const Byte& exceptionCode) {
+    SystemControlUnit* sys_ctrl = dynamic_cast<SystemControlUnit*>(coprocessors[0].get());  // if this errors, we can just get rid of it since all that happens is reg interaction
+
+    if (sys_ctrl->readEXL()) {
+        sys_ctrl->setEPC( cpu.readProgramCounter() );
+        sys_ctrl->setEXL(true);
+    }
+
+    sys_ctrl->setCause(exceptionCode);
+
 }
 
 void Hardware::Machine::loadData(const std::vector<Byte>& bytes) {

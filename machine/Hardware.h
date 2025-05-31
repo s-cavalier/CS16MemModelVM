@@ -18,7 +18,7 @@ namespace Hardware {
     class Machine {
         CPU cpu;
         Memory RAM;
-        Coprocessor::Array<1> coprocessors;
+        Coprocessor::Array<3> coprocessors;
         std::unordered_map<Word, std::unique_ptr<Instruction>> instructionCache;
         
     public:
@@ -26,10 +26,16 @@ namespace Hardware {
 
         const Memory& readMemory() const { return RAM; }
         Memory& accessMemory() { return RAM; }
+
+        
+
         inline const std::unique_ptr<Coprocessor>& readCoprocessor(const Byte& cp) const { return coprocessors.at(cp); }
         inline std::unique_ptr<Coprocessor>& accessCoprocessor(const Byte& cp) { return coprocessors.at(cp); }
         inline const CPU& readCPU() const { return cpu; }
         inline CPU& accessCPU() { return cpu; }
+
+
+        void raiseTrap(const Byte& exceptionCode);
         bool killed;
 
         void loadInstructions(const std::vector<Word>& instructions);

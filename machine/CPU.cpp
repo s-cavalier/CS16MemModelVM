@@ -10,7 +10,6 @@ void Hardware::CPU::cycle() {
         return;
     }
 
-
     auto it = instructionCache.find(programCounter);
     if (it != instructionCache.end()) {
         it->second->run();
@@ -31,7 +30,7 @@ std::unique_ptr<Hardware::Instruction> Hardware::CPU::decode(const Word& binary_
     // Simplify local namespace
     using namespace Binary;
     auto& RAM = machine.accessMemory();
-    auto& fpu = machine.accessCoprocessor(0);
+    auto& fpu = machine.accessCoprocessor(1);
     
     Opcode opcode = Opcode((binary_instruction >> 26) & 0b111111);  // For All
 
@@ -88,7 +87,7 @@ std::unique_ptr<Hardware::Instruction> Hardware::CPU::decode(const Word& binary_
         }
     }
 
-    #define I_GEN_INIT(oc, instr) case oc: return std::make_unique<instr>(registerFile[rt].i, registerFile[rs].i, immediate)
+    #define I_GEN_INIT(oc, instr) case oc: return std::make_unique<instr>(registerFile[rt].i, registerFile[rs].i, immediate)        // optimize instructions to use ui/i?
     #define I_MEM_INIT(oc, instr) case oc: return std::make_unique<instr>(registerFile[rt].i, registerFile[rs].i, immediate, RAM)
     #define I_BRANCH_INIT(oc, instr) case oc: return std::make_unique<instr>(registerFile[rt].i, registerFile[rs].i, immediate, programCounter)
     #define FPMEM_INIT(oc, instr) case oc: return std::make_unique<instr>(fpu->accessRegister(rt).f, registerFile[rs].i, immediate, RAM)

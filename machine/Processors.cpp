@@ -41,3 +41,9 @@ std::unique_ptr<Hardware::Instruction> Hardware::FloatingPointUnit::decode(const
         }
 
 }
+
+Hardware::SystemControlUnit::SystemControlUnit(Machine& machine) : Coprocessor(machine) {}
+
+std::unique_ptr<Hardware::Instruction> Hardware::SystemControlUnit::decode(const Word& binary_instruction) {
+    return nullptr;
+}

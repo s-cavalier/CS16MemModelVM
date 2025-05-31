@@ -17,45 +17,33 @@ namespace Hardware {
         float f;
     };
 
-    struct HiLoRegisters { Word hi; Word lo; };
-
-    class CPU {
-        Machine& machine;
-        reg32_t registerFile[32];
-        HiLoRegisters hiLo;
-        Word programCounter;
-    
-    public:
-        CPU(Machine& machine);       // maybe cache later down the road
-        inline const reg32_t& readRegister(const Byte& reg) const;
-
-        std::unique_ptr<Instruction> decode(const Word& bin_instr, const Word& programCounter);
-
-    };
-
     class Coprocessor {
     protected:
         Machine& machine;             // could switch to a bus model later on
         reg32_t registerFile[32];
     
     public:
-        Coprocessor(Machine& RAM);
+        template <unsigned int N>
+        using Array = std::array<std::unique_ptr<Coprocessor>, N>;
 
-        inline const reg32_t& readRegister(const Byte& reg) const;
-        inline void moveToThis(const Byte& regDst, const reg32_t& valueSrc);
+        Coprocessor(Machine& machine);
 
-        virtual std::unique_ptr<Instruction> decode(const Word& bin_instr, const Word& programCounter) = 0;
+        inline const reg32_t& readRegister(const Byte& reg) const { return registerFile[reg]; }
+        inline reg32_t& accessRegister(const Byte& reg) { return registerFile[reg]; }
+
+        virtual std::unique_ptr<Instruction> decode(const Word& bin_instr) = 0;
 
         virtual ~Coprocessor() = default;
     };
 
-    class CP1 : public Coprocessor {
+    class FloatingPointUnit : public Coprocessor {
         bool FPcond;
     
     public:
-        CP1(Machine& RAM);
 
-        std::unique_ptr<Instruction> decode(const Word& bin_instr, const Word& programCounter);
+        FloatingPointUnit(Machine& machine);
+
+        std::unique_ptr<Instruction> decode(const Word& bin_instr);
     };
 
 };

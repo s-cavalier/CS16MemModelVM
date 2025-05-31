@@ -1,9 +1,9 @@
 #ifndef __HARDWARE_H__
 #define __HARDWARE_H__
-#include "Memory.h"
+#include "CPU.h"
 #include <unordered_map>
-#include <memory>
 #include <vector>
+#include <array>
 
 // TODO: Implement memory access guards
 
@@ -16,34 +16,26 @@ namespace Hardware {
     struct Instruction;
 
     class Machine {
-    public:
-        struct HiLoRegisters { Word hi; Word lo; }; // If a system is big endian, speedups could be done here?
-        struct RegisterFile {
-            Word programCounter;
-            int registerFile[32];       // Maybe use a union between int/unsigned int? Probnot
-            float fpRegisterFile[32];
-            HiLoRegisters hiLo;
-            Memory RAM;
-            bool FPcond;
-        };
-
-    private:
-        RegisterFile registers;
+        CPU cpu;
+        Memory RAM;
+        Coprocessor::Array<1> coprocessors;
         std::unordered_map<Word, std::unique_ptr<Instruction>> instructionCache;
         
     public:
         Machine();
 
-        const Word& readProgramCounter() const;
-        const int& readRegister(const Byte& reg) const;
-        const Memory& readMemory() const;
-        const float& readFPRegister(const Byte& reg) const;
+        const Memory& readMemory() const { return RAM; }
+        Memory& accessMemory() { return RAM; }
+        inline const std::unique_ptr<Coprocessor>& readCoprocessor(const Byte& cp) const { return coprocessors.at(cp); }
+        inline std::unique_ptr<Coprocessor>& accessCoprocessor(const Byte& cp) { return coprocessors.at(cp); }
+        inline const CPU& readCPU() const { return cpu; }
+        inline CPU& accessCPU() { return cpu; }
         bool killed;
 
         void loadInstructions(const std::vector<Word>& instructions);
         void loadData(const std::vector<Byte>& bytes);
 
-        void runInstruction();
+        void step();
 
         // Just calls a loop on runInstruction until kill flag is set
         using instrDebugHook = void (*)(const Machine& machine);
@@ -53,8 +45,6 @@ namespace Hardware {
     struct Instruction {
         virtual void run() = 0;
     };
-
-    std::unique_ptr<Instruction> instructionFactory(const Word& binary_instruction, Hardware::Machine::RegisterFile& registers, bool& kill_flag);
 
 };
 

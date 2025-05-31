@@ -2,20 +2,14 @@
 #include "BinaryUtils.h"
 #include "instructions/FloatingPoint.h"
 
-Hardware::Coprocessor::Coprocessor(Machine& machine) : machine(machine), registerFile({0}) {}
+Hardware::Coprocessor::Coprocessor(Machine& machine) : machine(machine), registerFile{0} {}
 
-inline const Hardware::reg32_t& Hardware::Coprocessor::readRegister(const Byte& reg) const {
-    return registerFile[reg];
-}
+Hardware::FloatingPointUnit::FloatingPointUnit(Machine& machine) : Coprocessor(machine), FPcond(false) {}
 
-inline void Hardware::Coprocessor::moveToThis(const Byte& regDst, const reg32_t& valueSrc) {
-    registerFile[regDst] = valueSrc;
-}
-
-Hardware::CP1::CP1(Machine& machine) : Coprocessor(machine), FPcond(false) {}
-
-std::unique_ptr<Hardware::Instruction> Hardware::CP1::decode(const Word& binary_instruction, const Word& programCounter) {
+std::unique_ptr<Hardware::Instruction> Hardware::FloatingPointUnit::decode(const Word& binary_instruction) {
     using namespace Binary;
+
+    Word& programCounter = machine.accessCPU().accessProgramCounter();
 
     // opcode is always the same
     FMT fmt = FMT((binary_instruction >> 21) & 0b11111);

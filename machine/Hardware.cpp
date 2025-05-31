@@ -12,44 +12,23 @@
 // Hardware Emulation
 // Instruction factory can be in found in InstructionFactory.cpp
 // -------------------------------------------------------------
-Hardware::Machine::Machine() {
-    for (int i = 0; i < 32; ++i) {
-        registers.registerFile[i] = 0;
-        registers.fpRegisterFile[i] = 0.0f;
-    }
+Hardware::Machine::Machine() : cpu(*this), killed(false) {
 
-    registers.programCounter = TEXT_ENTRY;
-    registers.registerFile[Binary::SP] = 0x7fffffff;
-    registers.registerFile[Binary::FP] = 0x7fffffff;
-    registers.registerFile[Binary::GP] = DATA_ENTRY; 
-    killed = false;
-    registers.FPcond = false;
-}
-
-const Word& Hardware::Machine::readProgramCounter() const {
-    return registers.programCounter;
-}
-
-const int& Hardware::Machine::readRegister(const Byte& reg) const {
-    return registers.registerFile[reg];
-}
-
-const Hardware::Memory& Hardware::Machine::readMemory() const {
-    return registers.RAM;
-}
-
-const float& Hardware::Machine::readFPRegister(const Byte& reg) const {
-    return registers.fpRegisterFile[reg];
+    cpu.accessProgramCounter() = TEXT_ENTRY;
+    cpu.accessRegister(Binary::SP).ui = 0x7fffffff;
+    cpu.accessRegister(Binary::FP).ui = 0x7fffffff;
+    cpu.accessRegister(Binary::GP).ui = DATA_ENTRY; 
+    coprocessors.front() = std::make_unique<FloatingPointUnit>(*this);
 }
 
 void Hardware::Machine::loadData(const std::vector<Byte>& bytes) {
 
     Word at = DATA_ENTRY;
     for (const auto& byte : bytes) {
-        registers.RAM.setByte(at, byte);
+        RAM.setByte(at, byte);
         ++at;
     }
-    registers.RAM.memoryBounds.staticBound = at;
+    RAM.memoryBounds.staticBound = at;
 }
 
 void Hardware::Machine::loadInstructions(const std::vector<Word>& instructions) {
@@ -58,40 +37,23 @@ void Hardware::Machine::loadInstructions(const std::vector<Word>& instructions) 
 
     Word at = TEXT_ENTRY;
     for (const auto& instr : instructions) {
-        registers.RAM.setWord(at, instr);
+        RAM.setWord(at, instr);
         at += 4;
     }
     
-    Memory::boundRegisters& bounds = registers.RAM.memoryBounds;
+    Memory::boundRegisters& bounds = RAM.memoryBounds;
     bounds.textBound = at;
     bounds.stackBound = 0x7fffe000;
     bounds.dynamicBound = 0x70000000;
 }
 
-void Hardware::Machine::runInstruction() {
-    if (registers.programCounter >= registers.RAM.memoryBounds.textBound) {
-        killed = true;
-        return;
-    }
-
-
-    auto it = instructionCache.find(registers.programCounter);
-    if (it != instructionCache.end()) {
-        it->second->run();
-        registers.programCounter += 4;
-        return;
-    }
-
-    (
-        instructionCache[registers.programCounter] = instructionFactory( registers.RAM.getWord(registers.programCounter), registers, killed )
-    )->run(); // cool syntax
-
-    registers.programCounter += 4;
+void Hardware::Machine::step() {
+    cpu.cycle();
 }
 
 void Hardware::Machine::run(instrDebugHook hook) {
     while (!killed) {
-        runInstruction();
+        step();
         if (hook) hook(*this);
     }
 }

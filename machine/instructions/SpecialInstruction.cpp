@@ -21,7 +21,7 @@ void JumpRegister::run() { pc = ra; }
 JumpAndLinkRegister::JumpAndLinkRegister(J_INSTR_ARGS, int& rd, const int& rs) : JInstruction(pc), rd(rd), rs(rs) {}
 void JumpAndLinkRegister::run() { rd = pc; pc = rs; }
 
-HiLoInstruction::HiLoInstruction(Hardware::Machine::HiLoRegisters& hiLo) : hiLo(hiLo) { }
+HiLoInstruction::HiLoInstruction(Hardware::HiLoRegisters& hiLo) : hiLo(hiLo) { }
 HLMoveInstruction::HLMoveInstruction(HL_MOVE_INSTR_ARGS) : HiLoInstruction(hiLo), storage_register(storage_register) {}
 HLOpInstruction::HLOpInstruction(HL_OP_INSTR_ARGS) : HiLoInstruction(hiLo), rs(rs), rt(rt) {}
 
@@ -37,27 +37,26 @@ HL_OP_CNSTCTR_INIT(MultiplyUnsigned) { DoubleWord res = Word(rs) * Word(rt); hiL
 HL_OP_CNSTCTR_INIT(Divide) { hiLo.hi = rs % rt; hiLo.lo = rs / rt; }
 HL_OP_CNSTCTR_INIT(DivideUnsigned) { hiLo.hi = Word(rs) % Word(rt); hiLo.lo = Word(rs) / Word(rt); }
 
-Syscall::Syscall(Hardware::Machine::RegisterFile& rf, bool& kill_flag) : rf(rf), kill_flag(kill_flag) {}
+Syscall::Syscall(Hardware::Machine& machine) : machine(machine) {}
 void Syscall::run() {
+    const auto& cpu = machine.readCPU();
+    const auto& RAM = machine.readMemory();
     using namespace Binary;
-    switch (rf.registerFile[V0]) {
+    switch (cpu.readRegister(V0).ui) {
         case 1:         // Print integer
-            std::cout << rf.registerFile[A0];
-            return;
-        case 2:
-            std::cout << rf.fpRegisterFile[12];
+            std::cout << cpu.readRegister(A0).i;
             return;
         case 4:
-            for (Word i = rf.registerFile[A0]; rf.RAM.getByte(i) != '\0'; ++i) std::cout << rf.RAM.getByte(i);
+            for (Word i = cpu.readRegister(A0).ui; RAM.getByte(i) != '\0'; ++i) std::cout << RAM.getByte(i);
             return; 
         case 10:        // exit
-            kill_flag = true;
+            machine.killed = true;
             return;
         case 11:
-            std::cout << char(rf.registerFile[A0]);
+            std::cout << char(cpu.readRegister(A0).ui);
             return;
         default:
-            std::cout << "hello from bad syscall " << rf.registerFile[V0] << std::endl;
+            std::cout << "hello from bad syscall " << cpu.readRegister(V0).ui << std::endl;
             throw 4;
     }
 }

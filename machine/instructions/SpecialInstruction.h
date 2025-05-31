@@ -61,14 +61,14 @@ public:
 // --------------------------------------
 class HiLoInstruction : public Hardware::Instruction {
 protected:
-    Hardware::Machine::HiLoRegisters& hiLo;
+    Hardware::HiLoRegisters& hiLo;
 
 public:
-    HiLoInstruction(Hardware::Machine::HiLoRegisters& hiLo);
+    HiLoInstruction(Hardware::HiLoRegisters& hiLo);
     virtual void run() = 0;
 };
 
-#define HL_MOVE_INSTR_ARGS int& storage_register, Hardware::Machine::HiLoRegisters& hiLo
+#define HL_MOVE_INSTR_ARGS int& storage_register, Hardware::HiLoRegisters& hiLo
 // MoveFrom uses rd, MoveTo uses rs
 class HLMoveInstruction : public HiLoInstruction {
 protected:
@@ -80,7 +80,7 @@ public:
     virtual void run() = 0;
 };
 
-#define HL_OP_INSTR_ARGS int& rs, int& rt, Hardware::Machine::HiLoRegisters& hiLo
+#define HL_OP_INSTR_ARGS int& rs, int& rt, Hardware::HiLoRegisters& hiLo
 class HLOpInstruction : public HiLoInstruction {
 protected:
     int& rs;
@@ -108,11 +108,10 @@ HL_OP_INSTR(DivideUnsigned);
 // -------
 
 class Syscall : public Hardware::Instruction {
-    Hardware::Machine::RegisterFile& rf;
-    bool& kill_flag;
+    Hardware::Machine& machine;
 
 public:
-    Syscall(Hardware::Machine::RegisterFile& rf, bool& kill_flag);
+    Syscall(Hardware::Machine& machine);
     void run();
 };
 

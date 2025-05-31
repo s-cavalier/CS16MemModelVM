@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # ----------------------------------------------------------------------
 # Compiler and “release” flags
 # ----------------------------------------------------------------------
@@ -8,11 +7,6 @@ CXXFLAGS  := -Wall -Wextra -Werror -Wno-unused-parameter -Wno-unused-variable
 # (Remove the hard‐coded -DDEBUG here; we’ll only add it in debug mode.)
 #
 #CXXFLAGS += -DDEBUG
-=======
-# Compiler and flags
-CXX := g++
-CXXFLAGS := -O3 -Wall -Wextra -Werror -Wno-unused-variable
->>>>>>> parent of 6dc6812 (Added debug hooks for instructions)
 
 # ----------------------------------------------------------------------
 # Source directories and file lists

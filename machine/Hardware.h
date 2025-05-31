@@ -31,8 +31,7 @@ namespace Hardware {
         void runInstruction();
 
         // Just calls a loop on runInstruction until kill flag is set
-        using instrDebugHook = void (*)(const Machine& machine);
-        void run(instrDebugHook hook = nullptr);
+        void run();
     };
 
     struct Instruction {

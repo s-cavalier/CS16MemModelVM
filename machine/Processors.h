@@ -45,7 +45,6 @@ namespace Hardware {
     };
 
     class SystemControlUnit : public Coprocessor {
-        
     
     public:
         SystemControlUnit(Machine& machine);
@@ -53,8 +52,7 @@ namespace Hardware {
         inline void setEPC(const Word& pc) { registerFile[14].ui = pc; }
         inline void setCause(const Byte& exceptionCode) { registerFile[13].ui = Word(exceptionCode) << 2; }
         inline void setBadVAddr(const Word& vaddr) { registerFile[8].ui = vaddr; }
-        inline void setEXL(const bool& enable) { if (enable) registerFile[12].ui |= 0b10; else registerFile[12].ui &= ~0b10; }
-        inline bool readEXL() { return registerFile[12].ui & 0b10; }
+        inline void setEXL(const bool& enable) { if (enable) registerFile[12].ui |= 0b10; else registerFile[12].ui &= ~Word(0b10); }
 
         std::unique_ptr<Instruction> decode(const Word& bin_instr);
 

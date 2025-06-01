@@ -1,6 +1,7 @@
 #include "Processors.h"
 #include "BinaryUtils.h"
 #include "instructions/FloatingPoint.h"
+#include "instructions/KInstructions.h"
 
 Hardware::Coprocessor::Coprocessor(Machine& machine) : machine(machine), registerFile{0} {}
 
@@ -44,6 +45,19 @@ std::unique_ptr<Hardware::Instruction> Hardware::FloatingPointUnit::decode(const
 
 Hardware::SystemControlUnit::SystemControlUnit(Machine& machine) : Coprocessor(machine) {}
 
-std::unique_ptr<Hardware::Instruction> Hardware::SystemControlUnit::decode(const Word& binary_instruction) {
+std::unique_ptr<Hardware::Instruction> Hardware::SystemControlUnit::decode(const Word& binary) {
+    using namespace Binary;
+
+    const Byte rs = (binary >> 21) & 0x1F;
+    const Byte rt = (binary >> 16) & 0x1F;
+    const Byte rd = (binary >> 11) & 0x1F;
+    const Funct funct = Funct(binary & 0x3F);
+
+    if (funct == ERET) return std::make_unique<ExceptionReturn>(machine);
+    if (rs == 0) return std::make_unique<MoveFromCoprocessor0>(machine, machine.accessCPU().accessRegister(rt).i, registerFile[rd].i );
+    if (rt == 4) return std::make_unique<MoveToCoprocessor0>(machine, machine.readCPU().readRegister(rt).i, registerFile[rd].i );
+
+
+    throw 2;
     return nullptr;
 }

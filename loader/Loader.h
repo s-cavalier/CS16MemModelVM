@@ -14,6 +14,7 @@ namespace FileLoader {
     protected:
         Section<Byte> data;
         Section<Word> text;
+        Word entry;
         bool _bad;
 
     public:
@@ -21,6 +22,7 @@ namespace FileLoader {
         
         Section<Byte>& readData();
         Section<Word>& readText();
+        Word& readEntry();
         
         // "bad bit". Should only be used if file could be opened.
         const bool& bad() const;

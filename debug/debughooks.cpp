@@ -31,6 +31,16 @@ HOOK_TEMPLATE(printInstr) {
     DBG_OUT << "Reading instruction 0x"<< std::hex << std::setw(8) << std::setfill('0') << machine.readMemory().getWord(pc) << " at program counter 0x" << std::setw(8) << std::setfill('0') << pc << std::dec << DBG_END;
 }
 
+HOOK_TEMPLATE(printEXL) {
+    const Word& statusReg = machine.readCoprocessor(0)->readRegister(Binary::STATUS).ui;
+    DBG_OUT << "EXL_STATUS: " << std::boolalpha << bool(statusReg & 0b10) << DBG_END;
+}
+
+HOOK_TEMPLATE(printStatus) {
+    const Word& statusReg = machine.readCoprocessor(0)->readRegister(Binary::STATUS).ui;
+    DBG_OUT << "STATUS: " << std::hex << std::setw(8) << std::setfill('0') << statusReg << std::dec << DBG_END;
+}
+
 HOOK_TEMPLATE(printRegs) {
     DBG_OUT << "REGISTERS:\n";
     for (int i = 0; i < 32; ++i) DBG_OUT << '$' << Binary::regToString[i] << ":" << machine.readCPU().readRegister(i).i << ' ';

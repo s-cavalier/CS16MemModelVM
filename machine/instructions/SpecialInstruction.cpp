@@ -37,26 +37,7 @@ HL_OP_CNSTCTR_INIT(MultiplyUnsigned) { DoubleWord res = Word(rs) * Word(rt); hiL
 HL_OP_CNSTCTR_INIT(Divide) { hiLo.hi = rs % rt; hiLo.lo = rs / rt; }
 HL_OP_CNSTCTR_INIT(DivideUnsigned) { hiLo.hi = Word(rs) % Word(rt); hiLo.lo = Word(rs) / Word(rt); }
 
-Syscall::Syscall(Hardware::Machine& machine) : machine(machine) {}
+Syscall::Syscall(Hardware::Machine& machine) : raiseTrap(machine) {}
 void Syscall::run() {
-    const auto& cpu = machine.readCPU();
-    const auto& RAM = machine.readMemory();
-    using namespace Binary;
-    switch (cpu.readRegister(V0).ui) {
-        case 1:         // Print integer
-            std::cout << cpu.readRegister(A0).i;
-            return;
-        case 4:
-            for (Word i = cpu.readRegister(A0).ui; RAM.getByte(i) != '\0'; ++i) std::cout << RAM.getByte(i);
-            return; 
-        case 10:        // exit
-            machine.killed = true;
-            return;
-        case 11:
-            std::cout << char(cpu.readRegister(A0).ui);
-            return;
-        default:
-            std::cout << "hello from bad syscall " << cpu.readRegister(V0).ui << std::endl;
-            throw 4;
-    }
+    raiseTrap(Byte(Binary::ExceptionCode::SYSCALL_EXC));
 }

@@ -7,6 +7,7 @@
 namespace Binary {
     enum Opcode : unsigned char {
         R_TYPE = 0x0,
+        K_TYPE = 0x10,
         FP_TYPE = 0x11,
         J = 0x2,            //
         JAL = 0x3,          //
@@ -43,6 +44,15 @@ namespace Binary {
 
     enum Funct : unsigned char {
         SYSCALL = 0xc,      //
+        BREAK = 0xd,
+        ERET = 0x18,
+
+        // CUSTOM INSTR
+        HALT = 0x3f,
+        PRINTI = 0x3e,
+        READI = 0x3d,
+        PRINTSTR = 0x3c,
+
         ADD = 0x20,         //
         ADDU = 0x21,        //
         AND = 0x24,         //

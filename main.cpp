@@ -30,6 +30,7 @@ int main(int argc, char** argv) {
     #endif
 
     unique_ptr<FileLoader::Parser> exe;
+    FileLoader::ELFLoader kernel("kernel/kernel.elf");
 
     if (argc == 3 && string(argv[2]) == "-spim") exe = make_unique<FileLoader::SpimLoader>(argv[1]);
     else exe = make_unique<FileLoader::ELFLoader>(argv[1]);
@@ -39,11 +40,17 @@ int main(int argc, char** argv) {
         return 1;
     }
 
+    if (kernel.bad()) {
+        cout << "Failed to load kernel." << endl;
+        return 1;
+    }
+
     Hardware::Machine machine;
-    machine.loadData(exe->readData());
-    machine.loadInstructions(exe->readText());
+    
+    machine.loadKernel(kernel.readText(), kernel.readData(), kernel.readEntry());
+    machine.loadProgram(exe->readText(), exe->readData(), exe->readEntry());
     machine.run(DBGHOOK((
-        makeConditionalCombinedHook<onKilled, printRegs, printFPRegs, printMem<0x10008000>>()
+        makeCombinedHook<printInstr>()
     )));
 
     return 0;

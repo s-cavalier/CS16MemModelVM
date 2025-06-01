@@ -19,6 +19,10 @@ FileLoader::Parser::Parser() : _bad(false) {}
     return text;
 }
 
+FileLoader::Word& FileLoader::Parser::readEntry() {
+    return entry;
+}
+
 const bool& FileLoader::Parser::bad() const {
     return _bad;
 }
@@ -30,6 +34,7 @@ FileLoader::SpimLoader::SpimLoader(const std::string& path) : Parser() {
         return;
     }
 
+    entry = 0x00400024;
     Byte buffer[4];
     while (file.read((char*)buffer, 4)) text.push_back(loadBigEndian(buffer));
 }
@@ -41,6 +46,8 @@ FileLoader::ELFLoader::ELFLoader(const std::string& path) : Parser() {
         _bad = true;
         return;
     }
+
+    entry = reader.get_entry();
 
     // 2) Load .text section into vector<unsigned int>
     const ELFIO::section* text_sec = reader.sections[".text"];

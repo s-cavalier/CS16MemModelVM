@@ -1,14 +1,16 @@
 #include "CPU.h"
 #include "BinaryUtils.h"
 #include "instructions/Instruction.h"
+#include <string>
+#include <stdexcept>
 
 Hardware::CPU::CPU(Machine& machine) : machine(machine), registerFile{0}, programCounter(0) {}
 
 void Hardware::CPU::cycle() {
-    if (programCounter >= machine.readMemory().memoryBounds.textBound) {    // cpu should own the bounds later
-        machine.killed = true;
-        return;
-    }
+    // if (programCounter >= machine.readMemory().memoryBounds.textBound) {    // cpu should own the bounds later
+    //     machine.killed = true;
+    //     return;
+    // }
 
     auto it = instructionCache.find(programCounter);
     if (it != instructionCache.end()) {
@@ -30,11 +32,13 @@ std::unique_ptr<Hardware::Instruction> Hardware::CPU::decode(const Word& binary_
     // Simplify local namespace
     using namespace Binary;
     auto& RAM = machine.accessMemory();
+    auto& scu = machine.accessCoprocessor(0);
     auto& fpu = machine.accessCoprocessor(1);
     
     Opcode opcode = Opcode((binary_instruction >> 26) & 0b111111);  // For All
 
     if (opcode == FP_TYPE) return fpu->decode(binary_instruction);
+    if (opcode == K_TYPE) return scu->decode(binary_instruction);
 
     Word address = binary_instruction & 0x1FFFFFF;                  // For Jump
 
@@ -53,6 +57,7 @@ std::unique_ptr<Hardware::Instruction> Hardware::CPU::decode(const Word& binary_
     #define R_SHFT_INIT(oc, instr) case oc: return std::make_unique<instr>(registerFile[rd].i, registerFile[rt].i, shamt)
     #define HL_MOVE_INIT(oc, instr, reg) case oc: return std::make_unique<instr>(registerFile[reg].i, hiLo)
     #define HL_OP_INIT(oc, instr) case oc: return std::make_unique<instr>(registerFile[rs].i, registerFile[rt].i, hiLo)
+    #define MACHINE_OP_INIT(oc, instr) case oc: return std::make_unique<instr>(machine)
     if (!opcode) {  // Is an R-Type Instruction
         switch (funct) {
             R_VAR_INIT(ADD, Add);
@@ -79,11 +84,15 @@ std::unique_ptr<Hardware::Instruction> Hardware::CPU::decode(const Word& binary_
             HL_MOVE_INIT(MFLO, MoveFromLo, rd);
             HL_MOVE_INIT(MTHI, MoveToHi, rs);
             HL_MOVE_INIT(MTLO, MoveToLo, rs);
-            case SYSCALL: return std::make_unique<Syscall>(machine);
+            MACHINE_OP_INIT(SYSCALL, Syscall);
+            MACHINE_OP_INIT(HALT, Halt);
+            MACHINE_OP_INIT(PRINTI, PrintInteger);
+            MACHINE_OP_INIT(READI, ReadInteger);
+            MACHINE_OP_INIT(PRINTSTR, PrintString);
             case JR: return std::make_unique<JumpRegister>(programCounter, registerFile[RA].i);
             case JALR: return std::make_unique<JumpAndLinkRegister>(programCounter, registerFile[rd].i, registerFile[rs].i);
             default:
-                throw 1;
+                throw std::runtime_error("Encountered bad funct. " + std::to_string(binary_instruction));
         }
     }
 
@@ -108,9 +117,9 @@ std::unique_ptr<Hardware::Instruction> Hardware::CPU::decode(const Word& binary_
         case JAL: return std::make_unique<JumpAndLink>(programCounter, address, registerFile[RA].i);
         case LUI: return std::make_unique<LoadUpperImmediate>(registerFile[rt].i, immediate);
         default:
-            throw 2;
+            throw std::runtime_error("Encountered bad opcode. " + std::to_string(binary_instruction));
     }
 
-    throw 3;
+    throw std::runtime_error("Encountered bad instructions. " + std::to_string(binary_instruction));
     return nullptr;
 }

@@ -18,19 +18,29 @@ namespace Hardware {
     class Machine {
         CPU cpu;
         Memory RAM;
+        Word kernelEntry;
         Coprocessor::Array<3> coprocessors;
         std::unordered_map<Word, std::unique_ptr<Instruction>> instructionCache;
         
     public:
+
+        // Lightweight trap handler class for instructions that need it
+        class TrapHandler {
+            Machine& machine;
+        
+        public:
+            TrapHandler(Machine& machine);
+            void operator()(const Byte& exceptionCode /*implement badAddr later*/);
+        };
+
         Machine();
 
         const Memory& readMemory() const { return RAM; }
         Memory& accessMemory() { return RAM; }
 
-        
-
         inline const std::unique_ptr<Coprocessor>& readCoprocessor(const Byte& cp) const { return coprocessors.at(cp); }
         inline std::unique_ptr<Coprocessor>& accessCoprocessor(const Byte& cp) { return coprocessors.at(cp); }
+        inline const Word& readKernelEntry() const { return kernelEntry; }
         inline const CPU& readCPU() const { return cpu; }
         inline CPU& accessCPU() { return cpu; }
 
@@ -38,8 +48,8 @@ namespace Hardware {
         void raiseTrap(const Byte& exceptionCode);
         bool killed;
 
-        void loadInstructions(const std::vector<Word>& instructions);
-        void loadData(const std::vector<Byte>& bytes);
+        void loadKernel(const std::vector<Word>& text, const std::vector<Byte>& data, const Word& entry);
+        void loadProgram(const std::vector<Word>& instructions, const std::vector<Byte>& bytes, const Word& entry);
 
         void step();
 

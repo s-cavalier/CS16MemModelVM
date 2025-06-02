@@ -30,6 +30,8 @@ std::unique_ptr<Hardware::Instruction> Hardware::CPU::decode(const Word& binary_
     // DECODE
 
     // Simplify local namespace
+    #define TRAP_EXIT(excCode) { machine.raiseTrap(Word(excCode)); return std::make_unique<NoOp>(); }
+
     using namespace Binary;
     auto& RAM = machine.accessMemory();
     auto& scu = machine.accessCoprocessor(0);
@@ -37,8 +39,11 @@ std::unique_ptr<Hardware::Instruction> Hardware::CPU::decode(const Word& binary_
     
     Opcode opcode = Opcode((binary_instruction >> 26) & 0b111111);  // For All
 
-    if (opcode == FP_TYPE) return fpu->decode(binary_instruction);
-    if (opcode == K_TYPE) return scu->decode(binary_instruction);
+    if (opcode == FP_TYPE && fpu) return fpu->decode(binary_instruction);
+    else if (opcode == FP_TYPE) TRAP_EXIT(ExceptionCode::CP_UNUSABLE);
+
+    if (opcode == K_TYPE && scu) return scu->decode(binary_instruction);
+    else if (opcode == K_TYPE) TRAP_EXIT(ExceptionCode::CP_UNUSABLE);
 
     Word address = binary_instruction & 0x1FFFFFF;                  // For Jump
 
@@ -92,7 +97,7 @@ std::unique_ptr<Hardware::Instruction> Hardware::CPU::decode(const Word& binary_
             case JR: return std::make_unique<JumpRegister>(programCounter, registerFile[RA].i);
             case JALR: return std::make_unique<JumpAndLinkRegister>(programCounter, registerFile[rd].i, registerFile[rs].i);
             default:
-                throw std::runtime_error("Encountered bad funct. " + std::to_string(binary_instruction));
+                TRAP_EXIT(ExceptionCode::RI);
         }
     }
 
@@ -117,9 +122,9 @@ std::unique_ptr<Hardware::Instruction> Hardware::CPU::decode(const Word& binary_
         case JAL: return std::make_unique<JumpAndLink>(programCounter, address, registerFile[RA].i);
         case LUI: return std::make_unique<LoadUpperImmediate>(registerFile[rt].i, immediate);
         default:
-            throw std::runtime_error("Encountered bad opcode. " + std::to_string(binary_instruction));
+            TRAP_EXIT(ExceptionCode::RI);
     }
 
-    throw std::runtime_error("Encountered bad instructions. " + std::to_string(binary_instruction));
-    return nullptr;
+    machine.raiseTrap(Word(ExceptionCode::RI)); 
+    return std::make_unique<NoOp>();
 }

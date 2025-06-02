@@ -1,7 +1,5 @@
 #include "SpecialInstruction.h"
 #include "../BinaryUtils.h"
-#include <iostream>
-#include <cassert>
 
 JInstruction::JInstruction(J_INSTR_ARGS) : pc(pc) {}
 

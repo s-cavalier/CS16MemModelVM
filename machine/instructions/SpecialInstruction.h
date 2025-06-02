@@ -119,7 +119,7 @@ public:
 // No-Op
 // -----
 struct NoOp : public Hardware::Instruction {
-    void run() {}
+    inline void run() {}
 };
 
 

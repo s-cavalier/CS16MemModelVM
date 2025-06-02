@@ -35,7 +35,7 @@ HL_OP_CNSTCTR_INIT(MultiplyUnsigned) { DoubleWord res = Word(rs) * Word(rt); hiL
 HL_OP_CNSTCTR_INIT(Divide) { hiLo.hi = rs % rt; hiLo.lo = rs / rt; }
 HL_OP_CNSTCTR_INIT(DivideUnsigned) { hiLo.hi = Word(rs) % Word(rt); hiLo.lo = Word(rs) / Word(rt); }
 
-Syscall::Syscall(Hardware::Machine& machine) : raiseTrap(machine) {}
+Syscall::Syscall(Hardware::TrapHandler& raiseTrap) : raiseTrap(raiseTrap) {}
 void Syscall::run() {
     raiseTrap(Byte(Binary::ExceptionCode::SYSCALL_EXC));
 }

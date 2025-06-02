@@ -5,6 +5,8 @@ int main() {
     std::printString("Enter a fibonnaci value:\n");
     int n = std::readInteger();
 
+    __asm__ volatile (".word 0x0000003F");
+
     int a = 0, b = 1;
     for (int i = 2; i <= n; ++i) {
         int temp = b;

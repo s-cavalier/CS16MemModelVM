@@ -33,7 +33,6 @@ std::unique_ptr<Hardware::Instruction> Hardware::CPU::decode(const Word& binary_
     #define TRAP_EXIT(excCode) { machine.raiseTrap(Word(excCode)); return std::make_unique<NoOp>(); }
 
     using namespace Binary;
-    auto& RAM = machine.accessMemory();
     auto& scu = machine.accessCoprocessor(0);
     auto& fpu = machine.accessCoprocessor(1);
     
@@ -44,6 +43,10 @@ std::unique_ptr<Hardware::Instruction> Hardware::CPU::decode(const Word& binary_
 
     if (opcode == K_TYPE && scu) return scu->decode(binary_instruction);
     else if (opcode == K_TYPE) TRAP_EXIT(ExceptionCode::CP_UNUSABLE);
+
+    auto& RAM = machine.accessMemory();
+    auto& trap = machine.accessTrapHandler();
+    auto& statusReg = machine.accessCoprocessor(0)->accessRegister(STATUS).ui;
 
     Word address = binary_instruction & 0x1FFFFFF;                  // For Jump
 
@@ -62,10 +65,8 @@ std::unique_ptr<Hardware::Instruction> Hardware::CPU::decode(const Word& binary_
     #define R_SHFT_INIT(oc, instr) case oc: return std::make_unique<instr>(registerFile[rd].i, registerFile[rt].i, shamt)
     #define HL_MOVE_INIT(oc, instr, reg) case oc: return std::make_unique<instr>(registerFile[reg].i, hiLo)
     #define HL_OP_INIT(oc, instr) case oc: return std::make_unique<instr>(registerFile[rs].i, registerFile[rt].i, hiLo)
-    #define MACHINE_OP_INIT(oc, instr) case oc: return std::make_unique<instr>(machine)
     if (!opcode) {  // Is an R-Type Instruction
         switch (funct) {
-            R_VAR_INIT(ADD, Add);
             R_VAR_INIT(ADDU, AddUnsigned);
             R_VAR_INIT(AND, And);
             R_VAR_INIT(NOR, Nor);
@@ -78,7 +79,6 @@ std::unique_ptr<Hardware::Instruction> Hardware::CPU::decode(const Word& binary_
             R_VAR_INIT(SLLV, ShiftLeftLogicalVariable);
             R_VAR_INIT(SRLV, ShiftRightLogicalVariable);
             R_VAR_INIT(SRAV, ShiftRightArithmeticVariable);
-            R_VAR_INIT(SUB, Subtract);
             R_VAR_INIT(SUBU, SubtractUnsigned);
             R_VAR_INIT(XOR, Xor);
             HL_OP_INIT(MULT, Multiply);
@@ -89,11 +89,13 @@ std::unique_ptr<Hardware::Instruction> Hardware::CPU::decode(const Word& binary_
             HL_MOVE_INIT(MFLO, MoveFromLo, rd);
             HL_MOVE_INIT(MTHI, MoveToHi, rs);
             HL_MOVE_INIT(MTLO, MoveToLo, rs);
-            MACHINE_OP_INIT(SYSCALL, Syscall);
-            MACHINE_OP_INIT(HALT, Halt);
-            MACHINE_OP_INIT(PRINTI, PrintInteger);
-            MACHINE_OP_INIT(READI, ReadInteger);
-            MACHINE_OP_INIT(PRINTSTR, PrintString);
+            case ADD: return std::make_unique<Add>(trap, registerFile[rd].i, registerFile[rt].i, registerFile[rs].i);
+            case SUB: return std::make_unique<Subtract>(trap, registerFile[rd].i, registerFile[rt].i, registerFile[rs].i);
+            case SYSCALL: return std::make_unique<Syscall>(trap);
+            case HALT: return std::make_unique<Halt>(trap, statusReg, machine.killed);
+            case PRINTI: return std::make_unique<PrintInteger>(trap, statusReg, registerFile[A0].i);
+            case READI: return std::make_unique<ReadInteger>(trap, statusReg, registerFile[V0].i );
+            case PRINTSTR: return std::make_unique<PrintString>(trap, statusReg, RAM, registerFile[A0].ui );
             case JR: return std::make_unique<JumpRegister>(programCounter, registerFile[RA].i);
             case JALR: return std::make_unique<JumpAndLinkRegister>(programCounter, registerFile[rd].i, registerFile[rs].i);
             default:
@@ -106,7 +108,6 @@ std::unique_ptr<Hardware::Instruction> Hardware::CPU::decode(const Word& binary_
     #define I_BRANCH_INIT(oc, instr) case oc: return std::make_unique<instr>(registerFile[rt].i, registerFile[rs].i, immediate, programCounter)
     #define FPMEM_INIT(oc, instr) case oc: return std::make_unique<instr>(fpu->accessRegister(rt).f, registerFile[rs].i, immediate, RAM)
     switch (opcode) {
-        I_GEN_INIT(ADDI, AddImmediate);
         I_GEN_INIT(ADDIU, AddImmediateUnsigned);
         I_GEN_INIT(ANDI, AndImmediate);
         I_GEN_INIT(SLTI, SetLessThanImmediate);
@@ -117,7 +118,8 @@ std::unique_ptr<Hardware::Instruction> Hardware::CPU::decode(const Word& binary_
         I_BRANCH_INIT(BEQ, BranchOnEqual);
         I_BRANCH_INIT(BNE, BranchOnNotEqual);
         FPMEM_INIT(LWC1, LoadFPSingle);
-        FPMEM_INIT(SWC1, StoreFPSingle);  
+        FPMEM_INIT(SWC1, StoreFPSingle);
+        case ADDI: return std::make_unique<AddImmediate>(trap, registerFile[rt].i, registerFile[rs].i, immediate);
         case J: return std::make_unique<Jump>(programCounter, address);
         case JAL: return std::make_unique<JumpAndLink>(programCounter, address, registerFile[RA].i);
         case LUI: return std::make_unique<LoadUpperImmediate>(registerFile[rt].i, immediate);

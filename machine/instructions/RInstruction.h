@@ -50,7 +50,6 @@ public:
 // R Variable Instruction Prototypes
 // ---------------------------------
 #define R_VAR_INSTR(x) struct x : public RVariableInstruction { x(R_VAR_INSTR_ARGS); void run(); }
-R_VAR_INSTR(Add);
 R_VAR_INSTR(AddUnsigned);
 R_VAR_INSTR(And);
 R_VAR_INSTR(Nor);
@@ -58,11 +57,30 @@ R_VAR_INSTR(Or);
 R_VAR_INSTR(Xor);
 R_VAR_INSTR(SetLessThan);
 R_VAR_INSTR(SetLessThanUnsigned);
-R_VAR_INSTR(Subtract);
 R_VAR_INSTR(SubtractUnsigned);
 R_VAR_INSTR(ShiftLeftLogicalVariable);
 R_VAR_INSTR(ShiftRightLogicalVariable);
 R_VAR_INSTR(ShiftRightArithmeticVariable);
+
+// -- Trappable --
+class Add : public RVariableInstruction { 
+protected:
+    Hardware::TrapHandler& raiseTrap;
+
+public:
+    Add(Hardware::TrapHandler& raiseTrap, int& rd, int& rt, int& rs); 
+    void run(); 
+};
+
+class Subtract : public RVariableInstruction { 
+protected:
+    Hardware::TrapHandler& raiseTrap;
+
+public:
+    Subtract(Hardware::TrapHandler& raiseTrap, int& rd, int& rt, int& rs); 
+    void run(); 
+};
+
 
 // ------------------------------
 // R Shift Instruction Prototypes

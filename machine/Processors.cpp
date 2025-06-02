@@ -53,9 +53,12 @@ std::unique_ptr<Hardware::Instruction> Hardware::SystemControlUnit::decode(const
     const Byte rd = (binary >> 11) & 0x1F;
     const Funct funct = Funct(binary & 0x3F);
 
+    auto& trap = machine.accessTrapHandler();
+    auto& statusReg = machine.accessCoprocessor(0)->accessRegister(STATUS).ui;
+
     if (funct == ERET) return std::make_unique<ExceptionReturn>(machine);
-    if (rs == 0) return std::make_unique<MoveFromCoprocessor0>(machine, machine.accessCPU().accessRegister(rt).i, registerFile[rd].i );
-    if (rt == 4) return std::make_unique<MoveToCoprocessor0>(machine, machine.readCPU().readRegister(rt).i, registerFile[rd].i );
+    if (rs == 0) return std::make_unique<MoveFromCoprocessor0>(trap, statusReg, machine.accessCPU().accessRegister(rt).i, registerFile[rd].i );
+    if (rt == 4) return std::make_unique<MoveToCoprocessor0>(trap, statusReg, machine.readCPU().readRegister(rt).i, registerFile[rd].i );
 
 
     throw 2;

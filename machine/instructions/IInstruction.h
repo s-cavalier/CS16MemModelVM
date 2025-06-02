@@ -5,7 +5,6 @@
 // ---------------------------------
 // I-Type Instructions
 // Follows op rt, rs, imm
-// Consider refactoring with Union?
 // --------------------------------
 
 class IInstruction : public Hardware::Instruction {
@@ -40,13 +39,23 @@ public:
 // -------------------------------------
 
 #define I_GEN_INSTR(x) struct x : public IGenericInstruction { x(I_GEN_INSTR_ARGS); void run(); }
-I_GEN_INSTR(AddImmediate);
 I_GEN_INSTR(AddImmediateUnsigned);
 I_GEN_INSTR(AndImmediate);
 I_GEN_INSTR(OrImmediate);
 I_GEN_INSTR(XorImmediate);
 I_GEN_INSTR(SetLessThanImmediate);
 I_GEN_INSTR(SetLessThanImmediateUnsigned);
+
+// ---- Trappable ----
+class AddImmediate : public IGenericInstruction { 
+protected:
+    Hardware::TrapHandler& raiseTrap;
+public:
+    AddImmediate(Hardware::TrapHandler& raiseTrap, int& rt, int& rs, const short& imm); 
+    void run(); 
+};
+
+
 
 // ----------------------------------------------
 // Memory Instructions

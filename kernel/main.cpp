@@ -8,7 +8,7 @@ int main() {
     kernel::TrapFrame* trapFrame = kernel::loadTrapFrame();
 
     unsigned int cause = trapFrame->cause >> 2; // need to consider interrupt mask later
-    
+
     switch (cause) {
         case 8: {
             switch ( trapFrame->v0 ) { 
@@ -32,11 +32,11 @@ int main() {
             break;  // should never hit here
         }
         case 10:
-            kernel::printString("[KERNEL] Attempted privilieged instruction outside of kernel. Killing process...");
+            kernel::printString("[KERNEL] Attempted privilieged instruction outside of kernel. Killing process...\n");
             kernel::halt();
             break;
         default:
-            kernel::printString("Recieved unrecognized exception code ");
+            kernel::printString("[KERNEL] Recieved unrecognized exception code ");
             kernel::printInteger(cause);
             kernel::printString(newline);
     }

@@ -15,23 +15,24 @@ using Byte = unsigned char;
 namespace Hardware {
     struct Instruction;
 
+    // Lightweight trap handler class for instructions that need it
+    class TrapHandler {
+        Machine& machine;
+    
+    public:
+        TrapHandler(Machine& machine);
+        void operator()(const Byte& exceptionCode /*implement badAddr later*/);
+    };
+
     class Machine {
         CPU cpu;
         Memory RAM;
         Word kernelEntry;
+        TrapHandler trapHandler;
         Coprocessor::Array<3> coprocessors;
         std::unordered_map<Word, std::unique_ptr<Instruction>> instructionCache;
         
     public:
-
-        // Lightweight trap handler class for instructions that need it
-        class TrapHandler {
-            Machine& machine;
-        
-        public:
-            TrapHandler(Machine& machine);
-            void operator()(const Byte& exceptionCode /*implement badAddr later*/);
-        };
 
         Machine();
 
@@ -40,6 +41,7 @@ namespace Hardware {
 
         inline const std::unique_ptr<Coprocessor>& readCoprocessor(const Byte& cp) const { return coprocessors.at(cp); }
         inline std::unique_ptr<Coprocessor>& accessCoprocessor(const Byte& cp) { return coprocessors.at(cp); }
+        inline TrapHandler& accessTrapHandler() { return trapHandler; }
         inline const Word& readKernelEntry() const { return kernelEntry; }
         inline const CPU& readCPU() const { return cpu; }
         inline CPU& accessCPU() { return cpu; }

@@ -108,10 +108,10 @@ HL_OP_INSTR(DivideUnsigned);
 // -------
 
 class Syscall : public Hardware::Instruction {
-    Hardware::Machine::TrapHandler raiseTrap;
+    Hardware::TrapHandler& raiseTrap;
 
 public:
-    Syscall(Hardware::Machine& machine);
+    Syscall(Hardware::TrapHandler& raiseTrap);
     void run();
 };
 

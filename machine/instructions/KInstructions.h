@@ -5,14 +5,15 @@
 // -------------------
 // Can only be used in privilieged mode
 
+#define K_INSTR_ARGS Hardware::TrapHandler& raiseTrap, const Word& statusRegister
 class KInstruction : public Hardware::Instruction {
 protected:
-    Hardware::Machine::TrapHandler raiseTrap;
+    Hardware::TrapHandler& raiseTrap;
     const Word& statusRegister;
 
 public:
-    KInstruction(Hardware::Machine& machine);
-    inline void checkEXL() { if (!(statusRegister & 0b10)) raiseTrap(10); }
+    KInstruction(K_INSTR_ARGS);
+    inline bool checkEXL() const { return (statusRegister & 0b10); }
     virtual void run() = 0;
 
 };
@@ -24,7 +25,7 @@ class MoveToCoprocessor0 : public KInstruction {
     int& rd;
 
 public:
-    MoveToCoprocessor0(Hardware::Machine& machine, const int& rt, int& rd);
+    MoveToCoprocessor0(K_INSTR_ARGS, const int& rt, int& rd);
     void run();
 };
 
@@ -35,7 +36,7 @@ class MoveFromCoprocessor0 : public KInstruction {
     const int& rd;
 
 public:
-    MoveFromCoprocessor0(Hardware::Machine& machine, int& rt, const int& rd);
+    MoveFromCoprocessor0(K_INSTR_ARGS, int& rt, const int& rd);
     void run();
 };
 
@@ -57,7 +58,7 @@ protected:
     bool& kill;
 
 public:
-    Halt(Hardware::Machine& machine);
+    Halt(K_INSTR_ARGS, bool& kill);
     void run();
 
 };
@@ -67,7 +68,7 @@ protected:
     const int& a0;
 
 public:
-    PrintInteger(Hardware::Machine& machine);
+    PrintInteger(K_INSTR_ARGS, const int& a0);
     void run();
 };
 
@@ -76,7 +77,7 @@ protected:
     int& v0;
 
 public:
-    ReadInteger(Hardware::Machine& machine);
+    ReadInteger(K_INSTR_ARGS, int& v0);
     void run();
 };
 
@@ -86,7 +87,7 @@ protected:
     const Word& a0;
 
 public:
-    PrintString(Hardware::Machine& machine);
+    PrintString(K_INSTR_ARGS, Hardware::Memory& mem, const Word& a0);
     void run();
 
 };

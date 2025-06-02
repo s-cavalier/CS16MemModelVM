@@ -15,16 +15,17 @@
 // Instruction factory can be in found in InstructionFactory.cpp
 // -------------------------------------------------------------
 
-Hardware::Machine::TrapHandler::TrapHandler(Machine& machine) : machine(machine) {}
-void Hardware::Machine::TrapHandler::operator()(const Byte& exceptionCode) { machine.raiseTrap(exceptionCode); }
+Hardware::TrapHandler::TrapHandler(Machine& machine) : machine(machine) {}
+void Hardware::TrapHandler::operator()(const Byte& exceptionCode /*implement badAddr later*/) { machine.raiseTrap(exceptionCode); }
 
-Hardware::Machine::Machine() : cpu(*this), killed(false) {
+Hardware::Machine::Machine() : cpu(*this), kernelEntry(0), trapHandler(*this), killed(false) {
 
     cpu.accessRegister(Binary::SP).ui = 0x7fffffff;
     cpu.accessRegister(Binary::FP).ui = 0x7fffffff;
     cpu.accessRegister(Binary::GP).ui = DATA_ENTRY; 
     coprocessors[0] = std::make_unique<SystemControlUnit>(*this);
     coprocessors[1] = std::make_unique<FloatingPointUnit>(*this);
+    coprocessors[2] = nullptr;
 }
 
 void Hardware::Machine::raiseTrap(const Byte& exceptionCode) {

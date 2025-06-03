@@ -1,4 +1,4 @@
-#include "TrapInits.h"
+#include "ASMInterface.h"
 
 // should probably make the save/restore registers a core feature of the hardware traphandler
 
@@ -33,6 +33,10 @@ int main() {
         }
         case 10:
             kernel::printString("[KERNEL] Attempted privilieged instruction outside of kernel. Killing process...\n");
+            kernel::halt();
+            break;
+        case 12:
+            kernel::printString("[KERNEL] Arithmetic overflow exception. Killing process...\n");
             kernel::halt();
             break;
         default:

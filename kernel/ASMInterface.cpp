@@ -1,4 +1,4 @@
-#include "TrapInits.h"
+#include "ASMInterface.h"
 
 kernel::TrapFrame* kernel::loadTrapFrame() {
     TrapFrame* ptr = (TrapFrame*)( (unsigned int)( kernel::getK0Register() ) );

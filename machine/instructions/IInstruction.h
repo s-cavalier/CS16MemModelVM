@@ -130,12 +130,12 @@ struct LoadUpperImmediate : public ISingleInstruction {
     void run();
 };
 
-class BranchOnLessThanZero : public ISingleInstruction {
+class BranchOnLessThanEqualZero : public ISingleInstruction {
 protected:
     Word& pc;
 
 public:
-    BranchOnLessThanZero(int& rs, const short& imm, Word& pc);
+    BranchOnLessThanEqualZero(int& rs, const short& imm, Word& pc);
     void run();
 };
 

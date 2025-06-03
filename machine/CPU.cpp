@@ -120,6 +120,8 @@ std::unique_ptr<Hardware::Instruction> Hardware::CPU::decode(const Word& binary_
         FPMEM_INIT(LWC1, LoadFPSingle);
         FPMEM_INIT(SWC1, StoreFPSingle);
         case ADDI: return std::make_unique<AddImmediate>(trap, registerFile[rt].i, registerFile[rs].i, immediate);
+        case BGTZ: return std::make_unique<BranchOnGreaterThanZero>(registerFile[rs].i, immediate, programCounter);
+        case BLEZ: return std::make_unique<BranchOnLessThanEqualZero>(registerFile[rs].i, immediate, programCounter);
         case J: return std::make_unique<Jump>(programCounter, address);
         case JAL: return std::make_unique<JumpAndLink>(programCounter, address, registerFile[RA].i);
         case LUI: return std::make_unique<LoadUpperImmediate>(registerFile[rt].i, immediate);

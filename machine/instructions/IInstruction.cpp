@@ -36,8 +36,8 @@ I_BRANCH_CONSTRCTR_INIT(BranchOnNotEqual) { if (rt != rs) pc += (int(imm) << 2) 
 LoadUpperImmediate::LoadUpperImmediate(int& rt, const short& imm) : ISingleInstruction(rt, imm) {}
 void LoadUpperImmediate::run() { arg0 = int(HalfWord(imm)) << 16; }
 
-BranchOnLessThanZero::BranchOnLessThanZero(int& rs, const short& imm, Word& pc) : ISingleInstruction(rs, imm), pc(pc) {}
-void BranchOnLessThanZero::run() { if (arg0 < 0) pc += (int(imm) << 2) - 4; }
+BranchOnLessThanEqualZero::BranchOnLessThanEqualZero(int& rs, const short& imm, Word& pc) : ISingleInstruction(rs, imm), pc(pc) {}
+void BranchOnLessThanEqualZero::run() { if (arg0 <= 0) pc += (int(imm) << 2) - 4; }
 
 BranchOnGreaterThanZero::BranchOnGreaterThanZero(int& rs, const short& imm, Word& pc) : ISingleInstruction(rs, imm), pc(pc) {}
 void BranchOnGreaterThanZero::run() { if (arg0 > 0) pc += (int(imm) << 2) - 4; }

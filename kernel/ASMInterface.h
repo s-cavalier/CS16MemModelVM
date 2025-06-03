@@ -1,5 +1,5 @@
-#ifndef __CUSTOM_INSTR_H__
-#define __CUSTOM_INSTR_H__
+#ifndef __ASM_INTERFACE_H__
+#define __ASM_INTERFACE_H__
 
 // Custom instr
 #define HALT ".word 0x0000003F\n"

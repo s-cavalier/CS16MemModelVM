@@ -1,11 +1,12 @@
 #include "../ministl/stdio.h"
 
 int fib(const int& n) {
-    std::printString("Immediately recieved:\n");
-    std::printInteger(n);
-    std::printString("\n");
+    if (n < 0) {
+        std::printString("Invalid input!\n");
+        return -1;
+    }
 
-    if (n < 0) return -1;
+    if (n == 0) return 0;
 
     int a = 0, b = 1;
     for (int i = 2; i <= n; ++i) {
@@ -16,7 +17,6 @@ int fib(const int& n) {
 
     return b;
 }
-
 
 int main() {
 

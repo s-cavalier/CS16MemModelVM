@@ -61,6 +61,16 @@ std::unique_ptr<Hardware::Instruction> Hardware::CPU::decode(const Word& binary_
 
     // Return instruction
 
+    #define I_BRANCH_ZERO_INIT(oc, instr) case oc: return std::make_unique<instr>(immediate, programCounter, registerFile[rs].i)
+    if (opcode == REGIMM) {
+        switch (rt) {
+            I_BRANCH_ZERO_INIT(1, BranchOnGreaterThanOrEqualZero);
+            I_BRANCH_ZERO_INIT(0, BranchOnLessThanZero);
+            default:
+                TRAP_EXIT(ExceptionCode::RI);
+        }
+    }
+
     #define R_VAR_INIT(oc, instr) case oc: return std::make_unique<instr>(registerFile[rd].i, registerFile[rt].i, registerFile[rs].i)
     #define R_SHFT_INIT(oc, instr) case oc: return std::make_unique<instr>(registerFile[rd].i, registerFile[rt].i, shamt)
     #define HL_MOVE_INIT(oc, instr, reg) case oc: return std::make_unique<instr>(registerFile[reg].i, hiLo)
@@ -119,9 +129,9 @@ std::unique_ptr<Hardware::Instruction> Hardware::CPU::decode(const Word& binary_
         I_BRANCH_INIT(BNE, BranchOnNotEqual);
         FPMEM_INIT(LWC1, LoadFPSingle);
         FPMEM_INIT(SWC1, StoreFPSingle);
+        I_BRANCH_ZERO_INIT(BGTZ, BranchOnGreaterThanZero);
+        I_BRANCH_ZERO_INIT(BLEZ, BranchOnLessThanOrEqualZero);
         case ADDI: return std::make_unique<AddImmediate>(trap, registerFile[rt].i, registerFile[rs].i, immediate);
-        case BGTZ: return std::make_unique<BranchOnGreaterThanZero>(registerFile[rs].i, immediate, programCounter);
-        case BLEZ: return std::make_unique<BranchOnLessThanEqualZero>(registerFile[rs].i, immediate, programCounter);
         case J: return std::make_unique<Jump>(programCounter, address);
         case JAL: return std::make_unique<JumpAndLink>(programCounter, address, registerFile[RA].i);
         case LUI: return std::make_unique<LoadUpperImmediate>(registerFile[rt].i, immediate);

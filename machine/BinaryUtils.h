@@ -7,6 +7,7 @@
 namespace Binary {
     enum Opcode : unsigned char {
         R_TYPE = 0x0,
+        REGIMM = 0x1,
         K_TYPE = 0x10,
         FP_TYPE = 0x11,
         J = 0x2,            //

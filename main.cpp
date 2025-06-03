@@ -50,7 +50,7 @@ int main(int argc, char** argv) {
     machine.loadKernel(kernel.readText(), kernel.readData(), kernel.readEntry());
     machine.loadProgram(exe->readText(), exe->readData(), exe->readEntry());
     machine.run(DBGHOOK((
-        makeConditionalCombinedHook<onKilled, printRegs>()
+        makeConditionalCombinedHook<ignoreKernel, printRegs, printInstr>()
     )));
 
     return 0;

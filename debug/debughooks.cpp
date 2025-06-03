@@ -18,6 +18,8 @@ using dbgHook = void (*)(const Hardware::Machine& machine);
 // conditionals
 using condEval = bool(*)(const Hardware::Machine& machine);
 bool onKilled(const Hardware::Machine& machine) { return machine.killed; }
+bool ignoreKernel(const Hardware::Machine& machine) { return !(machine.readCoprocessor(0)->readRegister(12).ui & 0b10); }
+bool focusKernel(const Hardware::Machine& machine) { return (machine.readCoprocessor(0)->readRegister(12).ui & 0b10); }
 
 #define DBG_OUT *dbg_output_stream
 

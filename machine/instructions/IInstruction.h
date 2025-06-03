@@ -112,6 +112,28 @@ public:
 I_BRANCH_INSTR(BranchOnEqual);
 I_BRANCH_INSTR(BranchOnNotEqual);
 
+// --------------
+// ZERO branches
+// --------------
+
+#define I_BRANCH_ZERO_INSTR_ARGS const short& imm, Word& pc, const int& rs
+class IBranchZeroInstruction : public IInstruction {
+protected:
+    Word& pc;
+    const int& rs;
+
+public:
+    IBranchZeroInstruction(I_BRANCH_ZERO_INSTR_ARGS);
+    virtual void run() = 0;
+};
+
+#define I_BRANCH_ZERO_INSTR(x) struct x : public IBranchZeroInstruction { x(I_BRANCH_ZERO_INSTR_ARGS); void run(); }
+I_BRANCH_ZERO_INSTR(BranchOnGreaterThanOrEqualZero);
+I_BRANCH_ZERO_INSTR(BranchOnGreaterThanZero);
+I_BRANCH_ZERO_INSTR(BranchOnLessThanOrEqualZero);
+I_BRANCH_ZERO_INSTR(BranchOnLessThanZero);
+
+
 // --------------------------------------------------------
 // Single Argument Immediates
 // follows op, reg, imm
@@ -130,22 +152,5 @@ struct LoadUpperImmediate : public ISingleInstruction {
     void run();
 };
 
-class BranchOnLessThanEqualZero : public ISingleInstruction {
-protected:
-    Word& pc;
-
-public:
-    BranchOnLessThanEqualZero(int& rs, const short& imm, Word& pc);
-    void run();
-};
-
-class BranchOnGreaterThanZero : public ISingleInstruction {
-protected:
-    Word& pc;
-
-public:
-    BranchOnGreaterThanZero(int& rs, const short& imm, Word& pc);
-    void run();
-};
 
 #endif

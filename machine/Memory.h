@@ -6,6 +6,9 @@ using Byte = unsigned char;
 using HalfWord = unsigned short;
 using Word = unsigned int;
 
+#define PAGE_SIZE 4096UL
+#define PHYS_MEM_SIZE 268435456ULL
+
 namespace Hardware {
 
     class Memory {

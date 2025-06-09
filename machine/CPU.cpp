@@ -10,17 +10,10 @@ void Hardware::CPU::cycle() {
     //     return;
     // }
 
-    auto it = instructionCache.find(programCounter);
-    if (it != instructionCache.end()) {
-        it->second->run();
-        programCounter += 4;
-        return;
-    }
+    auto& instr = instructionCache[programCounter];
+    if (!instr) instr = decode( machine.readMemory().getWord(programCounter) );
 
-    (
-        instructionCache[programCounter] = decode( machine.readMemory().getWord(programCounter) )
-    )->run(); // cool syntax
-
+    instr->run();
     programCounter += 4;
 }
 

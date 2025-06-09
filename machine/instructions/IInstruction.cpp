@@ -31,8 +31,8 @@ I_MEM_CONSTRCTR_INIT(StoreWord) { mem.setWord(Word(rs) + int(imm), rt); }
 
 
 #define I_BRANCH_CONSTRCTR_INIT(x) x::x(I_BRANCH_INSTR_ARGS) : IBranchInstruction(rt, rs, imm, pc) {} void x::run()
-I_BRANCH_CONSTRCTR_INIT(BranchOnEqual) { if (rt == rs) pc += (int(imm) << 2) - 4; }
-I_BRANCH_CONSTRCTR_INIT(BranchOnNotEqual) { if (rt != rs) pc += (int(imm) << 2) - 4; }
+I_BRANCH_CONSTRCTR_INIT(BranchOnEqual) { if (rt == rs) pc += (int(imm) << 2); }
+I_BRANCH_CONSTRCTR_INIT(BranchOnNotEqual) { if (rt != rs) pc += (int(imm) << 2); }
 
 #define I_BRANCH_ZERO_CONSTCTR_INIT(x) x::x(I_BRANCH_ZERO_INSTR_ARGS) : IBranchZeroInstruction(imm, pc, rs) {} void x::run()
 I_BRANCH_ZERO_CONSTCTR_INIT(BranchOnGreaterThanOrEqualZero) { if (rs >= 0) pc += (int(imm) << 2); }

@@ -1,8 +1,6 @@
 #include "CPU.h"
 #include "BinaryUtils.h"
 #include "instructions/Instruction.h"
-#include <string>
-#include <stdexcept>
 
 Hardware::CPU::CPU(Machine& machine) : machine(machine), registerFile{0}, programCounter(0) {}
 

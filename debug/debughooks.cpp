@@ -28,6 +28,20 @@ bool focusKernel(const Hardware::Machine& machine) { return (machine.readCoproce
 #define HOOK_TEMPLATE(func_name) void func_name (const Hardware::Machine& machine)
 // print all written memory above this addr
 
+HOOK_TEMPLATE(memoryAccess) {
+    Word instr = machine.readMemory().getWord( machine.readCPU().readProgramCounter() );
+    Binary::Opcode opcode = Binary::Opcode((instr >> 26) & 0b111111);
+    if (opcode != Binary::LW && opcode != Binary::SW) return;
+    Binary::Register rs = Binary::Register((instr >> 21) & 0b11111);
+    short offset = (instr & 0xFF);
+    Word address = machine.readCPU().readRegister(rs).ui + Word(offset);
+    DBG_OUT << "Access memory location " << std::hex << std::setw(8) << std::setfill('0') << address << ":\n" << std::dec;
+    for (int i = -8; i < 12; ++i) DBG_OUT << std::setw(2) << std::setfill('0') << i << ' ';
+    DBG_OUT << std::hex << '\n';
+    for (Word i = address - 8; i < address + 12; ++i) DBG_OUT << std::setw(2) << std::setfill('0') << (unsigned short)(machine.readMemory().getByte(i)) << ' ';
+    DBG_OUT << std::dec << DBG_END;
+}
+
 HOOK_TEMPLATE(printInstr) {
     const Word& pc = machine.readCPU().readProgramCounter();
     DBG_OUT << "Reading instruction 0x"<< std::hex << std::setw(8) << std::setfill('0') << machine.readMemory().getWord(pc) << " at program counter 0x" << std::setw(8) << std::setfill('0') << pc << std::dec << DBG_END;

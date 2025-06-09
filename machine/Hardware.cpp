@@ -20,8 +20,7 @@ void Hardware::TrapHandler::operator()(const Byte& exceptionCode /*implement bad
 
 Hardware::Machine::Machine() : cpu(*this), kernelEntry(0), trapHandler(*this), killed(false) {
 
-    cpu.accessRegister(Binary::SP).ui = 0x7fffffff;
-    cpu.accessRegister(Binary::FP).ui = 0x7fffffff;
+    cpu.accessRegister(Binary::SP).ui = 0x7ffffffc;
     cpu.accessRegister(Binary::GP).ui = DATA_ENTRY; 
     coprocessors[0] = std::make_unique<SystemControlUnit>(*this);
     coprocessors[1] = std::make_unique<FloatingPointUnit>(*this);
@@ -56,7 +55,6 @@ void Hardware::Machine::raiseTrap(const Byte& exceptionCode) {
     RAM.setWord(sp + 33 * 4, coprocessors[0]->readRegister(CAUSE).ui );
 
     cpu.accessRegister(K0).ui = sp; // load in k0 so kernel can access it 
-    cpu.accessRegister(FP).ui = sp;
 }
 
 void Hardware::Machine::loadKernel(const std::vector<Word>& words, const std::vector<Byte>& bytes, const Word& entry) {

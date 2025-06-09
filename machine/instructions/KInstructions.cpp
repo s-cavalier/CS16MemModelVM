@@ -48,4 +48,4 @@ ReadInteger::ReadInteger(K_INSTR_ARGS, int& v0) : KInstruction(raiseTrap, status
 void ReadInteger::run() { EXL_CHECK std::cin >> v0; }
 
 PrintString::PrintString(K_INSTR_ARGS, Hardware::Memory& mem, const Word& a0) : KInstruction(raiseTrap, statusRegister), mem( mem ), a0( a0 ) {}
-void PrintString::run() { checkEXL(); for (Word i = a0; mem.getByte(i) != '\0'; ++i) std::cout << mem.getByte(i); }
+void PrintString::run() { EXL_CHECK for (Word i = a0; mem.getByte(i) != '\0'; ++i) std::cout << mem.getByte(i); }

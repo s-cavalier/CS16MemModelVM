@@ -1,12 +1,10 @@
 #include "Hardware.h"
 #include "BinaryUtils.h"
 #include "instructions/Instruction.h"
-#include <iostream>
-#include <iomanip>
 
 #define DATA_ENTRY 0x10008000
 #define TEXT_START 0x00400024
-#define KERNEL_TEXT_START 0x80000180
+#define KERNEL_TEXT_START 0x80000000
 #define KERNEL_DATA_ENTRY 0x80001000
 
 // TODO: add some debugging ability
@@ -18,7 +16,7 @@
 Hardware::TrapHandler::TrapHandler(Machine& machine) : machine(machine) {}
 void Hardware::TrapHandler::operator()(const Byte& exceptionCode /*implement badAddr later*/) { machine.raiseTrap(exceptionCode); }
 
-Hardware::Machine::Machine() : cpu(*this), kernelEntry(0), trapHandler(*this), killed(false) {
+Hardware::Machine::Machine() : cpu(*this), trapHandler(*this), killed(false) {
 
     cpu.accessRegister(Binary::SP).ui = 0x7ffffffc;
     cpu.accessRegister(Binary::GP).ui = DATA_ENTRY; 
@@ -39,9 +37,7 @@ void Hardware::Machine::raiseTrap(const Byte& exceptionCode) {
 
     sys_ctrl->setCause(exceptionCode);
 
-    // tlb later
-
-    cpu.accessProgramCounter() = kernelEntry - 4;
+    cpu.accessProgramCounter() = (exceptionCode == 24 ? bootEntry : trapEntry) - 4;
 
     // store trap frame
     auto& sp = cpu.accessRegister(SP).ui;
@@ -57,8 +53,9 @@ void Hardware::Machine::raiseTrap(const Byte& exceptionCode) {
     cpu.accessRegister(K0).ui = sp; // load in k0 so kernel can access it 
 }
 
-void Hardware::Machine::loadKernel(const std::vector<Word>& words, const std::vector<Byte>& bytes, const Word& entry) {
-    kernelEntry = entry;
+void Hardware::Machine::loadKernel(const std::vector<Word>& words, const std::vector<Byte>& bytes, const Word& entry, const Word& trapEntry) {
+    this->trapEntry = trapEntry;
+    bootEntry = entry;
     Word at = KERNEL_TEXT_START;
     for (const auto& instr : words) {
         RAM.setWord(at, instr);
@@ -77,7 +74,6 @@ void Hardware::Machine::loadKernel(const std::vector<Word>& words, const std::ve
 void Hardware::Machine::loadProgram(const std::vector<Word>& instructions, const std::vector<Byte>& bytes, const Word& entry) {
     // for right now, just load according to mips for no patricular reason
     // will figure out exact specifications later
-    cpu.accessProgramCounter() = entry;
     Word at = TEXT_START;
     for (const auto& instr : instructions) {
         RAM.setWord(at, instr);
@@ -89,6 +85,9 @@ void Hardware::Machine::loadProgram(const std::vector<Word>& instructions, const
         RAM.setByte(at, byte);
         ++at;
     }
+
+    cpu.accessProgramCounter() = entry;
+    raiseTrap(24);  // boot
 
     // set memory bounds
 }

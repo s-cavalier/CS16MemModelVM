@@ -1,28 +1,37 @@
 #include "../ministl/stdio.h"
 
-int fib(int n) {
-    if (n < 0) return -1;
-    if (n == 0) return 0;
+struct Node {
+    int data;
+    Node* next;
+};
 
-    int a = 0, b = 1;
-    for (int i = 2; i <= n; ++i) {
-        int temp = b;
-        b = a + b;
-        a = temp;
-    }
+void printForwards(Node* head) {
+    if (!head) return;
+    std::printInteger(head->data);
+    std::printString("\n");
+    printForwards(head->next);
+}
 
-    return b;
+void printBackwards(Node* head) {
+    if (!head) return;
+    printBackwards(head->next);
+    std::printInteger(head->data);
+    std::printString("\n");
 }
 
 int main() {
-
-    std::printString("Enter a fibonnaci value:\n");
-    int n = std::readInteger();
-
-    int out = fib(n);
-
-    std::printInteger(out);
-    std::printString("\n");
+    Node n1{1, nullptr};
+    Node n2{2, &n1};
+    Node n3{3, &n2};
+    Node n4{4, &n3};
+    Node n5{5, &n4};
+    Node n6{6, &n5};
+    Node n7{7, &n6};
+    Node n8{8, &n7};
+    Node n9{9, &n8};
+    
+    printBackwards(&n9);
+    printForwards(&n9);
 
     std::exit();
 }

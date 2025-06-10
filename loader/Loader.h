@@ -35,6 +35,15 @@ namespace FileLoader {
     struct ELFLoader : public Parser {
         ELFLoader(const std::string& path);
     };
+
+    class KernelLoader : public Parser {
+        Word trapHandlerLocation;
+
+    public:
+        inline const Word& getTrapHandlerLocation() const { return trapHandlerLocation; }
+        KernelLoader(const std::string& path);
+    };
+
 }
 
 

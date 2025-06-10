@@ -30,7 +30,7 @@ int main(int argc, char** argv) {
     #endif
 
     unique_ptr<FileLoader::Parser> exe;
-    FileLoader::ELFLoader kernel("kernel/kernel.elf");
+    FileLoader::KernelLoader kernel("kernel/kernel.elf");
 
     if (argc == 3 && string(argv[2]) == "-spim") exe = make_unique<FileLoader::SpimLoader>(argv[1]);
     else exe = make_unique<FileLoader::ELFLoader>(argv[1]);
@@ -47,11 +47,11 @@ int main(int argc, char** argv) {
 
     Hardware::Machine machine;
 
-    machine.loadKernel(kernel.readText(), kernel.readData(), kernel.readEntry());
+    machine.loadKernel(kernel.readText(), kernel.readData(), kernel.readEntry(), kernel.getTrapHandlerLocation());
     machine.loadProgram(exe->readText(), exe->readData(), exe->readEntry());
 
     machine.run(DBGHOOK((
-        makeConditionalCombinedHook<ignoreKernel, printRegs, printInstr>()
+        makeConditionalCombinedHook<ignoreKernel, printRegs>()
     )));
 
     return 0;

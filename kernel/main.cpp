@@ -5,6 +5,13 @@
 unsigned int newline = (unsigned int)("\n");
 
 int main() {
+    // just eret assuming that EPC already has the right PC loaded
+
+    kernel::ereturn();
+    return 0;
+}
+
+extern "C" void handleTrap() {
     kernel::TrapFrame* trapFrame = kernel::loadTrapFrame();
 
     unsigned int cause = trapFrame->cause >> 2; // need to consider interrupt mask later

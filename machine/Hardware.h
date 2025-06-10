@@ -27,7 +27,8 @@ namespace Hardware {
     class Machine {
         CPU cpu;
         Memory RAM;
-        Word kernelEntry;
+        Word trapEntry;
+        Word bootEntry;
         TrapHandler trapHandler;
         Coprocessor::Array<3> coprocessors;
         std::unordered_map<Word, std::unique_ptr<Instruction>> instructionCache;
@@ -42,7 +43,8 @@ namespace Hardware {
         inline const std::unique_ptr<Coprocessor>& readCoprocessor(const Byte& cp) const { return coprocessors.at(cp); }
         inline std::unique_ptr<Coprocessor>& accessCoprocessor(const Byte& cp) { return coprocessors.at(cp); }
         inline TrapHandler& accessTrapHandler() { return trapHandler; }
-        inline const Word& readKernelEntry() const { return kernelEntry; }
+        inline const Word& readTrapEntry() const { return trapEntry; }
+        inline const Word& readBootEntry() const { return bootEntry; }
         inline const CPU& readCPU() const { return cpu; }
         inline CPU& accessCPU() { return cpu; }
 
@@ -50,7 +52,7 @@ namespace Hardware {
         void raiseTrap(const Byte& exceptionCode);
         bool killed;
 
-        void loadKernel(const std::vector<Word>& text, const std::vector<Byte>& data, const Word& entry);
+        void loadKernel(const std::vector<Word>& text, const std::vector<Byte>& data, const Word& entry, const Word& trapEntry);
         void loadProgram(const std::vector<Word>& instructions, const std::vector<Byte>& bytes, const Word& entry);
 
         void step();

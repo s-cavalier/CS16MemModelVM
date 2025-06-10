@@ -1,4 +1,6 @@
 #include "Loader.h"
+#include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <elfio/elfio.hpp>
 
@@ -69,6 +71,80 @@ FileLoader::ELFLoader::ELFLoader(const std::string& path) : Parser() {
                    | (unsigned int)p[3] << 24;
             } else {
                 // big-endian
+                w =  (unsigned int)p[0] << 24
+                   | (unsigned int)p[1] << 16
+                   | (unsigned int)p[2] <<  8
+                   | (unsigned int)p[3];
+            }
+
+            text.push_back(w);
+        }
+    }
+
+    // 3) Load .data section into vector<unsigned char>
+    const ELFIO::section* data_sec = reader.sections[".data"];
+    if (data_sec) {
+        const char*       bytes = data_sec->get_data();
+        std::size_t       sz    = data_sec->get_size();
+        
+        data.assign(
+            reinterpret_cast<const unsigned char*>(bytes),
+            reinterpret_cast<const unsigned char*>(bytes) + sz
+        );
+    }
+}
+
+
+FileLoader::KernelLoader::KernelLoader(const std::string& path) : Parser() {
+    ELFIO::elfio reader;
+
+    if (!reader.load(path)) {
+        _bad = true;
+        return;
+    }
+
+    entry = reader.get_entry();
+
+    // 1) Extract symbol "handleTrap_address"
+    for (const auto& section : reader.sections) {
+        if (section->get_type() == ELFIO::SHT_SYMTAB) {
+            ELFIO::symbol_section_accessor symbols(reader, section.get());
+            for (unsigned int i = 0; i < symbols.get_symbols_num(); ++i) {
+                std::string   name;
+                ELFIO::Elf64_Addr value;
+                ELFIO::Elf_Xword size;
+                unsigned char bind, type, other;
+                ELFIO::Elf_Half section_index;
+
+                if (symbols.get_symbol(i, name, value, size, bind, type, section_index, other)) {
+                    if (name == "handleTrap") {
+                        trapHandlerLocation = static_cast<Word>(value);
+                        break;
+                    }
+                }
+            }
+            break;
+        }
+    }
+
+    // 2) Load .text section into vector<unsigned int>
+    const ELFIO::section* text_sec = reader.sections[".text"];
+    if (text_sec) {
+        const char*       bytes = text_sec->get_data();
+        std::size_t       sz    = text_sec->get_size();
+        std::size_t       count = sz / sizeof(unsigned int);
+        text.reserve(count);
+
+        for (std::size_t i = 0; i < count; ++i) {
+            const unsigned char* p = reinterpret_cast<const unsigned char*>(bytes + i * sizeof(unsigned int));
+            unsigned int         w;
+
+            if (reader.get_encoding() == ELFIO::ELFDATA2LSB) {
+                w =  (unsigned int)p[0]
+                   | (unsigned int)p[1] <<  8
+                   | (unsigned int)p[2] << 16
+                   | (unsigned int)p[3] << 24;
+            } else {
                 w =  (unsigned int)p[0] << 24
                    | (unsigned int)p[1] << 16
                    | (unsigned int)p[2] <<  8

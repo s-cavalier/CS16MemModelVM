@@ -5,38 +5,41 @@
 Hardware::CPU::CPU(Machine& machine) : machine(machine), registerFile{0}, programCounter(0) {}
 
 void Hardware::CPU::cycle() {
-    // if (programCounter >= machine.readMemory().memoryBounds.textBound) {    // cpu should own the bounds later
-    //     machine.killed = true;
-    //     return;
-    // }
+    try {
+        
+        auto& instr = instructionCache[programCounter];
+        if (!instr) instr = decode( machine.readMemory().getWord(programCounter) );
 
-    auto& instr = instructionCache[programCounter];
-    if (!instr) instr = decode( machine.readMemory().getWord(programCounter) );
+        instr->run();
+        programCounter += 4;
+        
+    } catch (const Hardware::Trap& trap) {
 
-    instr->run();
-    programCounter += 4;
+        machine.raiseTrap(trap.exceptionCode);
+
+    }
 }
 
 std::unique_ptr<Hardware::Instruction> Hardware::CPU::decode(const Word& binary_instruction) {
     // DECODE
 
+
     // Simplify local namespace
-    #define TRAP_EXIT(excCode) { machine.raiseTrap(Word(excCode)); return std::make_unique<NoOp>(); }
 
     using namespace Binary;
+
     auto& scu = machine.accessCoprocessor(0);
     auto& fpu = machine.accessCoprocessor(1);
     
     Opcode opcode = Opcode((binary_instruction >> 26) & 0b111111);  // For All
 
     if (opcode == FP_TYPE && fpu) return fpu->decode(binary_instruction);
-    else if (opcode == FP_TYPE) TRAP_EXIT(ExceptionCode::CP_UNUSABLE);
+    else if (opcode == FP_TYPE) throw Trap(Trap::CP_UNUSABLE);
 
     if (opcode == K_TYPE && scu) return scu->decode(binary_instruction);
-    else if (opcode == K_TYPE) TRAP_EXIT(ExceptionCode::CP_UNUSABLE);
+    else if (opcode == K_TYPE) throw Trap(Trap::CP_UNUSABLE);
 
     auto& RAM = machine.accessMemory();
-    auto& trap = machine.accessTrapHandler();
     auto& statusReg = machine.accessCoprocessor(0)->accessRegister(STATUS).ui;
 
     Word address = binary_instruction & 0x1FFFFFF;                  // For Jump
@@ -58,7 +61,7 @@ std::unique_ptr<Hardware::Instruction> Hardware::CPU::decode(const Word& binary_
             I_BRANCH_ZERO_INIT(1, BranchOnGreaterThanOrEqualZero);
             I_BRANCH_ZERO_INIT(0, BranchOnLessThanZero);
             default:
-                TRAP_EXIT(ExceptionCode::RI);
+                throw Trap(Trap::RI);
         }
     }
 
@@ -90,17 +93,17 @@ std::unique_ptr<Hardware::Instruction> Hardware::CPU::decode(const Word& binary_
             HL_MOVE_INIT(MFLO, MoveFromLo, rd);
             HL_MOVE_INIT(MTHI, MoveToHi, rs);
             HL_MOVE_INIT(MTLO, MoveToLo, rs);
-            case ADD: return std::make_unique<Add>(trap, registerFile[rd].i, registerFile[rt].i, registerFile[rs].i);
-            case SUB: return std::make_unique<Subtract>(trap, registerFile[rd].i, registerFile[rt].i, registerFile[rs].i);
-            case SYSCALL: return std::make_unique<Syscall>(trap);
-            case HALT: return std::make_unique<Halt>(trap, statusReg, machine.killed);
-            case PRINTI: return std::make_unique<PrintInteger>(trap, statusReg, registerFile[A0].i);
-            case READI: return std::make_unique<ReadInteger>(trap, statusReg, registerFile[V0].i );
-            case PRINTSTR: return std::make_unique<PrintString>(trap, statusReg, RAM, registerFile[A0].ui );
+            case ADD: return std::make_unique<Add>(registerFile[rd].i, registerFile[rt].i, registerFile[rs].i);
+            case SUB: return std::make_unique<Subtract>(registerFile[rd].i, registerFile[rt].i, registerFile[rs].i);
+            case SYSCALL: return std::make_unique<Syscall>();
+            case HALT: return std::make_unique<Halt>(statusReg, machine.killed);
+            case PRINTI: return std::make_unique<PrintInteger>(statusReg, registerFile[A0].i);
+            case READI: return std::make_unique<ReadInteger>(statusReg, registerFile[V0].i );
+            case PRINTSTR: return std::make_unique<PrintString>(statusReg, RAM, registerFile[A0].ui );
             case JR: return std::make_unique<JumpRegister>(programCounter, registerFile[RA].i);
             case JALR: return std::make_unique<JumpAndLinkRegister>(programCounter, registerFile[rd].i, registerFile[rs].i);
             default:
-                TRAP_EXIT(ExceptionCode::RI);
+                throw Trap(Trap::RI);
         }
     }
 
@@ -122,14 +125,14 @@ std::unique_ptr<Hardware::Instruction> Hardware::CPU::decode(const Word& binary_
         FPMEM_INIT(SWC1, StoreFPSingle);
         I_BRANCH_ZERO_INIT(BGTZ, BranchOnGreaterThanZero);
         I_BRANCH_ZERO_INIT(BLEZ, BranchOnLessThanOrEqualZero);
-        case ADDI: return std::make_unique<AddImmediate>(trap, registerFile[rt].i, registerFile[rs].i, immediate);
+        case ADDI: return std::make_unique<AddImmediate>(registerFile[rt].i, registerFile[rs].i, immediate);
         case J: return std::make_unique<Jump>(programCounter, address);
         case JAL: return std::make_unique<JumpAndLink>(programCounter, address, registerFile[RA].i);
         case LUI: return std::make_unique<LoadUpperImmediate>(registerFile[rt].i, immediate);
         default:
-            TRAP_EXIT(ExceptionCode::RI);
+            throw Trap(Trap::RI);
     }
 
-    machine.raiseTrap(Word(ExceptionCode::RI)); 
+    machine.raiseTrap(Word(Trap::RI)); 
     return std::make_unique<NoOp>();
 }

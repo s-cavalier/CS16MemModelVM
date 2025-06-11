@@ -156,26 +156,6 @@ namespace Binary {
         SYS_DEBUG = 31
     };
 
-    enum class ExceptionCode : unsigned char {
-        INTERRUPT = 0,   // Interrupt (hardware)
-
-        // no TLB
-
-        ADDRL = 4,   // Address error on load or fetch
-        ADDRS = 5,   // Address error on store
-        SYSCALL_EXC = 8,   // SYSCALL instruction
-        BREAK = 9,   // BREAK instruction
-        RI = 10,  // Reserved instruction
-        CP_UNUSABLE = 11,  // Coprocessor unusable
-        OVERFLOW = 12,  // Arithmetic overflow
-        TRAP = 13,  // TRAP instruction (e.g., TEQ + trap conditions)
-        FP_EXC = 15,  // Floating-point exception
-        WATCH = 23,  // Watchpoint reference
-        // Other values are reserved or implementation-specific
-    };
-
-
-
     unsigned int loadBigEndian(const unsigned char bytes[4]);
 
     void storeDoubleBE(float* loc, const double& dble);

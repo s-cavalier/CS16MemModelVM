@@ -5,10 +5,9 @@
 // -------------------
 // Can only be used in privilieged mode
 
-#define K_INSTR_ARGS Hardware::TrapHandler& raiseTrap, const Word& statusRegister
+#define K_INSTR_ARGS const Word& statusRegister
 class KInstruction : public Hardware::Instruction {
 protected:
-    Hardware::TrapHandler& raiseTrap;
     const Word& statusRegister;
 
 public:

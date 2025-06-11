@@ -8,16 +8,13 @@ IBranchZeroInstruction::IBranchZeroInstruction(I_BRANCH_ZERO_INSTR_ARGS) : IInst
 ISingleInstruction::ISingleInstruction(int& arg0, const short& imm) : IInstruction(imm), arg0(arg0) {}
 
 #define I_GEN_CONSTRCTR_INIT(x) x::x(I_GEN_INSTR_ARGS) : IGenericInstruction(rt, rs, imm) {} void x::run()
+I_GEN_CONSTRCTR_INIT(AddImmediate) { if (__builtin_add_overflow(rs, int(imm), &rt)) throw Hardware::Trap(Hardware::Trap::OVERFLOW); }
 I_GEN_CONSTRCTR_INIT(AddImmediateUnsigned) { rt = Word(rs) + int(imm); }
 I_GEN_CONSTRCTR_INIT(AndImmediate) { rt = rs & int(HalfWord(imm)); }
 I_GEN_CONSTRCTR_INIT(OrImmediate) { rt = rs | int(HalfWord(imm)); }
 I_GEN_CONSTRCTR_INIT(XorImmediate) { rt = rs ^ int(HalfWord(imm)); }
 I_GEN_CONSTRCTR_INIT(SetLessThanImmediate) { rt = (rs < imm ? 1 : 0); }
 I_GEN_CONSTRCTR_INIT(SetLessThanImmediateUnsigned) { rt = (Word(rs) < Word(HalfWord(imm)) ? 1 : 0); }
-
-// -- Trappable --
-AddImmediate::AddImmediate(Hardware::TrapHandler& raiseTrap, int& rt, int& rs, const short& imm) : IGenericInstruction(rt, rs, imm), raiseTrap(raiseTrap) {} 
-void AddImmediate::run() {  if (__builtin_add_overflow(rs, int(imm), &rt)) raiseTrap(12); }
 
 #define I_MEM_CONSTRCTR_INIT(x) x::x(I_MEM_INSTR_ARGS) : IMemoryInstruction(rt, rs, imm, mem) {} void x::run()
 I_MEM_CONSTRCTR_INIT(LoadByte) { rt = char(mem.getByte(Word(rs) + int(imm))); }

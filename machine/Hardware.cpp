@@ -7,16 +7,11 @@
 #define KERNEL_TEXT_START 0x80000000
 #define KERNEL_DATA_ENTRY 0x80001000
 
-// TODO: add some debugging ability
 // -------------------------------------------------------------
 // Hardware Emulation
-// Instruction factory can be in found in InstructionFactory.cpp
 // -------------------------------------------------------------
 
-Hardware::TrapHandler::TrapHandler(Machine& machine) : machine(machine) {}
-void Hardware::TrapHandler::operator()(const Byte& exceptionCode /*implement badAddr later*/) { machine.raiseTrap(exceptionCode); }
-
-Hardware::Machine::Machine() : cpu(*this), trapHandler(*this), killed(false) {
+Hardware::Machine::Machine() : cpu(*this), killed(false) {
 
     cpu.accessRegister(Binary::SP).ui = 0x7ffffffc;
     cpu.accessRegister(Binary::GP).ui = DATA_ENTRY; 
@@ -37,7 +32,7 @@ void Hardware::Machine::raiseTrap(const Byte& exceptionCode) {
 
     sys_ctrl->setCause(exceptionCode);
 
-    cpu.accessProgramCounter() = (exceptionCode == 24 ? bootEntry : trapEntry) - 4;
+    cpu.accessProgramCounter() = (exceptionCode == 24 ? bootEntry : trapEntry);
 
     // store trap frame
     auto& sp = cpu.accessRegister(SP).ui;
@@ -97,6 +92,7 @@ void Hardware::Machine::step() {
 }
 
 void Hardware::Machine::run(instrDebugHook hook) {
+    if (hook) hook(*this);
     while (!killed) {
         step();
         if (hook) hook(*this);

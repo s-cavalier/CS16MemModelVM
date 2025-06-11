@@ -2,26 +2,24 @@
 #include "../BinaryUtils.h"
 #include <iostream>
 
-#define EXL_CHECK if (!checkEXL()) { raiseTrap(10); return; }
+#define EXL_CHECK if (!checkEXL()) throw Hardware::Trap(Hardware::Trap::RI)
 
-KInstruction::KInstruction(K_INSTR_ARGS) : 
-    raiseTrap(raiseTrap), statusRegister( statusRegister ) {}
+KInstruction::KInstruction(K_INSTR_ARGS) :  statusRegister( statusRegister ) {}
 
 MoveToCoprocessor0::MoveToCoprocessor0(K_INSTR_ARGS, const int& rt, int& rd) : 
-    KInstruction(raiseTrap, statusRegister), rt(rt), rd(rd) {}
+    KInstruction(statusRegister), rt(rt), rd(rd) {}
 
-void MoveToCoprocessor0::run() { EXL_CHECK rd = rt; }
+void MoveToCoprocessor0::run() { EXL_CHECK; rd = rt; }
 
-MoveFromCoprocessor0::MoveFromCoprocessor0(K_INSTR_ARGS, int& rt, const int& rd) : 
-    KInstruction(raiseTrap, statusRegister), rt(rt), rd(rd) {}
+MoveFromCoprocessor0::MoveFromCoprocessor0(K_INSTR_ARGS, int& rt, const int& rd) : KInstruction(statusRegister), rt(rt), rd(rd) {}
 
-void MoveFromCoprocessor0::run() { EXL_CHECK rt = rd; }
+void MoveFromCoprocessor0::run() { EXL_CHECK; rt = rd; }
 
-ExceptionReturn::ExceptionReturn(Hardware::Machine& machine) : KInstruction(machine.accessTrapHandler(), machine.accessCoprocessor(0)->accessRegister(Binary::STATUS).ui ), machine(machine) {}
+ExceptionReturn::ExceptionReturn(Hardware::Machine& machine) : KInstruction(machine.accessCoprocessor(0)->accessRegister(Binary::STATUS).ui ), machine(machine) {}
 
 void ExceptionReturn::run() { 
-    EXL_CHECK 
-    machine.accessCPU().accessProgramCounter() = machine.readCoprocessor(0)->readRegister(Binary::EPC).ui;
+    EXL_CHECK; 
+    machine.accessCPU().accessProgramCounter() = machine.readCoprocessor(0)->readRegister(Binary::EPC).ui - 4;
     // don't need to flip exl bit, just restore the status with trap frame
 
     auto& spu = machine.accessCoprocessor(0);
@@ -38,14 +36,14 @@ void ExceptionReturn::run() {
 
 
 // custom
-Halt::Halt(K_INSTR_ARGS, bool& kill) : KInstruction(raiseTrap, statusRegister), kill(kill) {}
-void Halt::run() { EXL_CHECK kill = true; }
+Halt::Halt(K_INSTR_ARGS, bool& kill) : KInstruction(statusRegister), kill(kill) {}
+void Halt::run() { EXL_CHECK; kill = true; }
 
-PrintInteger::PrintInteger(K_INSTR_ARGS, const int& a0) : KInstruction(raiseTrap, statusRegister), a0(a0) {}
-void PrintInteger::run() { EXL_CHECK std::cout << a0; }
+PrintInteger::PrintInteger(K_INSTR_ARGS, const int& a0) : KInstruction(statusRegister), a0(a0) {}
+void PrintInteger::run() { EXL_CHECK; std::cout << a0; }
 
-ReadInteger::ReadInteger(K_INSTR_ARGS, int& v0) : KInstruction(raiseTrap, statusRegister), v0( v0 ) {}
-void ReadInteger::run() { EXL_CHECK std::cin >> v0; }
+ReadInteger::ReadInteger(K_INSTR_ARGS, int& v0) : KInstruction(statusRegister), v0( v0 ) {}
+void ReadInteger::run() { EXL_CHECK; std::cin >> v0; }
 
-PrintString::PrintString(K_INSTR_ARGS, Hardware::Memory& mem, const Word& a0) : KInstruction(raiseTrap, statusRegister), mem( mem ), a0( a0 ) {}
-void PrintString::run() { EXL_CHECK for (Word i = a0; mem.getByte(i) != '\0'; ++i) std::cout << mem.getByte(i); }
+PrintString::PrintString(K_INSTR_ARGS, Hardware::Memory& mem, const Word& a0) : KInstruction(statusRegister), mem( mem ), a0( a0 ) {}
+void PrintString::run() { EXL_CHECK; for (Word i = a0; mem.getByte(i) != '\0'; ++i) std::cout << mem.getByte(i); }

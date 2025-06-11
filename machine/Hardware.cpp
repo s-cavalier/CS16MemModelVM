@@ -1,11 +1,15 @@
 #include "Hardware.h"
 #include "BinaryUtils.h"
 #include "instructions/Instruction.h"
+#include <iostream>
+#include <iomanip>
 
 #define DATA_ENTRY 0x10008000
 #define TEXT_START 0x00400024
 #define KERNEL_TEXT_START 0x80000000
 #define KERNEL_DATA_ENTRY 0x80001000
+#define KERNEL_STACK_OFFSET 8188
+#define KERNEL_GLOBAL_PTR_DEFAULT 0x80005000
 
 // -------------------------------------------------------------
 // Hardware Emulation
@@ -26,7 +30,7 @@ void Hardware::Machine::raiseTrap(const Byte& exceptionCode) {
     SystemControlUnit* sys_ctrl = dynamic_cast<SystemControlUnit*>(coprocessors[0].get());  // if this errors, we can just get rid of it since all that happens is reg interaction
 
     if (!(sys_ctrl->accessRegister(STATUS).ui & 0b10)) {
-        sys_ctrl->setEPC( cpu.readProgramCounter() + 4 );
+        sys_ctrl->setEPC( cpu.readProgramCounter() );
         sys_ctrl->setEXL(true);
     }
 
@@ -34,34 +38,42 @@ void Hardware::Machine::raiseTrap(const Byte& exceptionCode) {
 
     cpu.accessProgramCounter() = (exceptionCode == 24 ? bootEntry : trapEntry);
 
-    // store trap frame
-    auto& sp = cpu.accessRegister(SP).ui;
-    Word old_sp = sp;
+    // store trap frame on kernel stack
+    auto& ksp = coprocessors[0]->accessRegister(K_SP).ui;
     Word end = 34 * 4;  // all registers - $0 + EPC + STATUS + CAUSE
-    sp -= end;
-    for (Byte i = 1; i < 32; ++i) RAM.setWord(sp + ((i - 1) << 2), cpu.accessRegister(i).ui );
-    RAM.setWord(sp + SP * 4, old_sp);
-    RAM.setWord(sp + 31 * 4, coprocessors[0]->readRegister(EPC).ui );
-    RAM.setWord(sp + 32 * 4, coprocessors[0]->readRegister(STATUS).ui );
-    RAM.setWord(sp + 33 * 4, coprocessors[0]->readRegister(CAUSE).ui );
+    ksp -= end;
 
-    cpu.accessRegister(K0).ui = sp; // load in k0 so kernel can access it 
+    for (Byte i = 1; i < 32; ++i) RAM.setWord(ksp + ((i - 1) << 2), cpu.accessRegister(i).ui);
+
+    RAM.setWord(ksp + SP * 4, cpu.accessRegister(SP).ui);  // save user $sp
+    RAM.setWord(ksp + 31 * 4, coprocessors[0]->readRegister(EPC).ui);
+    RAM.setWord(ksp + 32 * 4, coprocessors[0]->readRegister(STATUS).ui);
+    RAM.setWord(ksp + 33 * 4, coprocessors[0]->readRegister(CAUSE).ui);
+
+    cpu.accessRegister(K0).ui = ksp;  // store trap frame address in $k0
+    coprocessors[0]->accessRegister(K_TF).ui = ksp;  // store in K_TF
+
+    cpu.accessRegister(SP).ui = coprocessors[0]->accessRegister(K_SP).ui;  // switch to kernel stack
+    cpu.accessRegister(GP).ui = KERNEL_GLOBAL_PTR_DEFAULT;
+
 }
 
-void Hardware::Machine::loadKernel(const std::vector<Word>& words, const std::vector<Byte>& bytes, const Word& entry, const Word& trapEntry) {
-    this->trapEntry = trapEntry;
-    bootEntry = entry;
+void Hardware::Machine::loadKernel(const ExternalInfo::KernelBootInformation& kernelInfo) {
+    trapEntry = kernelInfo.trapEntry;
+    bootEntry = kernelInfo.bootEntry;
     Word at = KERNEL_TEXT_START;
-    for (const auto& instr : words) {
+    for (const auto& instr : kernelInfo.text) {
         RAM.setWord(at, instr);
         at += 4;
     }
 
     at = KERNEL_DATA_ENTRY;
-    for (const auto& byte : bytes) {
+    for (const auto& byte : kernelInfo.data) {
         RAM.setByte(at, byte);
         ++at;
     }
+
+    coprocessors[0]->accessRegister(Binary::K_SP).ui = kernelInfo.kernelStackPointerAddr + KERNEL_STACK_OFFSET;
 
 }
 

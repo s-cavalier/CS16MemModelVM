@@ -1,6 +1,6 @@
 #ifndef __LOADER_H__
 #define __LOADER_H__
-#include <vector>
+#include "../ExternalInfo.h"
 #include <string>
 
 namespace FileLoader {
@@ -36,12 +36,15 @@ namespace FileLoader {
         ELFLoader(const std::string& path);
     };
 
-    class KernelLoader : public Parser {
-        Word trapHandlerLocation;
+    // standalone
+    class KernelLoader {
+        bool _bad;
 
     public:
-        inline const Word& getTrapHandlerLocation() const { return trapHandlerLocation; }
+        ExternalInfo::KernelBootInformation kernelInfo;
+
         KernelLoader(const std::string& path);
+        inline const bool& bad() const { return _bad; }
     };
 
 }

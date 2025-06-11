@@ -1,8 +1,8 @@
 #ifndef __HARDWARE_H__
 #define __HARDWARE_H__
 #include "CPU.h"
+#include "../ExternalInfo.h"
 #include <unordered_map>
-#include <vector>
 #include <array>
 
 
@@ -42,13 +42,13 @@ namespace Hardware {
         void raiseTrap(const Byte& exceptionCode);
         bool killed;
 
-        void loadKernel(const std::vector<Word>& text, const std::vector<Byte>& data, const Word& entry, const Word& trapEntry);
+        void loadKernel(const ExternalInfo::KernelBootInformation& kernelInfo);
         void loadProgram(const std::vector<Word>& instructions, const std::vector<Byte>& bytes, const Word& entry);
 
         void step();
 
         // Just calls a loop on runInstruction until kill flag is set
-        using instrDebugHook = void (*)(const Machine& machine);
+        using instrDebugHook = void (*)(const Machine&);
         void run(instrDebugHook hook = nullptr);
     };
 

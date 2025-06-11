@@ -4,7 +4,7 @@
 
 CC        := mips-linux-gnu-g++
 
-ARCH_FLAGS := -march=mips32 -mfp32 -mno-dsp -mno-mips16 -mno-micromips -nostdlib -static -fno-pic -fno-pie -mno-abicalls -mno-gpopt -nostartfiles
+ARCH_FLAGS := -march=mips32 -mfp32 -mno-dsp -mno-mips16 -mno-micromips -nostdlib -ffreestanding -fno-rtti -fno-exceptions -static -fno-pic -fno-pie -mno-abicalls -mno-gpopt -nostartfiles
 LDFLAGS    := $(ARCH_FLAGS) -T linker.ld
 COMMON_FLAGS := -Wall -Wextra
 CFLAGS := $(ARCH_FLAGS) $(COMMON_FLAGS)

@@ -47,8 +47,17 @@ namespace Hardware {
         FloatingPointUnit(Machine& machine);
         std::unique_ptr<Instruction> decode(const Word& bin_instr);
 
-        inline const Double& getDouble(const Byte& reg) const { assert(!(reg & 1)); return *reinterpret_cast<const Double*>(&registerFile[reg].f); }
-        inline Double& getDouble(const Byte& reg) { assert(!(reg & 1)); return *reinterpret_cast<Double*>(&registerFile[reg].f); }
+        inline const Double& getDouble(const Byte& reg) const { 
+            using DoubleAlias __attribute__((__may_alias__)) = Double;
+            assert(!(reg & 1)); 
+            return *reinterpret_cast<const DoubleAlias*>(&registerFile[reg].f); 
+        }
+
+        inline Double& getDouble(const Byte& reg) { 
+            using DoubleAlias __attribute__((__may_alias__)) = Double;
+            assert(!(reg & 1)); 
+            return *reinterpret_cast<DoubleAlias*>(&registerFile[reg].f); 
+        }
     };
 
     class SystemControlUnit : public Coprocessor {

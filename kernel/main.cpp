@@ -2,10 +2,16 @@
 
 // should probably make the save/restore registers a core feature of the hardware traphandler
 
+#define K_STACK_SIZE 8192
+
+__attribute__((aligned(K_STACK_SIZE)))
+char kernel_stack[K_STACK_SIZE];
+
 unsigned int newline = (unsigned int)("\n");
 
 int main() {
     // just eret assuming that EPC already has the right PC loaded
+    kernel::printString("Kernel booted!\n");
 
     kernel::ereturn();
     return 0;

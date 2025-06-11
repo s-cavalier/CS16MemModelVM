@@ -95,7 +95,7 @@ FileLoader::ELFLoader::ELFLoader(const std::string& path) : Parser() {
 }
 
 
-FileLoader::KernelLoader::KernelLoader(const std::string& path) : Parser() {
+FileLoader::KernelLoader::KernelLoader(const std::string& path) : _bad(false) {
     ELFIO::elfio reader;
 
     if (!reader.load(path)) {
@@ -103,7 +103,7 @@ FileLoader::KernelLoader::KernelLoader(const std::string& path) : Parser() {
         return;
     }
 
-    entry = reader.get_entry();
+    kernelInfo.bootEntry = reader.get_entry();
 
     // 1) Extract symbol "handleTrap_address"
     for (const auto& section : reader.sections) {
@@ -118,8 +118,10 @@ FileLoader::KernelLoader::KernelLoader(const std::string& path) : Parser() {
 
                 if (symbols.get_symbol(i, name, value, size, bind, type, section_index, other)) {
                     if (name == "handleTrap") {
-                        trapHandlerLocation = static_cast<Word>(value);
-                        break;
+                        kernelInfo.trapEntry = static_cast<Word>(value);
+                    }
+                    if (name == "kernel_stack") {
+                        kernelInfo.kernelStackPointerAddr = static_cast<Word>(value);
                     }
                 }
             }
@@ -133,7 +135,7 @@ FileLoader::KernelLoader::KernelLoader(const std::string& path) : Parser() {
         const char*       bytes = text_sec->get_data();
         std::size_t       sz    = text_sec->get_size();
         std::size_t       count = sz / sizeof(unsigned int);
-        text.reserve(count);
+        kernelInfo.text.reserve(count);
 
         for (std::size_t i = 0; i < count; ++i) {
             const unsigned char* p = reinterpret_cast<const unsigned char*>(bytes + i * sizeof(unsigned int));
@@ -151,7 +153,7 @@ FileLoader::KernelLoader::KernelLoader(const std::string& path) : Parser() {
                    | (unsigned int)p[3];
             }
 
-            text.push_back(w);
+            kernelInfo.text.push_back(w);
         }
     }
 
@@ -161,7 +163,7 @@ FileLoader::KernelLoader::KernelLoader(const std::string& path) : Parser() {
         const char*       bytes = data_sec->get_data();
         std::size_t       sz    = data_sec->get_size();
         
-        data.assign(
+        kernelInfo.data.assign(
             reinterpret_cast<const unsigned char*>(bytes),
             reinterpret_cast<const unsigned char*>(bytes) + sz
         );

@@ -47,7 +47,7 @@ int main(int argc, char** argv) {
 
     Hardware::Machine machine;
 
-    machine.loadKernel(kernel.readText(), kernel.readData(), kernel.readEntry(), kernel.getTrapHandlerLocation());
+    machine.loadKernel( kernel.kernelInfo );
     machine.loadProgram(exe->readText(), exe->readData(), exe->readEntry());
 
     machine.run(DBGHOOK((

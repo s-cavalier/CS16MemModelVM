@@ -14,9 +14,7 @@ void Hardware::CPU::cycle() {
         programCounter += 4;
         
     } catch (const Hardware::Trap& trap) {
-
         machine.raiseTrap(trap.exceptionCode);
-
     }
 }
 

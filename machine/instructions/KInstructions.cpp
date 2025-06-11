@@ -19,18 +19,25 @@ ExceptionReturn::ExceptionReturn(Hardware::Machine& machine) : KInstruction(mach
 
 void ExceptionReturn::run() { 
     EXL_CHECK; 
-    machine.accessCPU().accessProgramCounter() = machine.readCoprocessor(0)->readRegister(Binary::EPC).ui - 4;
-    // don't need to flip exl bit, just restore the status with trap frame
-
     auto& spu = machine.accessCoprocessor(0);
 
+    machine.accessCPU().accessProgramCounter() = spu->readRegister(Binary::EPC).ui;
+    // don't need to flip exl bit, just restore the status with trap frame
+
     // restore trap frame based on value in $k0
-    Word trapFramePointer = machine.readCPU().readRegister(Binary::K0).ui;
-    for (Byte i = 1; i < 32; ++i) machine.accessCPU().accessRegister(i).ui = machine.readMemory().getWord(trapFramePointer + ((i - 1) << 2));
+    Word trapFramePointer = spu->accessRegister(Binary::K_TF).ui;
+
+    for (Byte i = 1; i < 32; ++i)
+        machine.accessCPU().accessRegister(i).ui = machine.readMemory().getWord(trapFramePointer + ((i - 1) << 2));
+
     spu->accessRegister(Binary::EPC).ui = machine.readMemory().getWord(trapFramePointer + 31 * 4);
     spu->accessRegister(Binary::STATUS).ui = machine.readMemory().getWord(trapFramePointer + 32 * 4);
-    spu->accessRegister(Binary::STATUS).ui &= ~Word(0b10);  //flip exl
+    spu->accessRegister(Binary::STATUS).ui &= ~Word(0b10);  // clear EXL
     spu->accessRegister(Binary::CAUSE).ui = machine.readMemory().getWord(trapFramePointer + 33 * 4);
+
+    // restore user $sp (which was saved in the trap frame)
+    machine.accessCPU().accessRegister(Binary::SP).ui = machine.readMemory().getWord(trapFramePointer + Binary::SP * 4);
+
 }
 
 

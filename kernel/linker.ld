@@ -1,4 +1,5 @@
 ENTRY(main)
+__global_pointer = 0x80005000;
 
 SECTIONS
 {

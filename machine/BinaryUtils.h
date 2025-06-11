@@ -152,6 +152,8 @@ namespace Binary {
         CAUSE = 13,
         EPC = 14,
         CONFIG = 16,
+        K_SP = 20,  // kernel stack ptr
+        K_TF = 21,  // kernel trap frame
         ERROR_EPC = 30,
         SYS_DEBUG = 31
     };

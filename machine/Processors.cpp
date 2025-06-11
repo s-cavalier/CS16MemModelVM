@@ -3,7 +3,7 @@
 #include "instructions/FloatingPoint.h"
 #include "instructions/KInstructions.h"
 
-Hardware::Coprocessor::Coprocessor(Machine& machine) : machine(machine), registerFile{0} {}
+Hardware::Coprocessor::Coprocessor(Machine& machine) : registerFile{0}, machine(machine) {}
 
 Hardware::FloatingPointUnit::FloatingPointUnit(Machine& machine) : Coprocessor(machine), FPcond(false) {}
 
@@ -20,25 +20,26 @@ std::unique_ptr<Hardware::Instruction> Hardware::FloatingPointUnit::decode(const
     FPFunct funct = FPFunct(binary_instruction & 0b111111);
     short immediate = binary_instruction & 0xFFFF;
 
-    if (fmt == BC) {
-        if (ft) return std::make_unique<FPBranchOnTrue>(programCounter, FPcond, immediate);
-        return std::make_unique<FPBranchOnFalse>(programCounter, FPcond, immediate);
-    }
+    // if (fmt == BC) {
+    //     if (ft) return std::make_unique<FPBranchOnTrue>(programCounter, FPcond, immediate);
+    //     return std::make_unique<FPBranchOnFalse>(programCounter, FPcond, immediate);
+    // }
 
-    #define FR_INIT(oc, instr) case oc: return std::make_unique<instr>(registerFile[ft].f, registerFile[fs].f, registerFile[fd].f)
-    #define FCMP_INIT(oc, instr) case oc: return std::make_unique<instr>(FPcond, registerFile[ft].f, registerFile[fs].f)
-    switch (FPFunct(funct)) {
-            FR_INIT(FPADD, FPAddSingle);
-            FR_INIT(FPDIV, FPDivideSingle);
-            FR_INIT(FPMUL, FPMultiplySingle);
-            FR_INIT(FPSUB, FPSubtractSingle);
-            FCMP_INIT(FPCEQ, FPCompareEqualSingle);
-            FCMP_INIT(FPCLT, FPCompareLessThanSingle);
-            FCMP_INIT(FPCLE, FPCompareLessThanOrEqualSingle);
-            case FPABS: return std::make_unique<FPAbsoluteValueSingle>(registerFile[fd].f, registerFile[fs].f);
-            default:
-                break;
-        }
+    #define FR_INIT(oc, instr) case oc: \
+    assert(fmt == D || fmt == S); \
+    if (fmt == S) return std::make_unique<instr<Single>>(registerFile[ft].f, registerFile[fs].f, registerFile[fd].f); \
+    else return std::make_unique<instr<Double>>( getDouble(ft), getDouble(fs), getDouble(fd) );
+    // ensure if double that we are aligned to even regs (can't store double in any odd register)
+    // maybe just replace with an exception later
+
+    switch (funct) {
+        FR_INIT(FPADD, FPAdd);
+        FR_INIT(FPDIV, FPDivide);
+        FR_INIT(FPMUL, FPMultiply);
+        FR_INIT(FPSUB, FPSubtract);
+        default:
+            break;
+    }
 
     throw Trap(Trap::ExceptionCode::RI);
     return std::make_unique<NoOp>();

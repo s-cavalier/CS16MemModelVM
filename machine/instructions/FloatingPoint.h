@@ -2,6 +2,7 @@
 #define __FLOATING_POINT_H__
 #include "SpecialInstruction.h"
 #include "IInstruction.h"
+#include <type_traits>
 
 // ------------------------------------------------------------
 // Floating Point instructions
@@ -9,95 +10,60 @@
 // Use pointers so double precision ops are easier
 // ------------------------------------------------------------
 
+using Single = float;
+using Double = double;
+
+template <typename FPType>
 class FPInstruction : public Hardware::Instruction {
+    // since it's defined in the CPP i don't think its necessary here but may as well
+    static_assert(
+        std::is_same_v<FPType, Single> || std::is_same_v<FPType, Double>,
+        "FPInstructions only can hold float/double."
+    );
+
 protected:
-    float* ft;
+    FPType& ft;
     
 public:
-    FPInstruction(float& ft);
+    FPInstruction(FPType& ft);
     virtual void run() = 0;
 };
 
-// FPBranch is unique; doesn't need ft, just branch on FPcond - maybe inherit from IInstruction?
-
-#define FBC_INSTR_ARGS Word& pc, bool& FPcond, const short& imm
-class FPBranchInstruction : public Hardware::Instruction {
+#define FR_INSTR_ARGS FPType& ft, FPType& fs, FPType& fd
+template <typename FPType>
+class FRInstruction : public FPInstruction<FPType> {
 protected:
-    Word& pc;
-    const bool& FPcond;
-    short imm;
-
-public:
-    FPBranchInstruction(FBC_INSTR_ARGS);
-    virtual void run() = 0;
-};
-
-#define FR_INSTR_ARGS float& ft, float& fs, float& fd
-class FRInstruction : public FPInstruction {
-protected:
-    float* fs;
-    float* fd;
+    FPType& fs;
+    FPType& fd;
 
 public:
     FRInstruction(FR_INSTR_ARGS);
     virtual void run() = 0;
 };
 
-#define FPCMP_INSTR_ARGS bool& FPcond, float& ft, float& fs
-class FPCompareInstruction : public FPInstruction {
-protected:
-    bool& FPcond;
-    float* fs;
+#define FR_INSTR(x) template <typename FPType> struct x : public FRInstruction<FPType> { x(FR_INSTR_ARGS); void run(); }
+FR_INSTR(FPAdd);
+FR_INSTR(FPDivide);
+FR_INSTR(FPMultiply);
+FR_INSTR(FPSubtract);
 
-public:
-    FPCompareInstruction(FPCMP_INSTR_ARGS);
-    virtual void run() = 0;
-};
-
-// ---------
-// FP memory
-// ---------
-#define FPMEM_INSTR_ARGS float& rt, int& rs, const short& imm, Hardware::Memory& mem
-class FPMemoryInstruction : public IInstruction {
+// only r-types, plus it won't be more than 4 instr with single double load/stores
+#define FPS_MEM_INSTR_ARGS float& rt, int& rs, const short& imm, Hardware::Memory& mem
+class FPSingleMemoryInstruction : public IInstruction {
 protected:
-    float* rt;
+    float& rt;
     int& rs;
     Hardware::Memory& mem;
 public:
-    FPMemoryInstruction(FPMEM_INSTR_ARGS);
+    FPSingleMemoryInstruction(FPS_MEM_INSTR_ARGS);
     virtual void run() = 0;
 };
 
-//TODO: Add double precision
+#define FPS_MEM_INSTR(x) struct x : public FPSingleMemoryInstruction { x(FPS_MEM_INSTR_ARGS); void run(); }
+FPS_MEM_INSTR(LoadFPSingle);
+FPS_MEM_INSTR(StoreFPSingle);
 
-#define FR_INSTR(x) struct x : public FRInstruction { x(FR_INSTR_ARGS); void run(); }
-FR_INSTR(FPAddSingle);
-FR_INSTR(FPDivideSingle);
-FR_INSTR(FPMultiplySingle);
-FR_INSTR(FPSubtractSingle);
-
-#define FCMP_INSTR(x) struct x : public FPCompareInstruction { x(FPCMP_INSTR_ARGS); void run(); }
-FCMP_INSTR(FPCompareEqualSingle);
-FCMP_INSTR(FPCompareLessThanSingle);
-FCMP_INSTR(FPCompareLessThanOrEqualSingle);
-
-#define FBC_INSTR(x) struct x : public FPBranchInstruction { x(FBC_INSTR_ARGS); void run(); }
-FBC_INSTR(FPBranchOnTrue);
-FBC_INSTR(FPBranchOnFalse);
-
-#define FPMEM_INSTR(x) struct x : public FPMemoryInstruction { x(FPMEM_INSTR_ARGS); void run(); }
-FPMEM_INSTR(LoadFPSingle);
-FPMEM_INSTR(StoreFPSingle);
-
-// ABS is weird
-struct FPAbsoluteValueSingle : public Hardware::Instruction {
-protected:
-    float& fd;
-    float& fs;
-public:
-    FPAbsoluteValueSingle(float& fd, float& fs);
-    void run();
-};
-
+// load in template impl
+#include "FloatingPoint.impl.hpp"
 
 #endif

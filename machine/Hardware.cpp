@@ -26,7 +26,7 @@ void Hardware::Machine::raiseTrap(const Byte& exceptionCode) {
     SystemControlUnit* sys_ctrl = dynamic_cast<SystemControlUnit*>(coprocessors[0].get());  // if this errors, we can just get rid of it since all that happens is reg interaction
 
     if (!(sys_ctrl->accessRegister(STATUS).ui & 0b10)) {
-        sys_ctrl->setEPC( cpu.readProgramCounter() );
+        sys_ctrl->setEPC( cpu.readProgramCounter() + 4 );
         sys_ctrl->setEXL(true);
     }
 
@@ -81,7 +81,7 @@ void Hardware::Machine::loadProgram(const std::vector<Word>& instructions, const
         ++at;
     }
 
-    cpu.accessProgramCounter() = entry;
+    cpu.accessProgramCounter() = entry - 4;
     raiseTrap(24);  // boot
 
     // set memory bounds
@@ -92,7 +92,6 @@ void Hardware::Machine::step() {
 }
 
 void Hardware::Machine::run(instrDebugHook hook) {
-    if (hook) hook(*this);
     while (!killed) {
         step();
         if (hook) hook(*this);

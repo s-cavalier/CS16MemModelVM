@@ -158,10 +158,6 @@ namespace Binary {
 
     unsigned int loadBigEndian(const unsigned char bytes[4]);
 
-    void storeDoubleBE(float* loc, const double& dble);
-
-    double loadDoubleBE(const float* vals);
-
     static char regToString[32][3] = {
         "0\0",  // null terminator so it ends earlier
         "at",

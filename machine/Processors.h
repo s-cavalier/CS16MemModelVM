@@ -2,10 +2,13 @@
 #define __PROCESSORS_H__
 #include "Memory.h"
 #include <memory>
+#include <cassert>
 
 using Word = unsigned int;
 using HalfWord = unsigned short;
 using Byte = unsigned char;
+using Double = double;
+using Single = float;
 
 namespace Hardware {
     struct Instruction;
@@ -19,8 +22,9 @@ namespace Hardware {
 
     class Coprocessor {
     protected:
+        alignas(8) reg32_t registerFile[32];    // aligned for FPU to be able to reinterpret_cast pairs of registers into double, switch to alignas(16) if implementing quad-prec
         Machine& machine;             // could switch to a bus model later on
-        reg32_t registerFile[32];
+        
     
     public:
         template <unsigned int N>
@@ -38,10 +42,13 @@ namespace Hardware {
 
     class FloatingPointUnit : public Coprocessor {
         bool FPcond;
-    
+
     public:
         FloatingPointUnit(Machine& machine);
         std::unique_ptr<Instruction> decode(const Word& bin_instr);
+
+        inline const Double& getDouble(const Byte& reg) const { assert(!(reg & 1)); return *reinterpret_cast<const Double*>(&registerFile[reg].f); }
+        inline Double& getDouble(const Byte& reg) { assert(!(reg & 1)); return *reinterpret_cast<Double*>(&registerFile[reg].f); }
     };
 
     class SystemControlUnit : public Coprocessor {

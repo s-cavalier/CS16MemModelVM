@@ -48,45 +48,14 @@ public:
 };
 
 // ----------------------------------------------------------
-// Custom Instructions!
-// Largely meant as temporaries until more interface is built
+// Custom Instructions
+// Temporary interface until more is built
 // ----------------------------------------------------------
 
-class Halt : public KInstruction {
-protected:
-    bool& kill;
+class VMTunnel : public KInstruction {
+    Hardware::Machine& machine;
 
 public:
-    Halt(K_INSTR_ARGS, bool& kill);
+    VMTunnel(K_INSTR_ARGS, Hardware::Machine& machine);
     void run();
-
-};
-
-class PrintInteger : public KInstruction {
-protected:
-    const int& a0;
-
-public:
-    PrintInteger(K_INSTR_ARGS, const int& a0);
-    void run();
-};
-
-class ReadInteger : public KInstruction {
-protected:
-    int& v0;
-
-public:
-    ReadInteger(K_INSTR_ARGS, int& v0);
-    void run();
-};
-
-class PrintString : public KInstruction {
-protected:
-    const Hardware::Memory& mem;
-    const Word& a0;
-
-public:
-    PrintString(K_INSTR_ARGS, Hardware::Memory& mem, const Word& a0);
-    void run();
-
 };

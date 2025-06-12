@@ -1,13 +1,10 @@
 #ifndef __ASM_INTERFACE_H__
 #define __ASM_INTERFACE_H__
 
-// Custom instr
-#define HALT ".word 0x0000003F\n"
-#define PRINTI ".word 0x0000003E\n"
-#define READI ".word 0x0000003D\n"
-#define PRINTSTR ".word 0x0000003C\n"
+#define VMTUNNEL ".word 0x0000003F\n"
 
 namespace kernel {
+    using uint32_t = unsigned int;
 
     struct TrapFrame {
         unsigned int at;
@@ -87,21 +84,41 @@ namespace kernel {
         RA = 31
     };
     
+    enum VMRequestType : uint32_t {
+        UNKNOWN,
+        HALT,
+        PRINT_STRING,
+        PRINT_INTEGER,
+        READ_INTEGER
+    };
+
+    struct VMResponse {
+        uint32_t res;
+        uint32_t err;
+    };
+
+    struct VMPackage {
+        VMRequestType reqType;
+        uint32_t arg0;
+        uint32_t arg1;
+        uint32_t arg2;
+
+        VMPackage(VMRequestType reqType = UNKNOWN, uint32_t arg0 = 0, uint32_t arg1 = 0, uint32_t arg2 = 0) : reqType(reqType), arg0(arg0), arg1(arg1), arg2(arg2) {}
+
+        VMResponse send() const;
+    };
+
     // frame needs to be manually loaded
     TrapFrame* loadTrapFrame();
 
     int getK0Register();
     int getK1Register();
 
-    void moveExceptionCode();
-
-    inline void ereturn() { __asm__ volatile ("eret\n" : : :); }
-
-    void halt();
-    void printInteger(const int& i);
-    int readInteger();
-    void printString(const unsigned int& addr);
-    inline void printString(const char* str) { printString( (unsigned int)(str) ); }
 }
+
+#define Halt                kernel::VMPackage(kernel::HALT).send()
+#define PrintString(ptr)    kernel::VMPackage(kernel::PRINT_STRING, (kernel::uint32_t)(ptr) ).send()
+#define PrintInteger(num)   kernel::VMPackage(kernel::PRINT_INTEGER, (num)).send()
+#define ReadInteger         kernel::VMPackage(kernel::READ_INTEGER).send()
 
 #endif

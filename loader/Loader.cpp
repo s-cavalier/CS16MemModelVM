@@ -117,7 +117,7 @@ FileLoader::KernelLoader::KernelLoader(const std::string& path) : _bad(false) {
                 ELFIO::Elf_Half section_index;
 
                 if (symbols.get_symbol(i, name, value, size, bind, type, section_index, other)) {
-                    if (name == "handleTrap") {
+                    if (name == "kernel_trap") {
                         kernelInfo.trapEntry = static_cast<Word>(value);
                     }
                     if (name == "kernel_stack") {

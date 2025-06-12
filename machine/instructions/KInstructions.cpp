@@ -43,14 +43,47 @@ void ExceptionReturn::run() {
 
 
 // custom
-Halt::Halt(K_INSTR_ARGS, bool& kill) : KInstruction(statusRegister), kill(kill) {}
-void Halt::run() { EXL_CHECK; kill = true; }
+VMTunnel::VMTunnel(K_INSTR_ARGS, Hardware::Machine& machine) : KInstruction(statusRegister), machine(machine) {}
+void VMTunnel::run() {
+    EXL_CHECK;
+    
+    auto& cpu = machine.accessCPU();
 
-PrintInteger::PrintInteger(K_INSTR_ARGS, const int& a0) : KInstruction(statusRegister), a0(a0) {}
-void PrintInteger::run() { EXL_CHECK; std::cout << a0; }
+    Word reqAddr = cpu.readRegister(Binary::A0).ui;
+    Word resAddr = cpu.readRegister(Binary::V0).ui;
 
-ReadInteger::ReadInteger(K_INSTR_ARGS, int& v0) : KInstruction(statusRegister), v0( v0 ) {}
-void ReadInteger::run() { EXL_CHECK; std::cin >> v0; }
+    // this can be optimized pretty heavily once we switch to virtual memory
+    Word req  = machine.readMemory().getWord( reqAddr );
+    Word arg0 = machine.readMemory().getWord( reqAddr + 4 );
+    Word arg1 = machine.readMemory().getWord( reqAddr + 8 );
+    Word arg2 = machine.readMemory().getWord( reqAddr + 12 );
 
-PrintString::PrintString(K_INSTR_ARGS, Hardware::Memory& mem, const Word& a0) : KInstruction(statusRegister), mem( mem ), a0( a0 ) {}
-void PrintString::run() { EXL_CHECK; for (Word i = a0; mem.getByte(i) != '\0'; ++i) std::cout << mem.getByte(i); }
+    Word res = 0;
+    Word err = 0;
+
+    switch (req) {
+        case 1: // halt
+            machine.killed = true;
+            break;
+
+        case 2: // print string
+            for (Word i = arg0; machine.readMemory().getByte(i) != '\0'; ++i) std::cout << machine.readMemory().getByte(i);
+            break;
+
+        case 3: // print integer
+            std::cout << arg0;
+            break;
+        
+        case 4: // read integer
+            std::cin >> res;
+            break;
+        default:
+            break;
+    }
+
+    // load back into res, err
+    
+    machine.accessMemory().setWord( resAddr, res     );
+    machine.accessMemory().setWord( resAddr + 4, err );
+
+}

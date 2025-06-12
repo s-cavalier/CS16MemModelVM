@@ -49,10 +49,7 @@ namespace Binary {
         ERET = 0x18,
 
         // CUSTOM INSTR
-        HALT = 0x3f,
-        PRINTI = 0x3e,
-        READI = 0x3d,
-        PRINTSTR = 0x3c,
+        VMTUNNEL = 0x3f,
 
         ADD = 0x20,         //
         ADDU = 0x21,        //

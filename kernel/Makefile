@@ -1,40 +1,31 @@
-#————————————————————————————————————————————————————————————
-# Cross‐compiler settings
-#————————————————————————————————————————————————————————————
-
 CC        := mips-linux-gnu-g++
+AS        := mips-linux-gnu-as
 
 ARCH_FLAGS := -march=mips32 -mfp32 -mno-dsp -mno-mips16 -mno-micromips -nostdlib -static -fno-pic -fno-pie -mno-abicalls -mno-gpopt -nostartfiles
+
 LDFLAGS    := $(ARCH_FLAGS) -T linker.ld
 COMMON_FLAGS := -Wall -Wextra
 CFLAGS := $(ARCH_FLAGS) $(COMMON_FLAGS)
 
-#————————————————————————————————————————————————————————————
-# Source discovery
-#————————————————————————————————————————————————————————————
+ASFLAGS := -march=mips32
 
-# Find .cpp files in current directory and ../ministl
 SRCS := $(wildcard *.cpp)
+ASM_SRCS := kerneltrap.asm
 
-# Convert each source file to a corresponding object file in the build dir
-OBJS := $(SRCS:.cpp=.o)
+OBJS := $(SRCS:.cpp=.o) $(ASM_SRCS:.asm=.o)
 
-# Final output filename
 TARGET := kernel.elf
-
-#————————————————————————————————————————————————————————————
-# Make rules
-#————————————————————————————————————————————————————————————
 
 .PHONY: all clean
 
 all: $(TARGET)
 
-# Compile rule
 %.o: %.cpp
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Link rule
+%.o: %.asm
+	$(AS) $(ASFLAGS) $< -o $@
+
 $(TARGET): $(OBJS)
 	$(CC) $(LDFLAGS) $(OBJS) -o $@
 

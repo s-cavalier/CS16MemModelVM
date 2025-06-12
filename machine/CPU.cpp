@@ -94,10 +94,7 @@ std::unique_ptr<Hardware::Instruction> Hardware::CPU::decode(const Word& binary_
             case ADD: return std::make_unique<Add>(registerFile[rd].i, registerFile[rt].i, registerFile[rs].i);
             case SUB: return std::make_unique<Subtract>(registerFile[rd].i, registerFile[rt].i, registerFile[rs].i);
             case SYSCALL: return std::make_unique<Syscall>();
-            case HALT: return std::make_unique<Halt>(statusReg, machine.killed);
-            case PRINTI: return std::make_unique<PrintInteger>(statusReg, registerFile[A0].i);
-            case READI: return std::make_unique<ReadInteger>(statusReg, registerFile[V0].i );
-            case PRINTSTR: return std::make_unique<PrintString>(statusReg, RAM, registerFile[A0].ui );
+            case VMTUNNEL: return std::make_unique<VMTunnel>(statusReg, machine);
             case JR: return std::make_unique<JumpRegister>(programCounter, registerFile[RA].i);
             case JALR: return std::make_unique<JumpAndLinkRegister>(programCounter, registerFile[rd].i, registerFile[rs].i);
             default:

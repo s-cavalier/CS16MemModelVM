@@ -6,7 +6,6 @@ Heap::BlockHeader* Heap::FreeList::getBlock(void* p) {
 }
 
 bool Heap::FreeList::validAddr(void* p) {
-
     return (head) && ( p > head ) && ( p < CURR_BRK ) && ( p == getBlock(p)->ptr );
 }
 
@@ -21,7 +20,7 @@ Heap::BlockHeader* Heap::FreeList::findBlock(size_t s) {
 
 Heap::BlockHeader* Heap::FreeList::extendHeap(size_t s) {
     BlockHeader* it = (BlockHeader*)CURR_BRK;
-    long long sb = (long long)MOVE_BRK(BLOCKHEADER_OFFSET + s);
+    long long sb = (long long)sbrk(BLOCKHEADER_OFFSET + s);
     if (sb < 0) return nullptr;
     it->size = s;
     it->next = nullptr;
@@ -104,5 +103,3 @@ void* operator new(size_t size) { return Heap::freeList.malloc(size); }
 void* operator new[](size_t size) { return Heap::freeList.malloc(size); }
 void operator delete(void* ptr) noexcept { return Heap::freeList.free(ptr); }
 void operator delete[](void* ptr) noexcept { return Heap::freeList.free(ptr); }
-void operator delete(void* ptr, size_t) noexcept { return Heap::freeList.free(ptr); }
-void operator delete[](void* ptr, size_t) noexcept { return Heap::freeList.free(ptr); }

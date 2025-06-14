@@ -1,4 +1,5 @@
 #include "ASMInterface.h"
+#include "HeapManager.h"
 
 #define K_STACK_SIZE 8192
 
@@ -9,7 +10,14 @@ unsigned int newline = (unsigned int)("\n");
 
 int main() {
     // just eret assuming that EPC already has the right PC loaded
-    PrintString("Booted kernel!\n");
+    const char* startup = "Booted kernel!\n";
+    PrintString(startup);
+
+    int* x = new int[5]();
+
+    delete[] x;
+    PrintInteger((unsigned int)Heap::freeList.sbrk(0));
+    PrintString(newline);
 
     __asm__ volatile ("eret\n" : : :);
     return 0;

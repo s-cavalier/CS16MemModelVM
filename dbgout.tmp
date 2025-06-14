@@ -1,1567 +1,2080 @@
-Access memory location 80003f70:
+Access memory location 80007f70:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xafbf0034 at program counter 0x80000114
-Access memory location 80003f6c:
+Reading instruction 0xafbf006c at program counter 0x80000ae4
+Access memory location 80007f6c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xafbe0030 at program counter 0x80000118
-Reading instruction 0x03a0f025 at program counter 0x8000011c
-Reading instruction 0x3c028000 at program counter 0x80000120
-Reading instruction 0x24420644 at program counter 0x80000124
-Access memory location 80003f4c:
+Reading instruction 0xafbe0068 at program counter 0x80000ae8
+Reading instruction 0x03a0f025 at program counter 0x80000aec
+Reading instruction 0x3c028000 at program counter 0x80000af0
+Reading instruction 0x24421194 at program counter 0x80000af4
+Access memory location 80007f1c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xafa00010 at program counter 0x80000128
-Reading instruction 0x00003825 at program counter 0x8000012c
-Reading instruction 0x00403025 at program counter 0x80000130
-Reading instruction 0x24050002 at program counter 0x80000134
-Reading instruction 0x27c20018 at program counter 0x80000138
-Reading instruction 0x00402025 at program counter 0x8000013c
-Reading instruction 0x0c000170 at program counter 0x80000140
-Reading instruction 0x27bdfff8 at program counter 0x800005c0
-Access memory location 80003f38:
+Reading instruction 0xafc20018 at program counter 0x80000af8
+Access memory location 80007f1c:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 80 00 11 94 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc20018 at program counter 0x80000afc
+Reading instruction 0x27c30050 at program counter 0x80000b00
+Access memory location 80007f14:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 00 11 94 
+Reading instruction 0xafa00010 at program counter 0x80000b04
+Reading instruction 0x00003825 at program counter 0x80000b08
+Reading instruction 0x00403025 at program counter 0x80000b0c
+Reading instruction 0x24050002 at program counter 0x80000b10
+Reading instruction 0x00602025 at program counter 0x80000b14
+Reading instruction 0x0c000444 at program counter 0x80000b18
+Reading instruction 0x27bdfff8 at program counter 0x80001110
+Access memory location 80007f00:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xafbe0004 at program counter 0x800005c4
-Reading instruction 0x03a0f025 at program counter 0x800005c8
-Access memory location 80003f3c:
+Reading instruction 0xafbe0004 at program counter 0x80001114
+Reading instruction 0x03a0f025 at program counter 0x80001118
+Access memory location 80007f04:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3f 3c 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xafc40008 at program counter 0x800005cc
-Access memory location 80003f40:
+00 00 00 00 80 00 7f 04 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xafc40008 at program counter 0x8000111c
+Access memory location 80007f08:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3f 3c 80 00 3f 54 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xafc5000c at program counter 0x800005d0
-Access memory location 80003f44:
+80 00 7f 04 80 00 7f 54 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xafc5000c at program counter 0x80001120
+Access memory location 80007f0c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3f 54 00 00 00 02 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xafc60010 at program counter 0x800005d4
-Access memory location 80003f48:
+80 00 7f 54 00 00 00 02 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xafc60010 at program counter 0x80001124
+Access memory location 80007f10:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 02 80 00 06 44 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xafc70014 at program counter 0x800005d8
-Access memory location 80003f3c:
+00 00 00 02 80 00 11 94 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xafc70014 at program counter 0x80001128
+Access memory location 80007f04:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3f 3c 80 00 3f 54 00 00 00 02 80 00 06 44 
-Reading instruction 0x8fc20008 at program counter 0x800005dc
-Access memory location 80003f40:
+00 00 00 00 80 00 7f 04 80 00 7f 54 00 00 00 02 80 00 11 94 
+Reading instruction 0x8fc20008 at program counter 0x8000112c
+Access memory location 80007f08:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3f 3c 80 00 3f 54 00 00 00 02 80 00 06 44 00 00 00 00 
-Reading instruction 0x8fc3000c at program counter 0x800005e0
-Access memory location 80003f54:
+80 00 7f 04 80 00 7f 54 00 00 00 02 80 00 11 94 00 00 00 00 
+Reading instruction 0x8fc3000c at program counter 0x80001130
+Access memory location 80007f54:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xac430000 at program counter 0x800005e4
-Access memory location 80003f3c:
+Reading instruction 0xac430000 at program counter 0x80001134
+Access memory location 80007f04:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3f 3c 80 00 3f 54 00 00 00 02 80 00 06 44 
-Reading instruction 0x8fc20008 at program counter 0x800005e8
-Access memory location 80003f44:
+00 00 00 00 80 00 7f 04 80 00 7f 54 00 00 00 02 80 00 11 94 
+Reading instruction 0x8fc20008 at program counter 0x80001138
+Access memory location 80007f0c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3f 54 00 00 00 02 80 00 06 44 00 00 00 00 00 00 00 00 
-Reading instruction 0x8fc30010 at program counter 0x800005ec
-Access memory location 80003f58:
+80 00 7f 54 00 00 00 02 80 00 11 94 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc30010 at program counter 0x8000113c
+Access memory location 80007f58:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 00 00 00 00 02 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xac430004 at program counter 0x800005f0
-Access memory location 80003f3c:
+Reading instruction 0xac430004 at program counter 0x80001140
+Access memory location 80007f04:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3f 3c 80 00 3f 54 00 00 00 02 80 00 06 44 
-Reading instruction 0x8fc20008 at program counter 0x800005f4
-Access memory location 80003f48:
+00 00 00 00 80 00 7f 04 80 00 7f 54 00 00 00 02 80 00 11 94 
+Reading instruction 0x8fc20008 at program counter 0x80001144
+Access memory location 80007f10:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 02 80 00 06 44 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0x8fc30014 at program counter 0x800005f8
-Access memory location 80003f5c:
+00 00 00 02 80 00 11 94 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc30014 at program counter 0x80001148
+Access memory location 80007f5c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 02 80 00 06 44 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xac430008 at program counter 0x800005fc
-Access memory location 80003f3c:
+00 00 00 02 80 00 11 94 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xac430008 at program counter 0x8000114c
+Access memory location 80007f04:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3f 3c 80 00 3f 54 00 00 00 02 80 00 06 44 
-Reading instruction 0x8fc20008 at program counter 0x80000600
-Access memory location 80003f4c:
+00 00 00 00 80 00 7f 04 80 00 7f 54 00 00 00 02 80 00 11 94 
+Reading instruction 0x8fc20008 at program counter 0x80001150
+Access memory location 80007f14:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 06 44 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 02 
-Reading instruction 0x8fc30018 at program counter 0x80000604
-Access memory location 80003f60:
+80 00 11 94 00 00 00 00 00 00 00 00 00 00 00 00 80 00 11 94 
+Reading instruction 0x8fc30018 at program counter 0x80001154
+Access memory location 80007f60:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 06 44 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xac43000c at program counter 0x80000608
-Reading instruction 0x00000000 at program counter 0x8000060c
-Reading instruction 0x03c0e825 at program counter 0x80000610
-Access memory location 80003f38:
+80 00 11 94 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xac43000c at program counter 0x80001158
+Reading instruction 0x00000000 at program counter 0x8000115c
+Reading instruction 0x03c0e825 at program counter 0x80001160
+Access memory location 80007f00:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 80 00 3f 3c 80 00 3f 54 00 00 00 02 
-Reading instruction 0x8fbe0004 at program counter 0x80000614
-Reading instruction 0x27bd0008 at program counter 0x80000618
-Reading instruction 0x03e00008 at program counter 0x8000061c
-Reading instruction 0x00000000 at program counter 0x80000144
-Reading instruction 0x27c20028 at program counter 0x80000148
-Reading instruction 0x27c30018 at program counter 0x8000014c
-Reading instruction 0x00602825 at program counter 0x80000150
-Reading instruction 0x00402025 at program counter 0x80000154
-Reading instruction 0x0c000000 at program counter 0x80000158
+00 00 00 00 00 00 00 00 80 00 7f 04 80 00 7f 54 00 00 00 02 
+Reading instruction 0x8fbe0004 at program counter 0x80001164
+Reading instruction 0x27bd0008 at program counter 0x80001168
+Reading instruction 0x03e00008 at program counter 0x8000116c
+Reading instruction 0x00000000 at program counter 0x80000b1c
+Reading instruction 0x27c20060 at program counter 0x80000b20
+Reading instruction 0x27c30050 at program counter 0x80000b24
+Reading instruction 0x00602825 at program counter 0x80000b28
+Reading instruction 0x00402025 at program counter 0x80000b2c
+Reading instruction 0x0c000000 at program counter 0x80000b30
 Reading instruction 0x27bdfff0 at program counter 0x80000000
-Access memory location 80003f38:
+Access memory location 80007f00:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 80 00 3f 3c 80 00 3f 54 00 00 00 02 
+00 00 00 00 00 00 00 00 80 00 7f 04 80 00 7f 54 00 00 00 02 
 Reading instruction 0xafbe000c at program counter 0x80000004
 Reading instruction 0x03a0f025 at program counter 0x80000008
-Access memory location 80003f3c:
+Access memory location 80007f04:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3f 3c 80 00 3f 54 00 00 00 02 80 00 06 44 
+00 00 00 00 80 00 7f 04 80 00 7f 54 00 00 00 02 80 00 11 94 
 Reading instruction 0xafc40010 at program counter 0x8000000c
-Access memory location 80003f40:
+Access memory location 80007f08:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3f 3c 80 00 3f 64 00 00 00 02 80 00 06 44 00 00 00 00 
+80 00 7f 04 80 00 7f 64 00 00 00 02 80 00 11 94 00 00 00 00 
 Reading instruction 0xafc50014 at program counter 0x80000010
-Access memory location 80003f40:
+Access memory location 80007f08:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3f 3c 80 00 3f 64 80 00 3f 54 80 00 06 44 00 00 00 00 
+80 00 7f 04 80 00 7f 64 80 00 7f 54 80 00 11 94 00 00 00 00 
 Reading instruction 0x8fc20014 at program counter 0x80000014
-Access memory location 80003f54:
+Access memory location 80007f54:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 00 00 00 02 80 00 06 44 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 02 80 00 11 94 00 00 00 00 
 Reading instruction 0x8c420000 at program counter 0x80000018
 Reading instruction 0x14400007 at program counter 0x8000001c
-Access memory location 80003f40:
+Access memory location 80007f08:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3f 3c 80 00 3f 64 80 00 3f 54 80 00 06 44 00 00 00 00 
+80 00 7f 04 80 00 7f 64 80 00 7f 54 80 00 11 94 00 00 00 00 
 Reading instruction 0x8fc30014 at program counter 0x8000003c
 Reading instruction 0x00602025 at program counter 0x80000040
 Reading instruction 0x03c01025 at program counter 0x80000044
 Reading instruction 0x0000003f at program counter 0x80000048
-Access memory location 80003f3c:
+Access memory location 80007f04:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3f 3c 80 00 3f 64 80 00 3f 54 80 00 06 44 
+00 00 00 00 80 00 7f 04 80 00 7f 64 80 00 7f 54 80 00 11 94 
 Reading instruction 0x8fc20010 at program counter 0x8000004c
-Access memory location 80003f2c:
+Access memory location 80007ef4:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
 Reading instruction 0x8fc40000 at program counter 0x80000050
-Access memory location 80003f30:
+Access memory location 80007ef8:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 00 3f 3c 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 00 7f 04 
 Reading instruction 0x8fc30004 at program counter 0x80000054
-Access memory location 80003f64:
+Access memory location 80007f64:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
 Reading instruction 0xac440000 at program counter 0x80000058
-Access memory location 80003f68:
+Access memory location 80007f68:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
 Reading instruction 0xac430004 at program counter 0x8000005c
-Access memory location 80003f3c:
+Access memory location 80007f04:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3f 3c 80 00 3f 64 80 00 3f 54 80 00 06 44 
+00 00 00 00 80 00 7f 04 80 00 7f 64 80 00 7f 54 80 00 11 94 
 Reading instruction 0x8fc20010 at program counter 0x80000060
 Reading instruction 0x03c0e825 at program counter 0x80000064
-Access memory location 80003f38:
+Access memory location 80007f00:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 80 00 3f 3c 80 00 3f 64 80 00 3f 54 
+00 00 00 00 00 00 00 00 80 00 7f 04 80 00 7f 64 80 00 7f 54 
 Reading instruction 0x8fbe000c at program counter 0x80000068
 Reading instruction 0x27bd0010 at program counter 0x8000006c
 Reading instruction 0x03e00008 at program counter 0x80000070
-Reading instruction 0x00000000 at program counter 0x8000015c
-Reading instruction 0x42000018 at program counter 0x80000160
-Reading instruction 0x27bdffe0 at program counter 0x00400030
-Access memory location 7ffffff8:
+Reading instruction 0x00000000 at program counter 0x80000b34
+Reading instruction 0x24040014 at program counter 0x80000b38
+Reading instruction 0x0c0001ff at program counter 0x80000b3c
+Reading instruction 0x27bdffe8 at program counter 0x800007fc
+Access memory location 80007f00:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 27 bd ff f0 
-Reading instruction 0xafbf001c at program counter 0x00400034
-Access memory location 7ffffff4:
+00 00 00 00 00 00 00 00 80 00 7f 04 80 00 7f 64 80 00 7f 54 
+Reading instruction 0xafbf0014 at program counter 0x80000800
+Access memory location 80007efc:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xafbe0018 at program counter 0x00400038
-Reading instruction 0x03a0f025 at program counter 0x0040003c
-Reading instruction 0x27c20014 at program counter 0x00400040
-Reading instruction 0x00402025 at program counter 0x00400044
-Reading instruction 0x0c10004c at program counter 0x00400048
-Reading instruction 0x27bdffe8 at program counter 0x00400130
-Access memory location 7fffffd8:
+00 00 00 00 00 00 00 00 00 00 00 00 80 00 0b 3c 80 00 7f 64 
+Reading instruction 0xafbe0010 at program counter 0x80000804
+Reading instruction 0x03a0f025 at program counter 0x80000808
+Access memory location 80007f04:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xafbf0014 at program counter 0x00400134
-Access memory location 7fffffd4:
+80 00 7f 04 80 00 0b 3c 80 00 7f 64 80 00 7f 54 80 00 11 94 
+Reading instruction 0xafc40018 at program counter 0x8000080c
+Access memory location 80007f04:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 00 00 00 00 00 40 00 48 00 00 00 00 
-Reading instruction 0xafbe0010 at program counter 0x00400138
-Reading instruction 0x03a0f025 at program counter 0x0040013c
-Access memory location 7fffffdc:
--8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-7f ff ff dc 00 40 00 48 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xafc40018 at program counter 0x00400140
-Access memory location 7fffffdc:
--8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-7f ff ff dc 00 40 00 48 7f ff ff f0 00 00 00 00 00 00 00 00 
-Reading instruction 0x8fc20018 at program counter 0x00400144
-Reading instruction 0x00402025 at program counter 0x00400148
-Reading instruction 0x0c100028 at program counter 0x0040014c
-Reading instruction 0x27bdffe8 at program counter 0x004000a0
-Access memory location 7fffffc0:
+80 00 7f 04 80 00 0b 3c 00 00 00 14 80 00 7f 54 80 00 11 94 
+Reading instruction 0x8fc50018 at program counter 0x80000810
+Reading instruction 0x3c028000 at program counter 0x80000814
+Reading instruction 0x24445500 at program counter 0x80000818
+Reading instruction 0x0c000106 at program counter 0x8000081c
+Reading instruction 0x27bdffe0 at program counter 0x80000418
+Access memory location 80007ee8:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xafbf0014 at program counter 0x004000a4
-Access memory location 7fffffbc:
+Reading instruction 0xafbf001c at program counter 0x8000041c
+Access memory location 80007ee4:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 00 00 00 00 00 40 01 4c 00 00 00 00 
-Reading instruction 0xafbe0010 at program counter 0x004000a8
-Reading instruction 0x03a0f025 at program counter 0x004000ac
-Access memory location 7fffffc4:
+00 00 00 00 00 00 00 00 00 00 00 00 80 00 08 1c 00 00 00 00 
+Reading instruction 0xafbe0018 at program counter 0x80000420
+Reading instruction 0x03a0f025 at program counter 0x80000424
+Access memory location 80007eec:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-7f ff ff c4 00 40 01 4c 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xafc40018 at program counter 0x004000b0
-Reading instruction 0x3c020040 at program counter 0x004000b4
-Reading instruction 0x24430324 at program counter 0x004000b8
-Access memory location 7fffffc4:
+80 00 7e ec 80 00 08 1c 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xafc40020 at program counter 0x80000428
+Access memory location 80007ef0:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-7f ff ff c4 00 40 01 4c 7f ff ff f0 00 00 00 00 00 00 00 00 
-Reading instruction 0x8fc20018 at program counter 0x004000bc
-Access memory location 7ffffff0:
+80 00 08 1c 80 00 55 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xafc50024 at program counter 0x8000042c
+Access memory location 80007ef0:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 00 00 00 00 7f ff ff fc 00 00 00 00 
-Reading instruction 0xac430000 at program counter 0x004000c0
-Reading instruction 0x3c020040 at program counter 0x004000c4
-Reading instruction 0x244402b0 at program counter 0x004000c8
-Reading instruction 0x0c10009b at program counter 0x004000cc
-Reading instruction 0x27bdfff8 at program counter 0x0040026c
-Access memory location 7fffffa8:
+80 00 08 1c 80 00 55 00 00 00 00 14 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc20024 at program counter 0x80000430
+Reading instruction 0x24430003 at program counter 0x80000434
+Reading instruction 0x2402fffc at program counter 0x80000438
+Reading instruction 0x00621024 at program counter 0x8000043c
+Access memory location 80007ee0:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xafbe0004 at program counter 0x00400270
-Reading instruction 0x03a0f025 at program counter 0x00400274
-Access memory location 7fffffac:
+00 00 00 00 00 00 00 00 00 00 00 00 80 00 7e ec 80 00 08 1c 
+Reading instruction 0xafc20014 at program counter 0x80000440
+Access memory location 80007eec:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 7f ff ff ac 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xafc40008 at program counter 0x00400278
-Access memory location 7fffffac:
--8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 7f ff ff ac 00 40 02 b0 00 00 00 00 00 00 00 00 
-Reading instruction 0x8fc30008 at program counter 0x0040027c
-Reading instruction 0x00602025 at program counter 0x00400280
-Reading instruction 0x24020004 at program counter 0x00400284
-Reading instruction 0x0000000c at program counter 0x00400288
-Reading instruction 0x0c000060 at program counter 0x80000630
-Reading instruction 0x27bdfea0 at program counter 0x80000180
-Access memory location 80003de8:
+80 00 7e ec 80 00 08 1c 80 00 55 00 00 00 00 14 00 00 00 00 
+Reading instruction 0x8fc20020 at program counter 0x80000444
+Access memory location 80005508:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xafbf015c at program counter 0x80000184
-Access memory location 80003de4:
+Reading instruction 0x8c420008 at program counter 0x80000448
+Reading instruction 0x10400028 at program counter 0x8000044c
+Access memory location 80007ee0:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 00 00 00 14 80 00 7e ec 80 00 08 1c 
+Reading instruction 0x8fc50014 at program counter 0x800004f0
+Access memory location 80007eec:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 7e ec 80 00 08 1c 80 00 55 00 00 00 00 14 00 00 00 00 
+Reading instruction 0x8fc40020 at program counter 0x800004f4
+Reading instruction 0x0c00009e at program counter 0x800004f8
+Reading instruction 0x27bdffd8 at program counter 0x80000278
+Access memory location 80007ec8:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xafbe0158 at program counter 0x80000188
-Reading instruction 0x03a0f025 at program counter 0x8000018c
-Reading instruction 0x0c00001e at program counter 0x80000190
+Reading instruction 0xafbf0024 at program counter 0x8000027c
+Access memory location 80007ec4:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 00 00 00 00 80 00 04 f8 00 00 00 00 
+Reading instruction 0xafbe0020 at program counter 0x80000280
+Reading instruction 0x03a0f025 at program counter 0x80000284
+Access memory location 80007ecc:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 7e cc 80 00 04 f8 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xafc40028 at program counter 0x80000288
+Access memory location 80007ed0:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 04 f8 80 00 55 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xafc5002c at program counter 0x8000028c
+Reading instruction 0x00002825 at program counter 0x80000290
+Access memory location 80007ecc:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 7e cc 80 00 04 f8 80 00 55 00 00 00 00 14 00 00 00 00 
+Reading instruction 0x8fc40028 at program counter 0x80000294
+Reading instruction 0x0c000291 at program counter 0x80000298
+Reading instruction 0x27bdfff8 at program counter 0x80000a44
+Access memory location 80007ea0:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xafbe0004 at program counter 0x80000a48
+Reading instruction 0x03a0f025 at program counter 0x80000a4c
+Access memory location 80007ea4:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 80 00 7e a4 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xafc40008 at program counter 0x80000a50
+Access memory location 80007ea8:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 7e a4 80 00 55 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xafc5000c at program counter 0x80000a54
+Access memory location 80007ea8:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 7e a4 80 00 55 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc2000c at program counter 0x80000a58
+Reading instruction 0x14400005 at program counter 0x80000a5c
+Reading instruction 0x00000000 at program counter 0x80000a60
+Access memory location 80007ea4:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 80 00 7e a4 80 00 55 00 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc20008 at program counter 0x80000a64
+Access memory location 80005510:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0x8c420010 at program counter 0x80000a68
+Reading instruction 0x10000009 at program counter 0x80000a6c
+Reading instruction 0x03c0e825 at program counter 0x80000a94
+Access memory location 80007ea0:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 80 00 7e a4 80 00 55 00 00 00 00 00 
+Reading instruction 0x8fbe0004 at program counter 0x80000a98
+Reading instruction 0x27bd0008 at program counter 0x80000a9c
+Reading instruction 0x03e00008 at program counter 0x80000aa0
+Reading instruction 0x00000000 at program counter 0x8000029c
+Access memory location 80007eb4:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xafc20010 at program counter 0x800002a0
+Access memory location 80007ed0:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 04 f8 80 00 55 00 00 00 00 14 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc2002c at program counter 0x800002a4
+Reading instruction 0x24420014 at program counter 0x800002a8
+Reading instruction 0x00402825 at program counter 0x800002ac
+Access memory location 80007ecc:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 7e cc 80 00 04 f8 80 00 55 00 00 00 00 14 00 00 00 00 
+Reading instruction 0x8fc40028 at program counter 0x800002b0
+Reading instruction 0x0c000291 at program counter 0x800002b4
+Reading instruction 0x27bdfff8 at program counter 0x80000a44
+Access memory location 80007ea0:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 80 00 7e a4 80 00 55 00 00 00 00 00 
+Reading instruction 0xafbe0004 at program counter 0x80000a48
+Reading instruction 0x03a0f025 at program counter 0x80000a4c
+Access memory location 80007ea4:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 80 00 7e a4 80 00 55 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xafc40008 at program counter 0x80000a50
+Access memory location 80007ea8:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 7e a4 80 00 55 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xafc5000c at program counter 0x80000a54
+Access memory location 80007ea8:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 7e a4 80 00 55 00 00 00 00 28 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc2000c at program counter 0x80000a58
+Reading instruction 0x14400005 at program counter 0x80000a5c
+Access memory location 80007ea4:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 80 00 7e a4 80 00 55 00 00 00 00 28 00 00 00 00 
+Reading instruction 0x8fc20008 at program counter 0x80000a74
+Access memory location 80005510:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0x8c430010 at program counter 0x80000a78
+Access memory location 80007ea8:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 7e a4 80 00 55 00 00 00 00 28 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc2000c at program counter 0x80000a7c
+Reading instruction 0x00621821 at program counter 0x80000a80
+Access memory location 80007ea4:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 80 00 7e a4 80 00 55 00 00 00 00 28 00 00 00 00 
+Reading instruction 0x8fc20008 at program counter 0x80000a84
+Access memory location 80005510:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xac430010 at program counter 0x80000a88
+Access memory location 80007ea4:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 80 00 7e a4 80 00 55 00 00 00 00 28 00 00 00 00 
+Reading instruction 0x8fc20008 at program counter 0x80000a8c
+Access memory location 80005510:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 00 00 00 28 00 00 00 00 00 00 00 00 
+Reading instruction 0x8c420010 at program counter 0x80000a90
+Reading instruction 0x03c0e825 at program counter 0x80000a94
+Access memory location 80007ea0:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 80 00 7e a4 80 00 55 00 00 00 00 28 
+Reading instruction 0x8fbe0004 at program counter 0x80000a98
+Reading instruction 0x27bd0008 at program counter 0x80000a9c
+Reading instruction 0x03e00008 at program counter 0x80000aa0
+Reading instruction 0x00000000 at program counter 0x800002b8
+Access memory location 80007ec0:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 00 00 00 00 80 00 7e cc 80 00 04 f8 
+Reading instruction 0xafc2001c at program counter 0x800002bc
+Reading instruction 0x000217c3 at program counter 0x800002c0
+Access memory location 80007ebc:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 28 80 00 7e cc 
+Reading instruction 0xafc20018 at program counter 0x800002c4
+Access memory location 80007ebc:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 28 80 00 7e cc 
+Reading instruction 0x8fc20018 at program counter 0x800002c8
+Reading instruction 0x04410004 at program counter 0x800002cc
+Access memory location 80007eb4:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc20010 at program counter 0x800002e0
+Access memory location 80007ed0:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 04 f8 80 00 55 00 00 00 00 14 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc3002c at program counter 0x800002e4
+Access memory location 00000000:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+
+Reading instruction 0xac430000 at program counter 0x800002e8
+Access memory location 80007eb4:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc20010 at program counter 0x800002ec
+Access memory location 00000004:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+
+Reading instruction 0xac400004 at program counter 0x800002f0
+Access memory location 80007ecc:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 7e cc 80 00 04 f8 80 00 55 00 00 00 00 14 00 00 00 00 
+Reading instruction 0x8fc20028 at program counter 0x800002f4
+Access memory location 8000550c:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 28 00 00 00 00 
+Reading instruction 0x8c43000c at program counter 0x800002f8
+Access memory location 80007eb4:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc20010 at program counter 0x800002fc
+Access memory location 00000008:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 14 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xac430008 at program counter 0x80000300
+Access memory location 80007eb4:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc20010 at program counter 0x80000304
+Reading instruction 0x24430014 at program counter 0x80000308
+Access memory location 80007eb4:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc20010 at program counter 0x8000030c
+Access memory location 00000010:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xac430010 at program counter 0x80000310
+Access memory location 80007ecc:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 7e cc 80 00 04 f8 80 00 55 00 00 00 00 14 00 00 00 00 
+Reading instruction 0x8fc20028 at program counter 0x80000314
+Access memory location 8000550c:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 28 00 00 00 00 
+Reading instruction 0x8c42000c at program counter 0x80000318
+Reading instruction 0x10400005 at program counter 0x8000031c
+Access memory location 80007eb4:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc20010 at program counter 0x80000334
+Access memory location 0000000c:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 14 00 00 00 00 
+Reading instruction 0xac40000c at program counter 0x80000338
+Access memory location 80007eb4:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc20010 at program counter 0x8000033c
+Reading instruction 0x03c0e825 at program counter 0x80000340
+Access memory location 80007ec8:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 28 80 00 7e cc 80 00 04 f8 80 00 55 00 00 00 00 14 
+Reading instruction 0x8fbf0024 at program counter 0x80000344
+Access memory location 80007ec4:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 28 80 00 7e cc 80 00 04 f8 80 00 55 00 
+Reading instruction 0x8fbe0020 at program counter 0x80000348
+Reading instruction 0x27bd0028 at program counter 0x8000034c
+Reading instruction 0x03e00008 at program counter 0x80000350
+Reading instruction 0x00000000 at program counter 0x800004fc
+Access memory location 80007edc:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 14 80 00 7e ec 
+Reading instruction 0xafc20010 at program counter 0x80000500
+Access memory location 80007edc:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 14 80 00 7e ec 
+Reading instruction 0x8fc20010 at program counter 0x80000504
+Reading instruction 0x14400004 at program counter 0x80000508
+Reading instruction 0x00000000 at program counter 0x8000050c
+Reading instruction 0x00001025 at program counter 0x80000510
+Reading instruction 0x10000006 at program counter 0x80000514
+Reading instruction 0x03c0e825 at program counter 0x80000530
+Access memory location 80007ee8:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 14 80 00 7e ec 80 00 08 1c 80 00 55 00 00 00 00 14 
+Reading instruction 0x8fbf001c at program counter 0x80000534
+Access memory location 80007ee4:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 14 80 00 7e ec 80 00 08 1c 80 00 55 00 
+Reading instruction 0x8fbe0018 at program counter 0x80000538
+Reading instruction 0x27bd0020 at program counter 0x8000053c
+Reading instruction 0x03e00008 at program counter 0x80000540
+Reading instruction 0x00000000 at program counter 0x80000820
+Reading instruction 0x03c0e825 at program counter 0x80000824
+Access memory location 80007f00:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 80 00 7f 04 80 00 0b 3c 00 00 00 14 80 00 7f 54 
+Reading instruction 0x8fbf0014 at program counter 0x80000828
+Access memory location 80007efc:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 80 00 7f 04 80 00 0b 3c 00 00 00 14 
+Reading instruction 0x8fbe0010 at program counter 0x8000082c
+Reading instruction 0x27bd0018 at program counter 0x80000830
+Reading instruction 0x03e00008 at program counter 0x80000834
+Reading instruction 0x00000000 at program counter 0x80000b40
+Reading instruction 0x00402025 at program counter 0x80000b44
+Reading instruction 0x00801825 at program counter 0x80000b48
+Reading instruction 0x24020004 at program counter 0x80000b4c
+Reading instruction 0x10000004 at program counter 0x80000b50
+Reading instruction 0x0441fffc at program counter 0x80000b64
+Access memory location 00000000:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+
+Reading instruction 0xac600000 at program counter 0x80000b58
+Reading instruction 0x2442ffff at program counter 0x80000b5c
+Reading instruction 0x24630004 at program counter 0x80000b60
+Reading instruction 0x0441fffc at program counter 0x80000b64
+Access memory location 00000004:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+
+Reading instruction 0xac600000 at program counter 0x80000b58
+Reading instruction 0x2442ffff at program counter 0x80000b5c
+Reading instruction 0x24630004 at program counter 0x80000b60
+Reading instruction 0x0441fffc at program counter 0x80000b64
+Access memory location 00000008:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 14 
+Reading instruction 0xac600000 at program counter 0x80000b58
+Reading instruction 0x2442ffff at program counter 0x80000b5c
+Reading instruction 0x24630004 at program counter 0x80000b60
+Reading instruction 0x0441fffc at program counter 0x80000b64
+Access memory location 0000000c:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 14 00 00 00 00 
+Reading instruction 0xac600000 at program counter 0x80000b58
+Reading instruction 0x2442ffff at program counter 0x80000b5c
+Reading instruction 0x24630004 at program counter 0x80000b60
+Reading instruction 0x0441fffc at program counter 0x80000b64
+Access memory location 00000010:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 00 00 00 14 00 00 00 00 00 00 00 00 
+Reading instruction 0xac600000 at program counter 0x80000b58
+Reading instruction 0x2442ffff at program counter 0x80000b5c
+Reading instruction 0x24630004 at program counter 0x80000b60
+Reading instruction 0x0441fffc at program counter 0x80000b64
+Reading instruction 0x00000000 at program counter 0x80000b68
+Access memory location 80007f20:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 80 00 11 94 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xafc4001c at program counter 0x80000b6c
+Access memory location 80007f20:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 80 00 11 94 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc2001c at program counter 0x80000b70
+Reading instruction 0x10400004 at program counter 0x80000b74
+Reading instruction 0x00002825 at program counter 0x80000b88
+Reading instruction 0x3c028001 at program counter 0x80000b8c
+Reading instruction 0x24448000 at program counter 0x80000b90
+Reading instruction 0x0c000291 at program counter 0x80000b94
+Reading instruction 0x27bdfff8 at program counter 0x80000a44
+Access memory location 80007f00:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 80 00 7f 04 80 00 0b 3c 00 00 00 14 80 00 7f 54 
+Reading instruction 0xafbe0004 at program counter 0x80000a48
+Reading instruction 0x03a0f025 at program counter 0x80000a4c
+Access memory location 80007f04:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 7f 04 80 00 7f 04 00 00 00 14 80 00 7f 54 80 00 11 94 
+Reading instruction 0xafc40008 at program counter 0x80000a50
+Access memory location 80007f08:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 7f 04 80 00 80 00 80 00 7f 54 80 00 11 94 00 00 00 00 
+Reading instruction 0xafc5000c at program counter 0x80000a54
+Access memory location 80007f08:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 7f 04 80 00 80 00 00 00 00 00 80 00 11 94 00 00 00 00 
+Reading instruction 0x8fc2000c at program counter 0x80000a58
+Reading instruction 0x14400005 at program counter 0x80000a5c
+Reading instruction 0x00000000 at program counter 0x80000a60
+Access memory location 80007f04:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 7f 04 80 00 7f 04 80 00 80 00 00 00 00 00 80 00 11 94 
+Reading instruction 0x8fc20008 at program counter 0x80000a64
+Access memory location 80008010:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0x8c420010 at program counter 0x80000a68
+Reading instruction 0x10000009 at program counter 0x80000a6c
+Reading instruction 0x03c0e825 at program counter 0x80000a94
+Access memory location 80007f00:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 80 00 7f 04 80 00 7f 04 80 00 80 00 00 00 00 00 
+Reading instruction 0x8fbe0004 at program counter 0x80000a98
+Reading instruction 0x27bd0008 at program counter 0x80000a9c
+Reading instruction 0x03e00008 at program counter 0x80000aa0
+Reading instruction 0x00000000 at program counter 0x80000b98
+Reading instruction 0x27c30038 at program counter 0x80000b9c
+Access memory location 80007f14:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 11 94 00 00 00 00 00 00 00 00 00 00 00 00 80 00 11 94 
+Reading instruction 0xafa00010 at program counter 0x80000ba0
+Reading instruction 0x00003825 at program counter 0x80000ba4
+Reading instruction 0x00403025 at program counter 0x80000ba8
+Reading instruction 0x24050003 at program counter 0x80000bac
+Reading instruction 0x00602025 at program counter 0x80000bb0
+Reading instruction 0x0c000444 at program counter 0x80000bb4
+Reading instruction 0x27bdfff8 at program counter 0x80001110
+Access memory location 80007f00:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 80 00 7f 04 80 00 7f 04 80 00 80 00 00 00 00 00 
+Reading instruction 0xafbe0004 at program counter 0x80001114
+Reading instruction 0x03a0f025 at program counter 0x80001118
+Access memory location 80007f04:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 7f 04 80 00 7f 04 80 00 80 00 00 00 00 00 80 00 11 94 
+Reading instruction 0xafc40008 at program counter 0x8000111c
+Access memory location 80007f08:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 7f 04 80 00 7f 3c 00 00 00 00 80 00 11 94 00 00 00 00 
+Reading instruction 0xafc5000c at program counter 0x80001120
+Access memory location 80007f0c:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 7f 3c 00 00 00 03 80 00 11 94 00 00 00 00 00 00 00 00 
+Reading instruction 0xafc60010 at program counter 0x80001124
+Access memory location 80007f10:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 03 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xafc70014 at program counter 0x80001128
+Access memory location 80007f04:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 7f 04 80 00 7f 04 80 00 7f 3c 00 00 00 03 00 00 00 00 
+Reading instruction 0x8fc20008 at program counter 0x8000112c
+Access memory location 80007f08:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 7f 04 80 00 7f 3c 00 00 00 03 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc3000c at program counter 0x80001130
+Access memory location 80007f3c:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xac430000 at program counter 0x80001134
+Access memory location 80007f04:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 7f 04 80 00 7f 04 80 00 7f 3c 00 00 00 03 00 00 00 00 
+Reading instruction 0x8fc20008 at program counter 0x80001138
+Access memory location 80007f0c:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 7f 3c 00 00 00 03 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc30010 at program counter 0x8000113c
+Access memory location 80007f40:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 03 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xac430004 at program counter 0x80001140
+Access memory location 80007f04:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 7f 04 80 00 7f 04 80 00 7f 3c 00 00 00 03 00 00 00 00 
+Reading instruction 0x8fc20008 at program counter 0x80001144
+Access memory location 80007f10:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 03 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc30014 at program counter 0x80001148
+Access memory location 80007f44:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 03 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xac430008 at program counter 0x8000114c
+Access memory location 80007f04:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 7f 04 80 00 7f 04 80 00 7f 3c 00 00 00 03 00 00 00 00 
+Reading instruction 0x8fc20008 at program counter 0x80001150
+Access memory location 80007f14:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 00 11 94 
+Reading instruction 0x8fc30018 at program counter 0x80001154
+Access memory location 80007f48:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xac43000c at program counter 0x80001158
+Reading instruction 0x00000000 at program counter 0x8000115c
+Reading instruction 0x03c0e825 at program counter 0x80001160
+Access memory location 80007f00:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 80 00 7f 04 80 00 7f 04 80 00 7f 3c 00 00 00 03 
+Reading instruction 0x8fbe0004 at program counter 0x80001164
+Reading instruction 0x27bd0008 at program counter 0x80001168
+Reading instruction 0x03e00008 at program counter 0x8000116c
+Reading instruction 0x00000000 at program counter 0x80000bb8
+Reading instruction 0x27c20048 at program counter 0x80000bbc
+Reading instruction 0x27c30038 at program counter 0x80000bc0
+Reading instruction 0x00602825 at program counter 0x80000bc4
+Reading instruction 0x00402025 at program counter 0x80000bc8
+Reading instruction 0x0c000000 at program counter 0x80000bcc
+Reading instruction 0x27bdfff0 at program counter 0x80000000
+Access memory location 80007f00:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 80 00 7f 04 80 00 7f 04 80 00 7f 3c 00 00 00 03 
+Reading instruction 0xafbe000c at program counter 0x80000004
+Reading instruction 0x03a0f025 at program counter 0x80000008
+Access memory location 80007f04:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 7f 04 80 00 7f 04 80 00 7f 3c 00 00 00 03 00 00 00 00 
+Reading instruction 0xafc40010 at program counter 0x8000000c
+Access memory location 80007f08:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 7f 04 80 00 7f 4c 00 00 00 03 00 00 00 00 00 00 00 00 
+Reading instruction 0xafc50014 at program counter 0x80000010
+Access memory location 80007f08:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 7f 04 80 00 7f 4c 80 00 7f 3c 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc20014 at program counter 0x80000014
+Access memory location 80007f3c:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 00 00 00 03 00 00 00 00 00 00 00 00 
+Reading instruction 0x8c420000 at program counter 0x80000018
+Reading instruction 0x14400007 at program counter 0x8000001c
+Access memory location 80007f08:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 7f 04 80 00 7f 4c 80 00 7f 3c 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc30014 at program counter 0x8000003c
+Reading instruction 0x00602025 at program counter 0x80000040
+Reading instruction 0x03c01025 at program counter 0x80000044
+Reading instruction 0x0000003f at program counter 0x80000048
+Access memory location 80007f04:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 7f 04 80 00 7f 04 80 00 7f 4c 80 00 7f 3c 00 00 00 00 
+Reading instruction 0x8fc20010 at program counter 0x8000004c
+Access memory location 80007ef4:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 55 00 00 00 00 14 00 00 00 00 00 00 00 00 80 00 7f 04 
+Reading instruction 0x8fc40000 at program counter 0x80000050
+Access memory location 80007ef8:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 14 00 00 00 00 00 00 00 00 80 00 7f 04 80 00 7f 04 
+Reading instruction 0x8fc30004 at program counter 0x80000054
+Access memory location 80007f4c:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 02 
+Reading instruction 0xac440000 at program counter 0x80000058
+Access memory location 80007f50:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 02 80 00 11 94 
+Reading instruction 0xac430004 at program counter 0x8000005c
+Access memory location 80007f04:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 7f 04 80 00 7f 04 80 00 7f 4c 80 00 7f 3c 00 00 00 00 
+Reading instruction 0x8fc20010 at program counter 0x80000060
+Reading instruction 0x03c0e825 at program counter 0x80000064
+Access memory location 80007f00:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 80 00 7f 04 80 00 7f 04 80 00 7f 4c 80 00 7f 3c 
+Reading instruction 0x8fbe000c at program counter 0x80000068
+Reading instruction 0x27bd0010 at program counter 0x8000006c
+Reading instruction 0x03e00008 at program counter 0x80000070
+Reading instruction 0x00000000 at program counter 0x80000bd0
+Reading instruction 0x3c028000 at program counter 0x80000bd4
+Access memory location 80000000:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 27 bd ff f0 af be 00 0c 03 a0 f0 25 
+Reading instruction 0x8c425000 at program counter 0x80000bd8
+Reading instruction 0x27c30020 at program counter 0x80000bdc
+Access memory location 80007f14:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 00 11 94 
+Reading instruction 0xafa00010 at program counter 0x80000be0
+Reading instruction 0x00003825 at program counter 0x80000be4
+Reading instruction 0x00403025 at program counter 0x80000be8
+Reading instruction 0x24050002 at program counter 0x80000bec
+Reading instruction 0x00602025 at program counter 0x80000bf0
+Reading instruction 0x0c000444 at program counter 0x80000bf4
+Reading instruction 0x27bdfff8 at program counter 0x80001110
+Access memory location 80007f00:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 80 00 7f 04 80 00 7f 04 80 00 7f 4c 80 00 7f 3c 
+Reading instruction 0xafbe0004 at program counter 0x80001114
+Reading instruction 0x03a0f025 at program counter 0x80001118
+Access memory location 80007f04:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 7f 04 80 00 7f 04 80 00 7f 4c 80 00 7f 3c 00 00 00 00 
+Reading instruction 0xafc40008 at program counter 0x8000111c
+Access memory location 80007f08:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 7f 04 80 00 7f 24 80 00 7f 3c 00 00 00 00 00 00 00 00 
+Reading instruction 0xafc5000c at program counter 0x80001120
+Access memory location 80007f0c:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 7f 24 00 00 00 02 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xafc60010 at program counter 0x80001124
+Access memory location 80007f10:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 02 80 00 11 90 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xafc70014 at program counter 0x80001128
+Access memory location 80007f04:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 7f 04 80 00 7f 04 80 00 7f 24 00 00 00 02 80 00 11 90 
+Reading instruction 0x8fc20008 at program counter 0x8000112c
+Access memory location 80007f08:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 7f 04 80 00 7f 24 00 00 00 02 80 00 11 90 00 00 00 00 
+Reading instruction 0x8fc3000c at program counter 0x80001130
+Access memory location 80007f24:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 11 94 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xac430000 at program counter 0x80001134
+Access memory location 80007f04:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 7f 04 80 00 7f 04 80 00 7f 24 00 00 00 02 80 00 11 90 
+Reading instruction 0x8fc20008 at program counter 0x80001138
+Access memory location 80007f0c:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 7f 24 00 00 00 02 80 00 11 90 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc30010 at program counter 0x8000113c
+Access memory location 80007f28:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 02 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xac430004 at program counter 0x80001140
+Access memory location 80007f04:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 7f 04 80 00 7f 04 80 00 7f 24 00 00 00 02 80 00 11 90 
+Reading instruction 0x8fc20008 at program counter 0x80001144
+Access memory location 80007f10:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 02 80 00 11 90 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc30014 at program counter 0x80001148
+Access memory location 80007f2c:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 02 80 00 11 90 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xac430008 at program counter 0x8000114c
+Access memory location 80007f04:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 7f 04 80 00 7f 04 80 00 7f 24 00 00 00 02 80 00 11 90 
+Reading instruction 0x8fc20008 at program counter 0x80001150
+Access memory location 80007f14:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 11 90 00 00 00 00 00 00 00 00 00 00 00 00 80 00 11 94 
+Reading instruction 0x8fc30018 at program counter 0x80001154
+Access memory location 80007f30:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 11 90 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xac43000c at program counter 0x80001158
+Reading instruction 0x00000000 at program counter 0x8000115c
+Reading instruction 0x03c0e825 at program counter 0x80001160
+Access memory location 80007f00:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 80 00 7f 04 80 00 7f 04 80 00 7f 24 00 00 00 02 
+Reading instruction 0x8fbe0004 at program counter 0x80001164
+Reading instruction 0x27bd0008 at program counter 0x80001168
+Reading instruction 0x03e00008 at program counter 0x8000116c
+Reading instruction 0x00000000 at program counter 0x80000bf8
+Reading instruction 0x27c20030 at program counter 0x80000bfc
+Reading instruction 0x27c30020 at program counter 0x80000c00
+Reading instruction 0x00602825 at program counter 0x80000c04
+Reading instruction 0x00402025 at program counter 0x80000c08
+Reading instruction 0x0c000000 at program counter 0x80000c0c
+Reading instruction 0x27bdfff0 at program counter 0x80000000
+Access memory location 80007f00:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 80 00 7f 04 80 00 7f 04 80 00 7f 24 00 00 00 02 
+Reading instruction 0xafbe000c at program counter 0x80000004
+Reading instruction 0x03a0f025 at program counter 0x80000008
+Access memory location 80007f04:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 7f 04 80 00 7f 04 80 00 7f 24 00 00 00 02 80 00 11 90 
+Reading instruction 0xafc40010 at program counter 0x8000000c
+Access memory location 80007f08:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 7f 04 80 00 7f 34 00 00 00 02 80 00 11 90 00 00 00 00 
+Reading instruction 0xafc50014 at program counter 0x80000010
+Access memory location 80007f08:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 7f 04 80 00 7f 34 80 00 7f 24 80 00 11 90 00 00 00 00 
+Reading instruction 0x8fc20014 at program counter 0x80000014
+Access memory location 80007f24:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 11 94 00 00 00 00 00 00 00 02 80 00 11 90 00 00 00 00 
+Reading instruction 0x8c420000 at program counter 0x80000018
+Reading instruction 0x14400007 at program counter 0x8000001c
+Access memory location 80007f08:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 7f 04 80 00 7f 34 80 00 7f 24 80 00 11 90 00 00 00 00 
+Reading instruction 0x8fc30014 at program counter 0x8000003c
+Reading instruction 0x00602025 at program counter 0x80000040
+Reading instruction 0x03c01025 at program counter 0x80000044
+Reading instruction 0x0000003f at program counter 0x80000048
+Access memory location 80007f04:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 7f 04 80 00 7f 04 80 00 7f 34 80 00 7f 24 80 00 11 90 
+Reading instruction 0x8fc20010 at program counter 0x8000004c
+Access memory location 80007ef4:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 55 00 00 00 00 14 00 00 00 00 00 00 00 00 80 00 7f 04 
+Reading instruction 0x8fc40000 at program counter 0x80000050
+Access memory location 80007ef8:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 14 00 00 00 00 00 00 00 00 80 00 7f 04 80 00 7f 04 
+Reading instruction 0x8fc30004 at program counter 0x80000054
+Access memory location 80007f34:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 03 
+Reading instruction 0xac440000 at program counter 0x80000058
+Access memory location 80007f38:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 03 00 00 00 00 
+Reading instruction 0xac430004 at program counter 0x8000005c
+Access memory location 80007f04:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+80 00 7f 04 80 00 7f 04 80 00 7f 34 80 00 7f 24 80 00 11 90 
+Reading instruction 0x8fc20010 at program counter 0x80000060
+Reading instruction 0x03c0e825 at program counter 0x80000064
+Access memory location 80007f00:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 80 00 7f 04 80 00 7f 04 80 00 7f 34 80 00 7f 24 
+Reading instruction 0x8fbe000c at program counter 0x80000068
+Reading instruction 0x27bd0010 at program counter 0x8000006c
+Reading instruction 0x03e00008 at program counter 0x80000070
+Reading instruction 0x00000000 at program counter 0x80000c10
+Reading instruction 0x42000018 at program counter 0x80000c14
+Reading instruction 0x0c00030d at program counter 0x80001180
+Reading instruction 0x27bdfea0 at program counter 0x80000c34
+Access memory location 80007de8:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xafbf015c at program counter 0x80000c38
+Access memory location 80007de4:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xafbe0158 at program counter 0x80000c3c
+Reading instruction 0x03a0f025 at program counter 0x80000c40
+Reading instruction 0x0c00001e at program counter 0x80000c44
 Reading instruction 0x27bdffe0 at program counter 0x80000078
-Access memory location 80003d88:
+Access memory location 80007d88:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
 Reading instruction 0xafbf001c at program counter 0x8000007c
-Access memory location 80003d84:
+Access memory location 80007d84:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 00 00 00 00 80 00 01 90 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 80 00 0c 44 00 00 00 00 
 Reading instruction 0xafbe0018 at program counter 0x80000080
 Reading instruction 0x03a0f025 at program counter 0x80000084
 Reading instruction 0x0c00002c at program counter 0x80000088
 Reading instruction 0x27bdfff0 at program counter 0x800000b0
-Access memory location 80003d68:
+Access memory location 80007d68:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
 Reading instruction 0xafbe000c at program counter 0x800000b4
 Reading instruction 0x03a0f025 at program counter 0x800000b8
 Reading instruction 0x03401025 at program counter 0x800000bc
-Access memory location 80003d5c:
+Access memory location 80007d5c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
 Reading instruction 0xafc20000 at program counter 0x800000c0
-Access memory location 80003d5c:
+Access memory location 80007d5c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 80 00 3e ec 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 80 00 7e ec 00 00 00 00 00 00 00 00 
 Reading instruction 0x8fc20000 at program counter 0x800000c4
 Reading instruction 0x03c0e825 at program counter 0x800000c8
-Access memory location 80003d68:
+Access memory location 80007d68:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 80 00 3d 6c 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 80 00 7d 6c 00 00 00 00 00 00 00 00 
 Reading instruction 0x8fbe000c at program counter 0x800000cc
 Reading instruction 0x27bd0010 at program counter 0x800000d0
 Reading instruction 0x03e00008 at program counter 0x800000d4
 Reading instruction 0x00000000 at program counter 0x8000008c
-Access memory location 80003d7c:
+Access memory location 80007d7c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 00 3d 8c 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 00 7d 8c 
 Reading instruction 0xafc20010 at program counter 0x80000090
-Access memory location 80003d7c:
+Access memory location 80007d7c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 80 00 3e ec 00 00 00 00 80 00 3d 8c 
+00 00 00 00 00 00 00 00 80 00 7e ec 00 00 00 00 80 00 7d 8c 
 Reading instruction 0x8fc20010 at program counter 0x80000094
 Reading instruction 0x03c0e825 at program counter 0x80000098
-Access memory location 80003d88:
+Access memory location 80007d88:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3d 8c 80 00 01 90 00 00 00 00 00 00 00 00 
+00 00 00 00 80 00 7d 8c 80 00 0c 44 00 00 00 00 00 00 00 00 
 Reading instruction 0x8fbf001c at program counter 0x8000009c
-Access memory location 80003d84:
+Access memory location 80007d84:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3e ec 00 00 00 00 80 00 3d 8c 80 00 01 90 00 00 00 00 
+80 00 7e ec 00 00 00 00 80 00 7d 8c 80 00 0c 44 00 00 00 00 
 Reading instruction 0x8fbe0018 at program counter 0x800000a0
 Reading instruction 0x27bd0020 at program counter 0x800000a4
 Reading instruction 0x03e00008 at program counter 0x800000a8
-Reading instruction 0x00000000 at program counter 0x80000194
-Access memory location 80003da4:
+Reading instruction 0x00000000 at program counter 0x80000c48
+Access memory location 80007da4:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xafc20018 at program counter 0x80000198
-Access memory location 80003da4:
+Reading instruction 0xafc20018 at program counter 0x80000c4c
+Access memory location 80007da4:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 80 00 3e ec 00 00 00 00 00 00 00 00 
-Reading instruction 0x8fc20018 at program counter 0x8000019c
-Access memory location 80003f70:
+00 00 00 00 00 00 00 00 80 00 7e ec 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc20018 at program counter 0x80000c50
+Access memory location 80007f70:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 40 02 88 00 00 00 02 00 00 00 20 00 00 00 00 00 00 00 00 
-Reading instruction 0x8c420084 at program counter 0x800001a0
-Reading instruction 0x00021082 at program counter 0x800001a4
-Access memory location 80003da8:
+Reading instruction 0x8c420084 at program counter 0x80000c54
+Reading instruction 0x00021082 at program counter 0x80000c58
+Access memory location 80007da8:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3e ec 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xafc2001c at program counter 0x800001a8
-Access memory location 80003da8:
+00 00 00 00 80 00 7e ec 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xafc2001c at program counter 0x80000c5c
+Access memory location 80007da8:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3e ec 00 00 00 08 00 00 00 00 00 00 00 00 
-Reading instruction 0x8fc3001c at program counter 0x800001ac
-Reading instruction 0x2402000c at program counter 0x800001b0
-Reading instruction 0x1062009f at program counter 0x800001b4
-Reading instruction 0x00000000 at program counter 0x800001b8
-Access memory location 80003da8:
+00 00 00 00 80 00 7e ec 00 00 00 08 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc3001c at program counter 0x80000c60
+Reading instruction 0x2402000c at program counter 0x80000c64
+Reading instruction 0x1062009f at program counter 0x80000c68
+Reading instruction 0x00000000 at program counter 0x80000c6c
+Access memory location 80007da8:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3e ec 00 00 00 08 00 00 00 00 00 00 00 00 
-Reading instruction 0x8fc2001c at program counter 0x800001bc
-Reading instruction 0x2c42000d at program counter 0x800001c0
-Reading instruction 0x104000bb at program counter 0x800001c4
-Reading instruction 0x00000000 at program counter 0x800001c8
-Access memory location 80003da8:
+00 00 00 00 80 00 7e ec 00 00 00 08 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc2001c at program counter 0x80000c70
+Reading instruction 0x2c42000d at program counter 0x80000c74
+Reading instruction 0x104000bb at program counter 0x80000c78
+Reading instruction 0x00000000 at program counter 0x80000c7c
+Access memory location 80007da8:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3e ec 00 00 00 08 00 00 00 00 00 00 00 00 
-Reading instruction 0x8fc3001c at program counter 0x800001cc
-Reading instruction 0x24020008 at program counter 0x800001d0
-Reading instruction 0x10620007 at program counter 0x800001d4
-Access memory location 80003da4:
+00 00 00 00 80 00 7e ec 00 00 00 08 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc3001c at program counter 0x80000c80
+Reading instruction 0x24020008 at program counter 0x80000c84
+Reading instruction 0x10620007 at program counter 0x80000c88
+Access memory location 80007da4:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 80 00 3e ec 00 00 00 08 00 00 00 00 
-Reading instruction 0x8fc20018 at program counter 0x800001f4
-Access memory location 80003ef0:
+00 00 00 00 00 00 00 00 80 00 7e ec 00 00 00 08 00 00 00 00 
+Reading instruction 0x8fc20018 at program counter 0x80000ca8
+Access memory location 80007ef0:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 06 30 00 00 00 00 00 00 00 04 00 40 02 b0 00 40 02 b0 
-Reading instruction 0x8c420004 at program counter 0x800001f8
-Reading instruction 0x2403000a at program counter 0x800001fc
-Reading instruction 0x10430049 at program counter 0x80000200
-Reading instruction 0x00000000 at program counter 0x80000204
-Reading instruction 0x2c43000b at program counter 0x80000208
-Reading instruction 0x10600056 at program counter 0x8000020c
-Reading instruction 0x00000000 at program counter 0x80000210
-Reading instruction 0x24030005 at program counter 0x80000214
-Reading instruction 0x10430030 at program counter 0x80000218
-Reading instruction 0x00000000 at program counter 0x8000021c
-Reading instruction 0x2c430006 at program counter 0x80000220
-Reading instruction 0x10600050 at program counter 0x80000224
-Reading instruction 0x00000000 at program counter 0x80000228
-Reading instruction 0x24030001 at program counter 0x8000022c
-Reading instruction 0x10430006 at program counter 0x80000230
-Reading instruction 0x00000000 at program counter 0x80000234
-Reading instruction 0x24030004 at program counter 0x80000238
-Reading instruction 0x10430015 at program counter 0x8000023c
-Access memory location 80003da4:
+80 00 11 80 00 00 00 00 00 00 00 04 00 40 02 b0 00 40 02 b0 
+Reading instruction 0x8c420004 at program counter 0x80000cac
+Reading instruction 0x2403000a at program counter 0x80000cb0
+Reading instruction 0x10430049 at program counter 0x80000cb4
+Reading instruction 0x00000000 at program counter 0x80000cb8
+Reading instruction 0x2c43000b at program counter 0x80000cbc
+Reading instruction 0x10600056 at program counter 0x80000cc0
+Reading instruction 0x00000000 at program counter 0x80000cc4
+Reading instruction 0x24030005 at program counter 0x80000cc8
+Reading instruction 0x10430030 at program counter 0x80000ccc
+Reading instruction 0x00000000 at program counter 0x80000cd0
+Reading instruction 0x2c430006 at program counter 0x80000cd4
+Reading instruction 0x10600050 at program counter 0x80000cd8
+Reading instruction 0x00000000 at program counter 0x80000cdc
+Reading instruction 0x24030001 at program counter 0x80000ce0
+Reading instruction 0x10430006 at program counter 0x80000ce4
+Reading instruction 0x00000000 at program counter 0x80000ce8
+Reading instruction 0x24030004 at program counter 0x80000cec
+Reading instruction 0x10430015 at program counter 0x80000cf0
+Access memory location 80007da4:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 80 00 3e ec 00 00 00 08 00 00 00 00 
-Reading instruction 0x8fc20018 at program counter 0x80000294
-Access memory location 80003ef8:
+00 00 00 00 00 00 00 00 80 00 7e ec 00 00 00 08 00 00 00 00 
+Reading instruction 0x8fc20018 at program counter 0x80000d48
+Access memory location 80007ef8:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 04 00 40 02 b0 00 40 02 b0 00 00 00 00 00 00 00 00 
-Reading instruction 0x8c42000c at program counter 0x80000298
-Reading instruction 0x27c30128 at program counter 0x8000029c
-Access memory location 80003d9c:
+Reading instruction 0x8c42000c at program counter 0x80000d4c
+Reading instruction 0x27c30128 at program counter 0x80000d50
+Access memory location 80007d9c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 00 3e ec 
-Reading instruction 0xafa00010 at program counter 0x800002a0
-Reading instruction 0x00003825 at program counter 0x800002a4
-Reading instruction 0x00403025 at program counter 0x800002a8
-Reading instruction 0x24050002 at program counter 0x800002ac
-Reading instruction 0x00602025 at program counter 0x800002b0
-Reading instruction 0x0c000170 at program counter 0x800002b4
-Reading instruction 0x27bdfff8 at program counter 0x800005c0
-Access memory location 80003d88:
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 00 7e ec 
+Reading instruction 0xafa00010 at program counter 0x80000d54
+Reading instruction 0x00003825 at program counter 0x80000d58
+Reading instruction 0x00403025 at program counter 0x80000d5c
+Reading instruction 0x24050002 at program counter 0x80000d60
+Reading instruction 0x00602025 at program counter 0x80000d64
+Reading instruction 0x0c000444 at program counter 0x80000d68
+Reading instruction 0x27bdfff8 at program counter 0x80001110
+Access memory location 80007d88:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3d 8c 80 00 01 90 00 00 00 00 00 00 00 00 
-Reading instruction 0xafbe0004 at program counter 0x800005c4
-Reading instruction 0x03a0f025 at program counter 0x800005c8
-Access memory location 80003d8c:
+00 00 00 00 80 00 7d 8c 80 00 0c 44 00 00 00 00 00 00 00 00 
+Reading instruction 0xafbe0004 at program counter 0x80001114
+Reading instruction 0x03a0f025 at program counter 0x80001118
+Access memory location 80007d8c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3d 8c 80 00 3d 8c 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xafc40008 at program counter 0x800005cc
-Access memory location 80003d90:
+80 00 7d 8c 80 00 7d 8c 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xafc40008 at program counter 0x8000111c
+Access memory location 80007d90:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3d 8c 80 00 3e b4 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xafc5000c at program counter 0x800005d0
-Access memory location 80003d94:
+80 00 7d 8c 80 00 7e b4 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xafc5000c at program counter 0x80001120
+Access memory location 80007d94:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3e b4 00 00 00 02 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xafc60010 at program counter 0x800005d4
-Access memory location 80003d98:
+80 00 7e b4 00 00 00 02 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xafc60010 at program counter 0x80001124
+Access memory location 80007d98:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 02 00 40 02 b0 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xafc70014 at program counter 0x800005d8
-Access memory location 80003d8c:
+Reading instruction 0xafc70014 at program counter 0x80001128
+Access memory location 80007d8c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3d 8c 80 00 3d 8c 80 00 3e b4 00 00 00 02 00 40 02 b0 
-Reading instruction 0x8fc20008 at program counter 0x800005dc
-Access memory location 80003d90:
+80 00 7d 8c 80 00 7d 8c 80 00 7e b4 00 00 00 02 00 40 02 b0 
+Reading instruction 0x8fc20008 at program counter 0x8000112c
+Access memory location 80007d90:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3d 8c 80 00 3e b4 00 00 00 02 00 40 02 b0 00 00 00 00 
-Reading instruction 0x8fc3000c at program counter 0x800005e0
-Access memory location 80003eb4:
+80 00 7d 8c 80 00 7e b4 00 00 00 02 00 40 02 b0 00 00 00 00 
+Reading instruction 0x8fc3000c at program counter 0x80001130
+Access memory location 80007eb4:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xac430000 at program counter 0x800005e4
-Access memory location 80003d8c:
+Reading instruction 0xac430000 at program counter 0x80001134
+Access memory location 80007d8c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3d 8c 80 00 3d 8c 80 00 3e b4 00 00 00 02 00 40 02 b0 
-Reading instruction 0x8fc20008 at program counter 0x800005e8
-Access memory location 80003d94:
+80 00 7d 8c 80 00 7d 8c 80 00 7e b4 00 00 00 02 00 40 02 b0 
+Reading instruction 0x8fc20008 at program counter 0x80001138
+Access memory location 80007d94:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3e b4 00 00 00 02 00 40 02 b0 00 00 00 00 00 00 00 00 
-Reading instruction 0x8fc30010 at program counter 0x800005ec
-Access memory location 80003eb8:
+80 00 7e b4 00 00 00 02 00 40 02 b0 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc30010 at program counter 0x8000113c
+Access memory location 80007eb8:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 02 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xac430004 at program counter 0x800005f0
-Access memory location 80003d8c:
+00 00 00 00 00 00 00 02 00 00 00 00 00 00 00 00 00 00 00 28 
+Reading instruction 0xac430004 at program counter 0x80001140
+Access memory location 80007d8c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3d 8c 80 00 3d 8c 80 00 3e b4 00 00 00 02 00 40 02 b0 
-Reading instruction 0x8fc20008 at program counter 0x800005f4
-Access memory location 80003d98:
--8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 02 00 40 02 b0 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0x8fc30014 at program counter 0x800005f8
-Access memory location 80003ebc:
+80 00 7d 8c 80 00 7d 8c 80 00 7e b4 00 00 00 02 00 40 02 b0 
+Reading instruction 0x8fc20008 at program counter 0x80001144
+Access memory location 80007d98:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 02 00 40 02 b0 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xac430008 at program counter 0x800005fc
-Access memory location 80003d8c:
+Reading instruction 0x8fc30014 at program counter 0x80001148
+Access memory location 80007ebc:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3d 8c 80 00 3d 8c 80 00 3e b4 00 00 00 02 00 40 02 b0 
-Reading instruction 0x8fc20008 at program counter 0x80000600
-Access memory location 80003d9c:
+00 00 00 02 00 40 02 b0 00 00 00 00 00 00 00 28 80 00 7e cc 
+Reading instruction 0xac430008 at program counter 0x8000114c
+Access memory location 80007d8c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 40 02 b0 00 00 00 00 00 00 00 00 00 00 00 00 80 00 3e ec 
-Reading instruction 0x8fc30018 at program counter 0x80000604
-Access memory location 80003ec0:
+80 00 7d 8c 80 00 7d 8c 80 00 7e b4 00 00 00 02 00 40 02 b0 
+Reading instruction 0x8fc20008 at program counter 0x80001150
+Access memory location 80007d9c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 40 02 b0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xac43000c at program counter 0x80000608
-Reading instruction 0x00000000 at program counter 0x8000060c
-Reading instruction 0x03c0e825 at program counter 0x80000610
-Access memory location 80003d88:
+00 40 02 b0 00 00 00 00 00 00 00 00 00 00 00 00 80 00 7e ec 
+Reading instruction 0x8fc30018 at program counter 0x80001154
+Access memory location 80007ec0:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3d 8c 80 00 3d 8c 80 00 3e b4 00 00 00 02 
-Reading instruction 0x8fbe0004 at program counter 0x80000614
-Reading instruction 0x27bd0008 at program counter 0x80000618
-Reading instruction 0x03e00008 at program counter 0x8000061c
-Reading instruction 0x00000000 at program counter 0x800002b8
-Reading instruction 0x27c20138 at program counter 0x800002bc
-Reading instruction 0x27c30128 at program counter 0x800002c0
-Reading instruction 0x00602825 at program counter 0x800002c4
-Reading instruction 0x00402025 at program counter 0x800002c8
-Reading instruction 0x0c000000 at program counter 0x800002cc
+00 40 02 b0 00 00 00 00 00 00 00 28 80 00 7e cc 80 00 04 f8 
+Reading instruction 0xac43000c at program counter 0x80001158
+Reading instruction 0x00000000 at program counter 0x8000115c
+Reading instruction 0x03c0e825 at program counter 0x80001160
+Access memory location 80007d88:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 00 00 00 80 00 7d 8c 80 00 7d 8c 80 00 7e b4 00 00 00 02 
+Reading instruction 0x8fbe0004 at program counter 0x80001164
+Reading instruction 0x27bd0008 at program counter 0x80001168
+Reading instruction 0x03e00008 at program counter 0x8000116c
+Reading instruction 0x00000000 at program counter 0x80000d6c
+Reading instruction 0x27c20138 at program counter 0x80000d70
+Reading instruction 0x27c30128 at program counter 0x80000d74
+Reading instruction 0x00602825 at program counter 0x80000d78
+Reading instruction 0x00402025 at program counter 0x80000d7c
+Reading instruction 0x0c000000 at program counter 0x80000d80
 Reading instruction 0x27bdfff0 at program counter 0x80000000
-Access memory location 80003d88:
+Access memory location 80007d88:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3d 8c 80 00 3d 8c 80 00 3e b4 00 00 00 02 
+00 00 00 00 80 00 7d 8c 80 00 7d 8c 80 00 7e b4 00 00 00 02 
 Reading instruction 0xafbe000c at program counter 0x80000004
 Reading instruction 0x03a0f025 at program counter 0x80000008
-Access memory location 80003d8c:
+Access memory location 80007d8c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3d 8c 80 00 3d 8c 80 00 3e b4 00 00 00 02 00 40 02 b0 
+80 00 7d 8c 80 00 7d 8c 80 00 7e b4 00 00 00 02 00 40 02 b0 
 Reading instruction 0xafc40010 at program counter 0x8000000c
-Access memory location 80003d90:
+Access memory location 80007d90:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3d 8c 80 00 3e c4 00 00 00 02 00 40 02 b0 00 00 00 00 
+80 00 7d 8c 80 00 7e c4 00 00 00 02 00 40 02 b0 00 00 00 00 
 Reading instruction 0xafc50014 at program counter 0x80000010
-Access memory location 80003d90:
+Access memory location 80007d90:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3d 8c 80 00 3e c4 80 00 3e b4 00 40 02 b0 00 00 00 00 
+80 00 7d 8c 80 00 7e c4 80 00 7e b4 00 40 02 b0 00 00 00 00 
 Reading instruction 0x8fc20014 at program counter 0x80000014
-Access memory location 80003eb4:
+Access memory location 80007eb4:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 00 00 00 00 00 00 00 00 02 00 40 02 b0 00 00 00 00 
 Reading instruction 0x8c420000 at program counter 0x80000018
 Reading instruction 0x14400007 at program counter 0x8000001c
-Access memory location 80003d90:
+Access memory location 80007d90:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3d 8c 80 00 3e c4 80 00 3e b4 00 40 02 b0 00 00 00 00 
+80 00 7d 8c 80 00 7e c4 80 00 7e b4 00 40 02 b0 00 00 00 00 
 Reading instruction 0x8fc30014 at program counter 0x8000003c
 Reading instruction 0x00602025 at program counter 0x80000040
 Reading instruction 0x03c01025 at program counter 0x80000044
 Reading instruction 0x0000003f at program counter 0x80000048
-Access memory location 80003d8c:
+Access memory location 80007d8c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3d 8c 80 00 3d 8c 80 00 3e c4 80 00 3e b4 00 40 02 b0 
+80 00 7d 8c 80 00 7d 8c 80 00 7e c4 80 00 7e b4 00 40 02 b0 
 Reading instruction 0x8fc20010 at program counter 0x8000004c
-Access memory location 80003d7c:
+Access memory location 80007d7c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 00 3d 8c 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 00 7d 8c 
 Reading instruction 0x8fc40000 at program counter 0x80000050
-Access memory location 80003d80:
+Access memory location 80007d80:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 00 00 00 00 80 00 3d 8c 80 00 3d 8c 
+00 00 00 00 00 00 00 00 00 00 00 00 80 00 7d 8c 80 00 7d 8c 
 Reading instruction 0x8fc30004 at program counter 0x80000054
-Access memory location 80003ec4:
+Access memory location 80007ec4:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 80 00 7e cc 80 00 04 f8 80 00 55 00 
 Reading instruction 0xac440000 at program counter 0x80000058
-Access memory location 80003ec8:
+Access memory location 80007ec8:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 80 00 04 f8 80 00 55 00 00 00 00 14 
 Reading instruction 0xac430004 at program counter 0x8000005c
-Access memory location 80003d8c:
+Access memory location 80007d8c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3d 8c 80 00 3d 8c 80 00 3e c4 80 00 3e b4 00 40 02 b0 
+80 00 7d 8c 80 00 7d 8c 80 00 7e c4 80 00 7e b4 00 40 02 b0 
 Reading instruction 0x8fc20010 at program counter 0x80000060
 Reading instruction 0x03c0e825 at program counter 0x80000064
-Access memory location 80003d88:
+Access memory location 80007d88:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3d 8c 80 00 3d 8c 80 00 3e c4 80 00 3e b4 
+00 00 00 00 80 00 7d 8c 80 00 7d 8c 80 00 7e c4 80 00 7e b4 
 Reading instruction 0x8fbe000c at program counter 0x80000068
 Reading instruction 0x27bd0010 at program counter 0x8000006c
 Reading instruction 0x03e00008 at program counter 0x80000070
-Reading instruction 0x00000000 at program counter 0x800002d0
-Reading instruction 0x10000035 at program counter 0x800002d4
-Reading instruction 0x1000007d at program counter 0x800003ac
-Reading instruction 0x03c0e825 at program counter 0x800005a4
-Access memory location 80003de8:
+Reading instruction 0x00000000 at program counter 0x80000d84
+Reading instruction 0x10000035 at program counter 0x80000d88
+Reading instruction 0x1000007d at program counter 0x80000e60
+Reading instruction 0x03c0e825 at program counter 0x80001058
+Access memory location 80007de8:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0x8fbf015c at program counter 0x800005a8
-Access memory location 80003de4:
+Reading instruction 0x8fbf015c at program counter 0x8000105c
+Access memory location 80007de4:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0x8fbe0158 at program counter 0x800005ac
-Reading instruction 0x27bd0160 at program counter 0x800005b0
-Reading instruction 0x03e00008 at program counter 0x800005b4
-Reading instruction 0x00000000 at program counter 0x80000634
-Reading instruction 0x42000018 at program counter 0x80000638
-Reading instruction 0x00000000 at program counter 0x0040028c
-Reading instruction 0x03c0e825 at program counter 0x00400290
-Access memory location 7fffffa8:
+Reading instruction 0x8fbe0158 at program counter 0x80001060
+Reading instruction 0x27bd0160 at program counter 0x80001064
+Reading instruction 0x03e00008 at program counter 0x80001068
+Reading instruction 0x00000000 at program counter 0x80001184
+Reading instruction 0x42000018 at program counter 0x80001188
+Reading instruction 0x0c00030d at program counter 0x80001180
+Reading instruction 0x27bdfea0 at program counter 0x80000c34
+Access memory location 80007d60:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 7f ff ff ac 00 40 02 b0 00 00 00 00 
-Reading instruction 0x8fbe0004 at program counter 0x00400294
-Reading instruction 0x27bd0008 at program counter 0x00400298
-Reading instruction 0x03e00008 at program counter 0x0040029c
-Reading instruction 0x00000000 at program counter 0x004000d0
-Reading instruction 0x00000000 at program counter 0x004000d4
-Reading instruction 0x03c0e825 at program counter 0x004000d8
-Access memory location 7fffffc0:
+00 00 00 00 80 00 7e ec 00 00 00 00 00 00 00 00 80 00 7d 6c 
+Reading instruction 0xafbf015c at program counter 0x80000c38
+Access memory location 80007d5c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 7f ff ff c4 00 40 01 4c 7f ff ff f0 00 00 00 00 
-Reading instruction 0x8fbf0014 at program counter 0x004000dc
-Access memory location 7fffffbc:
--8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 7f ff ff c4 00 40 01 4c 7f ff ff f0 
-Reading instruction 0x8fbe0010 at program counter 0x004000e0
-Reading instruction 0x27bd0018 at program counter 0x004000e4
-Reading instruction 0x03e00008 at program counter 0x004000e8
-Reading instruction 0x00000000 at program counter 0x00400150
-Reading instruction 0x3c020040 at program counter 0x00400154
-Reading instruction 0x24430318 at program counter 0x00400158
-Access memory location 7fffffdc:
--8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-7f ff ff dc 00 40 00 48 7f ff ff f0 00 00 00 00 00 00 00 00 
-Reading instruction 0x8fc20018 at program counter 0x0040015c
-Access memory location 7ffffff0:
--8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 00 40 03 24 7f ff ff fc 00 00 00 00 
-Reading instruction 0xac430000 at program counter 0x00400160
-Reading instruction 0x3c020040 at program counter 0x00400164
-Reading instruction 0x244402dc at program counter 0x00400168
-Reading instruction 0x0c10009b at program counter 0x0040016c
-Reading instruction 0x27bdfff8 at program counter 0x0040026c
-Access memory location 7fffffc0:
--8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 7f ff ff c4 00 40 01 4c 7f ff ff f0 00 00 00 00 
-Reading instruction 0xafbe0004 at program counter 0x00400270
-Reading instruction 0x03a0f025 at program counter 0x00400274
-Access memory location 7fffffc4:
--8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-7f ff ff c4 7f ff ff c4 7f ff ff f0 00 00 00 00 00 00 00 00 
-Reading instruction 0xafc40008 at program counter 0x00400278
-Access memory location 7fffffc4:
--8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-7f ff ff c4 7f ff ff c4 00 40 02 dc 00 00 00 00 00 00 00 00 
-Reading instruction 0x8fc30008 at program counter 0x0040027c
-Reading instruction 0x00602025 at program counter 0x00400280
-Reading instruction 0x24020004 at program counter 0x00400284
-Reading instruction 0x0000000c at program counter 0x00400288
-Reading instruction 0x0c000060 at program counter 0x80000630
-Reading instruction 0x27bdfea0 at program counter 0x80000180
-Access memory location 80003d60:
--8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3e ec 00 00 00 00 00 00 00 00 80 00 3d 6c 
-Reading instruction 0xafbf015c at program counter 0x80000184
-Access memory location 80003d5c:
--8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 80 00 3e ec 00 00 00 00 00 00 00 00 
-Reading instruction 0xafbe0158 at program counter 0x80000188
-Reading instruction 0x03a0f025 at program counter 0x8000018c
-Reading instruction 0x0c00001e at program counter 0x80000190
+00 00 00 00 00 00 00 00 80 00 7e ec 00 00 00 00 00 00 00 00 
+Reading instruction 0xafbe0158 at program counter 0x80000c3c
+Reading instruction 0x03a0f025 at program counter 0x80000c40
+Reading instruction 0x0c00001e at program counter 0x80000c44
 Reading instruction 0x27bdffe0 at program counter 0x80000078
-Access memory location 80003d00:
+Access memory location 80007d00:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
 Reading instruction 0xafbf001c at program counter 0x8000007c
-Access memory location 80003cfc:
+Access memory location 80007cfc:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 00 00 00 00 80 00 01 90 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 80 00 0c 44 00 00 00 00 
 Reading instruction 0xafbe0018 at program counter 0x80000080
 Reading instruction 0x03a0f025 at program counter 0x80000084
 Reading instruction 0x0c00002c at program counter 0x80000088
 Reading instruction 0x27bdfff0 at program counter 0x800000b0
-Access memory location 80003ce0:
+Access memory location 80007ce0:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
 Reading instruction 0xafbe000c at program counter 0x800000b4
 Reading instruction 0x03a0f025 at program counter 0x800000b8
 Reading instruction 0x03401025 at program counter 0x800000bc
-Access memory location 80003cd4:
+Access memory location 80007cd4:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
 Reading instruction 0xafc20000 at program counter 0x800000c0
-Access memory location 80003cd4:
+Access memory location 80007cd4:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 80 00 3e 64 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 80 00 7e 64 00 00 00 00 00 00 00 00 
 Reading instruction 0x8fc20000 at program counter 0x800000c4
 Reading instruction 0x03c0e825 at program counter 0x800000c8
-Access memory location 80003ce0:
+Access memory location 80007ce0:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 80 00 3c e4 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 80 00 7c e4 00 00 00 00 00 00 00 00 
 Reading instruction 0x8fbe000c at program counter 0x800000cc
 Reading instruction 0x27bd0010 at program counter 0x800000d0
 Reading instruction 0x03e00008 at program counter 0x800000d4
 Reading instruction 0x00000000 at program counter 0x8000008c
-Access memory location 80003cf4:
+Access memory location 80007cf4:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 00 3d 04 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 00 7d 04 
 Reading instruction 0xafc20010 at program counter 0x80000090
-Access memory location 80003cf4:
+Access memory location 80007cf4:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 80 00 3e 64 00 00 00 00 80 00 3d 04 
+00 00 00 00 00 00 00 00 80 00 7e 64 00 00 00 00 80 00 7d 04 
 Reading instruction 0x8fc20010 at program counter 0x80000094
 Reading instruction 0x03c0e825 at program counter 0x80000098
-Access memory location 80003d00:
+Access memory location 80007d00:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3d 04 80 00 01 90 00 00 00 00 00 00 00 00 
+00 00 00 00 80 00 7d 04 80 00 0c 44 00 00 00 00 00 00 00 00 
 Reading instruction 0x8fbf001c at program counter 0x8000009c
-Access memory location 80003cfc:
+Access memory location 80007cfc:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3e 64 00 00 00 00 80 00 3d 04 80 00 01 90 00 00 00 00 
+80 00 7e 64 00 00 00 00 80 00 7d 04 80 00 0c 44 00 00 00 00 
 Reading instruction 0x8fbe0018 at program counter 0x800000a0
 Reading instruction 0x27bd0020 at program counter 0x800000a4
 Reading instruction 0x03e00008 at program counter 0x800000a8
-Reading instruction 0x00000000 at program counter 0x80000194
-Access memory location 80003d1c:
+Reading instruction 0x00000000 at program counter 0x80000c48
+Access memory location 80007d1c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xafc20018 at program counter 0x80000198
-Access memory location 80003d1c:
+Reading instruction 0xafc20018 at program counter 0x80000c4c
+Access memory location 80007d1c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 80 00 3e 64 00 00 00 00 00 00 00 00 
-Reading instruction 0x8fc20018 at program counter 0x8000019c
-Access memory location 80003ee8:
+00 00 00 00 00 00 00 00 80 00 7e 64 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc20018 at program counter 0x80000c50
+Access memory location 80007ee8:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 40 02 88 00 00 00 02 00 00 00 20 00 00 00 00 00 00 00 04 
-Reading instruction 0x8c420084 at program counter 0x800001a0
-Reading instruction 0x00021082 at program counter 0x800001a4
-Access memory location 80003d20:
+Reading instruction 0x8c420084 at program counter 0x80000c54
+Reading instruction 0x00021082 at program counter 0x80000c58
+Access memory location 80007d20:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3e 64 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xafc2001c at program counter 0x800001a8
-Access memory location 80003d20:
+00 00 00 00 80 00 7e 64 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xafc2001c at program counter 0x80000c5c
+Access memory location 80007d20:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3e 64 00 00 00 08 00 00 00 00 00 00 00 00 
-Reading instruction 0x8fc3001c at program counter 0x800001ac
-Reading instruction 0x2402000c at program counter 0x800001b0
-Reading instruction 0x1062009f at program counter 0x800001b4
-Reading instruction 0x00000000 at program counter 0x800001b8
-Access memory location 80003d20:
+00 00 00 00 80 00 7e 64 00 00 00 08 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc3001c at program counter 0x80000c60
+Reading instruction 0x2402000c at program counter 0x80000c64
+Reading instruction 0x1062009f at program counter 0x80000c68
+Reading instruction 0x00000000 at program counter 0x80000c6c
+Access memory location 80007d20:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3e 64 00 00 00 08 00 00 00 00 00 00 00 00 
-Reading instruction 0x8fc2001c at program counter 0x800001bc
-Reading instruction 0x2c42000d at program counter 0x800001c0
-Reading instruction 0x104000bb at program counter 0x800001c4
-Reading instruction 0x00000000 at program counter 0x800001c8
-Access memory location 80003d20:
+00 00 00 00 80 00 7e 64 00 00 00 08 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc2001c at program counter 0x80000c70
+Reading instruction 0x2c42000d at program counter 0x80000c74
+Reading instruction 0x104000bb at program counter 0x80000c78
+Reading instruction 0x00000000 at program counter 0x80000c7c
+Access memory location 80007d20:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3e 64 00 00 00 08 00 00 00 00 00 00 00 00 
-Reading instruction 0x8fc3001c at program counter 0x800001cc
-Reading instruction 0x24020008 at program counter 0x800001d0
-Reading instruction 0x10620007 at program counter 0x800001d4
-Access memory location 80003d1c:
+00 00 00 00 80 00 7e 64 00 00 00 08 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc3001c at program counter 0x80000c80
+Reading instruction 0x24020008 at program counter 0x80000c84
+Reading instruction 0x10620007 at program counter 0x80000c88
+Access memory location 80007d1c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 80 00 3e 64 00 00 00 08 00 00 00 00 
-Reading instruction 0x8fc20018 at program counter 0x800001f4
-Access memory location 80003e68:
+00 00 00 00 00 00 00 00 80 00 7e 64 00 00 00 08 00 00 00 00 
+Reading instruction 0x8fc20018 at program counter 0x80000ca8
+Access memory location 80007e68:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 06 30 00 00 00 00 00 00 00 04 00 40 02 dc 00 40 02 dc 
-Reading instruction 0x8c420004 at program counter 0x800001f8
-Reading instruction 0x2403000a at program counter 0x800001fc
-Reading instruction 0x10430049 at program counter 0x80000200
-Reading instruction 0x00000000 at program counter 0x80000204
-Reading instruction 0x2c43000b at program counter 0x80000208
-Reading instruction 0x10600056 at program counter 0x8000020c
-Reading instruction 0x00000000 at program counter 0x80000210
-Reading instruction 0x24030005 at program counter 0x80000214
-Reading instruction 0x10430030 at program counter 0x80000218
-Reading instruction 0x00000000 at program counter 0x8000021c
-Reading instruction 0x2c430006 at program counter 0x80000220
-Reading instruction 0x10600050 at program counter 0x80000224
-Reading instruction 0x00000000 at program counter 0x80000228
-Reading instruction 0x24030001 at program counter 0x8000022c
-Reading instruction 0x10430006 at program counter 0x80000230
-Reading instruction 0x00000000 at program counter 0x80000234
-Reading instruction 0x24030004 at program counter 0x80000238
-Reading instruction 0x10430015 at program counter 0x8000023c
-Access memory location 80003d1c:
+80 00 11 80 00 00 00 00 00 00 00 04 00 40 02 dc 00 40 02 dc 
+Reading instruction 0x8c420004 at program counter 0x80000cac
+Reading instruction 0x2403000a at program counter 0x80000cb0
+Reading instruction 0x10430049 at program counter 0x80000cb4
+Reading instruction 0x00000000 at program counter 0x80000cb8
+Reading instruction 0x2c43000b at program counter 0x80000cbc
+Reading instruction 0x10600056 at program counter 0x80000cc0
+Reading instruction 0x00000000 at program counter 0x80000cc4
+Reading instruction 0x24030005 at program counter 0x80000cc8
+Reading instruction 0x10430030 at program counter 0x80000ccc
+Reading instruction 0x00000000 at program counter 0x80000cd0
+Reading instruction 0x2c430006 at program counter 0x80000cd4
+Reading instruction 0x10600050 at program counter 0x80000cd8
+Reading instruction 0x00000000 at program counter 0x80000cdc
+Reading instruction 0x24030001 at program counter 0x80000ce0
+Reading instruction 0x10430006 at program counter 0x80000ce4
+Reading instruction 0x00000000 at program counter 0x80000ce8
+Reading instruction 0x24030004 at program counter 0x80000cec
+Reading instruction 0x10430015 at program counter 0x80000cf0
+Access memory location 80007d1c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 80 00 3e 64 00 00 00 08 00 00 00 00 
-Reading instruction 0x8fc20018 at program counter 0x80000294
-Access memory location 80003e70:
+00 00 00 00 00 00 00 00 80 00 7e 64 00 00 00 08 00 00 00 00 
+Reading instruction 0x8fc20018 at program counter 0x80000d48
+Access memory location 80007e70:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 04 00 40 02 dc 00 40 02 dc 00 00 00 00 00 00 00 00 
-Reading instruction 0x8c42000c at program counter 0x80000298
-Reading instruction 0x27c30128 at program counter 0x8000029c
-Access memory location 80003d14:
+Reading instruction 0x8c42000c at program counter 0x80000d4c
+Reading instruction 0x27c30128 at program counter 0x80000d50
+Access memory location 80007d14:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 00 3e 64 
-Reading instruction 0xafa00010 at program counter 0x800002a0
-Reading instruction 0x00003825 at program counter 0x800002a4
-Reading instruction 0x00403025 at program counter 0x800002a8
-Reading instruction 0x24050002 at program counter 0x800002ac
-Reading instruction 0x00602025 at program counter 0x800002b0
-Reading instruction 0x0c000170 at program counter 0x800002b4
-Reading instruction 0x27bdfff8 at program counter 0x800005c0
-Access memory location 80003d00:
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 00 7e 64 
+Reading instruction 0xafa00010 at program counter 0x80000d54
+Reading instruction 0x00003825 at program counter 0x80000d58
+Reading instruction 0x00403025 at program counter 0x80000d5c
+Reading instruction 0x24050002 at program counter 0x80000d60
+Reading instruction 0x00602025 at program counter 0x80000d64
+Reading instruction 0x0c000444 at program counter 0x80000d68
+Reading instruction 0x27bdfff8 at program counter 0x80001110
+Access memory location 80007d00:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3d 04 80 00 01 90 00 00 00 00 00 00 00 00 
-Reading instruction 0xafbe0004 at program counter 0x800005c4
-Reading instruction 0x03a0f025 at program counter 0x800005c8
-Access memory location 80003d04:
+00 00 00 00 80 00 7d 04 80 00 0c 44 00 00 00 00 00 00 00 00 
+Reading instruction 0xafbe0004 at program counter 0x80001114
+Reading instruction 0x03a0f025 at program counter 0x80001118
+Access memory location 80007d04:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3d 04 80 00 3d 04 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xafc40008 at program counter 0x800005cc
-Access memory location 80003d08:
+80 00 7d 04 80 00 7d 04 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xafc40008 at program counter 0x8000111c
+Access memory location 80007d08:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3d 04 80 00 3e 2c 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xafc5000c at program counter 0x800005d0
-Access memory location 80003d0c:
+80 00 7d 04 80 00 7e 2c 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xafc5000c at program counter 0x80001120
+Access memory location 80007d0c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3e 2c 00 00 00 02 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xafc60010 at program counter 0x800005d4
-Access memory location 80003d10:
+80 00 7e 2c 00 00 00 02 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xafc60010 at program counter 0x80001124
+Access memory location 80007d10:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 02 00 40 02 dc 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xafc70014 at program counter 0x800005d8
-Access memory location 80003d04:
+Reading instruction 0xafc70014 at program counter 0x80001128
+Access memory location 80007d04:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3d 04 80 00 3d 04 80 00 3e 2c 00 00 00 02 00 40 02 dc 
-Reading instruction 0x8fc20008 at program counter 0x800005dc
-Access memory location 80003d08:
+80 00 7d 04 80 00 7d 04 80 00 7e 2c 00 00 00 02 00 40 02 dc 
+Reading instruction 0x8fc20008 at program counter 0x8000112c
+Access memory location 80007d08:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3d 04 80 00 3e 2c 00 00 00 02 00 40 02 dc 00 00 00 00 
-Reading instruction 0x8fc3000c at program counter 0x800005e0
-Access memory location 80003e2c:
+80 00 7d 04 80 00 7e 2c 00 00 00 02 00 40 02 dc 00 00 00 00 
+Reading instruction 0x8fc3000c at program counter 0x80001130
+Access memory location 80007e2c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xac430000 at program counter 0x800005e4
-Access memory location 80003d04:
+Reading instruction 0xac430000 at program counter 0x80001134
+Access memory location 80007d04:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3d 04 80 00 3d 04 80 00 3e 2c 00 00 00 02 00 40 02 dc 
-Reading instruction 0x8fc20008 at program counter 0x800005e8
-Access memory location 80003d0c:
+80 00 7d 04 80 00 7d 04 80 00 7e 2c 00 00 00 02 00 40 02 dc 
+Reading instruction 0x8fc20008 at program counter 0x80001138
+Access memory location 80007d0c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3e 2c 00 00 00 02 00 40 02 dc 00 00 00 00 00 00 00 00 
-Reading instruction 0x8fc30010 at program counter 0x800005ec
-Access memory location 80003e30:
+80 00 7e 2c 00 00 00 02 00 40 02 dc 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc30010 at program counter 0x8000113c
+Access memory location 80007e30:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 00 00 00 00 02 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xac430004 at program counter 0x800005f0
-Access memory location 80003d04:
+Reading instruction 0xac430004 at program counter 0x80001140
+Access memory location 80007d04:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3d 04 80 00 3d 04 80 00 3e 2c 00 00 00 02 00 40 02 dc 
-Reading instruction 0x8fc20008 at program counter 0x800005f4
-Access memory location 80003d10:
--8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 02 00 40 02 dc 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0x8fc30014 at program counter 0x800005f8
-Access memory location 80003e34:
+80 00 7d 04 80 00 7d 04 80 00 7e 2c 00 00 00 02 00 40 02 dc 
+Reading instruction 0x8fc20008 at program counter 0x80001144
+Access memory location 80007d10:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 02 00 40 02 dc 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xac430008 at program counter 0x800005fc
-Access memory location 80003d04:
+Reading instruction 0x8fc30014 at program counter 0x80001148
+Access memory location 80007e34:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3d 04 80 00 3d 04 80 00 3e 2c 00 00 00 02 00 40 02 dc 
-Reading instruction 0x8fc20008 at program counter 0x80000600
-Access memory location 80003d14:
+00 00 00 02 00 40 02 dc 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xac430008 at program counter 0x8000114c
+Access memory location 80007d04:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 40 02 dc 00 00 00 00 00 00 00 00 00 00 00 00 80 00 3e 64 
-Reading instruction 0x8fc30018 at program counter 0x80000604
-Access memory location 80003e38:
+80 00 7d 04 80 00 7d 04 80 00 7e 2c 00 00 00 02 00 40 02 dc 
+Reading instruction 0x8fc20008 at program counter 0x80001150
+Access memory location 80007d14:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 40 02 dc 00 00 00 00 00 00 00 00 00 00 00 00 80 00 7e 64 
+Reading instruction 0x8fc30018 at program counter 0x80001154
+Access memory location 80007e38:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 40 02 dc 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xac43000c at program counter 0x80000608
-Reading instruction 0x00000000 at program counter 0x8000060c
-Reading instruction 0x03c0e825 at program counter 0x80000610
-Access memory location 80003d00:
+Reading instruction 0xac43000c at program counter 0x80001158
+Reading instruction 0x00000000 at program counter 0x8000115c
+Reading instruction 0x03c0e825 at program counter 0x80001160
+Access memory location 80007d00:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3d 04 80 00 3d 04 80 00 3e 2c 00 00 00 02 
-Reading instruction 0x8fbe0004 at program counter 0x80000614
-Reading instruction 0x27bd0008 at program counter 0x80000618
-Reading instruction 0x03e00008 at program counter 0x8000061c
-Reading instruction 0x00000000 at program counter 0x800002b8
-Reading instruction 0x27c20138 at program counter 0x800002bc
-Reading instruction 0x27c30128 at program counter 0x800002c0
-Reading instruction 0x00602825 at program counter 0x800002c4
-Reading instruction 0x00402025 at program counter 0x800002c8
-Reading instruction 0x0c000000 at program counter 0x800002cc
+00 00 00 00 80 00 7d 04 80 00 7d 04 80 00 7e 2c 00 00 00 02 
+Reading instruction 0x8fbe0004 at program counter 0x80001164
+Reading instruction 0x27bd0008 at program counter 0x80001168
+Reading instruction 0x03e00008 at program counter 0x8000116c
+Reading instruction 0x00000000 at program counter 0x80000d6c
+Reading instruction 0x27c20138 at program counter 0x80000d70
+Reading instruction 0x27c30128 at program counter 0x80000d74
+Reading instruction 0x00602825 at program counter 0x80000d78
+Reading instruction 0x00402025 at program counter 0x80000d7c
+Reading instruction 0x0c000000 at program counter 0x80000d80
 Reading instruction 0x27bdfff0 at program counter 0x80000000
-Access memory location 80003d00:
+Access memory location 80007d00:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3d 04 80 00 3d 04 80 00 3e 2c 00 00 00 02 
+00 00 00 00 80 00 7d 04 80 00 7d 04 80 00 7e 2c 00 00 00 02 
 Reading instruction 0xafbe000c at program counter 0x80000004
 Reading instruction 0x03a0f025 at program counter 0x80000008
-Access memory location 80003d04:
+Access memory location 80007d04:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3d 04 80 00 3d 04 80 00 3e 2c 00 00 00 02 00 40 02 dc 
+80 00 7d 04 80 00 7d 04 80 00 7e 2c 00 00 00 02 00 40 02 dc 
 Reading instruction 0xafc40010 at program counter 0x8000000c
-Access memory location 80003d08:
+Access memory location 80007d08:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3d 04 80 00 3e 3c 00 00 00 02 00 40 02 dc 00 00 00 00 
+80 00 7d 04 80 00 7e 3c 00 00 00 02 00 40 02 dc 00 00 00 00 
 Reading instruction 0xafc50014 at program counter 0x80000010
-Access memory location 80003d08:
+Access memory location 80007d08:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3d 04 80 00 3e 3c 80 00 3e 2c 00 40 02 dc 00 00 00 00 
+80 00 7d 04 80 00 7e 3c 80 00 7e 2c 00 40 02 dc 00 00 00 00 
 Reading instruction 0x8fc20014 at program counter 0x80000014
-Access memory location 80003e2c:
+Access memory location 80007e2c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 00 00 00 00 00 00 00 00 02 00 40 02 dc 00 00 00 00 
 Reading instruction 0x8c420000 at program counter 0x80000018
 Reading instruction 0x14400007 at program counter 0x8000001c
-Access memory location 80003d08:
+Access memory location 80007d08:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3d 04 80 00 3e 3c 80 00 3e 2c 00 40 02 dc 00 00 00 00 
+80 00 7d 04 80 00 7e 3c 80 00 7e 2c 00 40 02 dc 00 00 00 00 
 Reading instruction 0x8fc30014 at program counter 0x8000003c
 Reading instruction 0x00602025 at program counter 0x80000040
 Reading instruction 0x03c01025 at program counter 0x80000044
 Reading instruction 0x0000003f at program counter 0x80000048
-Access memory location 80003d04:
+Access memory location 80007d04:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3d 04 80 00 3d 04 80 00 3e 3c 80 00 3e 2c 00 40 02 dc 
+80 00 7d 04 80 00 7d 04 80 00 7e 3c 80 00 7e 2c 00 40 02 dc 
 Reading instruction 0x8fc20010 at program counter 0x8000004c
-Access memory location 80003cf4:
+Access memory location 80007cf4:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 00 3d 04 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 00 7d 04 
 Reading instruction 0x8fc40000 at program counter 0x80000050
-Access memory location 80003cf8:
+Access memory location 80007cf8:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 00 00 00 00 80 00 3d 04 80 00 3d 04 
+00 00 00 00 00 00 00 00 00 00 00 00 80 00 7d 04 80 00 7d 04 
 Reading instruction 0x8fc30004 at program counter 0x80000054
-Access memory location 80003e3c:
+Access memory location 80007e3c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
 Reading instruction 0xac440000 at program counter 0x80000058
-Access memory location 80003e40:
+Access memory location 80007e40:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
 Reading instruction 0xac430004 at program counter 0x8000005c
-Access memory location 80003d04:
+Access memory location 80007d04:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3d 04 80 00 3d 04 80 00 3e 3c 80 00 3e 2c 00 40 02 dc 
+80 00 7d 04 80 00 7d 04 80 00 7e 3c 80 00 7e 2c 00 40 02 dc 
 Reading instruction 0x8fc20010 at program counter 0x80000060
 Reading instruction 0x03c0e825 at program counter 0x80000064
-Access memory location 80003d00:
+Access memory location 80007d00:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3d 04 80 00 3d 04 80 00 3e 3c 80 00 3e 2c 
+00 00 00 00 80 00 7d 04 80 00 7d 04 80 00 7e 3c 80 00 7e 2c 
 Reading instruction 0x8fbe000c at program counter 0x80000068
 Reading instruction 0x27bd0010 at program counter 0x8000006c
 Reading instruction 0x03e00008 at program counter 0x80000070
-Reading instruction 0x00000000 at program counter 0x800002d0
-Reading instruction 0x10000035 at program counter 0x800002d4
-Reading instruction 0x1000007d at program counter 0x800003ac
-Reading instruction 0x03c0e825 at program counter 0x800005a4
-Access memory location 80003d60:
+Reading instruction 0x00000000 at program counter 0x80000d84
+Reading instruction 0x10000035 at program counter 0x80000d88
+Reading instruction 0x1000007d at program counter 0x80000e60
+Reading instruction 0x03c0e825 at program counter 0x80001058
+Access memory location 80007d60:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3e ec 00 00 00 00 00 00 00 00 80 00 3d 6c 
-Reading instruction 0x8fbf015c at program counter 0x800005a8
-Access memory location 80003d5c:
+00 00 00 00 80 00 7e ec 00 00 00 00 00 00 00 00 80 00 7d 6c 
+Reading instruction 0x8fbf015c at program counter 0x8000105c
+Access memory location 80007d5c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 80 00 3e ec 00 00 00 00 00 00 00 00 
-Reading instruction 0x8fbe0158 at program counter 0x800005ac
-Reading instruction 0x27bd0160 at program counter 0x800005b0
-Reading instruction 0x03e00008 at program counter 0x800005b4
-Reading instruction 0x00000000 at program counter 0x80000634
-Reading instruction 0x42000018 at program counter 0x80000638
-Reading instruction 0x00000000 at program counter 0x0040028c
-Reading instruction 0x03c0e825 at program counter 0x00400290
-Access memory location 7fffffc0:
+00 00 00 00 00 00 00 00 80 00 7e ec 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fbe0158 at program counter 0x80001060
+Reading instruction 0x27bd0160 at program counter 0x80001064
+Reading instruction 0x03e00008 at program counter 0x80001068
+Reading instruction 0x00000000 at program counter 0x80001184
+Reading instruction 0x42000018 at program counter 0x80001188
+Reading instruction 0x0c00030d at program counter 0x80001180
+Reading instruction 0x27bdfea0 at program counter 0x80000c34
+Access memory location 80007cd8:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 7f ff ff c4 7f ff ff c4 00 40 02 dc 00 00 00 00 
-Reading instruction 0x8fbe0004 at program counter 0x00400294
-Reading instruction 0x27bd0008 at program counter 0x00400298
-Reading instruction 0x03e00008 at program counter 0x0040029c
-Reading instruction 0x00000000 at program counter 0x00400170
-Reading instruction 0x00000000 at program counter 0x00400174
-Reading instruction 0x03c0e825 at program counter 0x00400178
-Access memory location 7fffffd8:
+00 00 00 00 80 00 7e 64 00 00 00 00 00 00 00 00 80 00 7c e4 
+Reading instruction 0xafbf015c at program counter 0x80000c38
+Access memory location 80007cd4:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 7f ff ff dc 00 40 00 48 7f ff ff f0 00 00 00 00 
-Reading instruction 0x8fbf0014 at program counter 0x0040017c
-Access memory location 7fffffd4:
--8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 7f ff ff dc 00 40 00 48 7f ff ff f0 
-Reading instruction 0x8fbe0010 at program counter 0x00400180
-Reading instruction 0x27bd0018 at program counter 0x00400184
-Reading instruction 0x03e00008 at program counter 0x00400188
-Reading instruction 0x00000000 at program counter 0x0040004c
-Reading instruction 0x27c20014 at program counter 0x00400050
-Access memory location 7fffffec:
--8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 00 00 00 00 00 40 03 18 7f ff ff fc 
-Reading instruction 0xafc20010 at program counter 0x00400054
-Access memory location 7fffffec:
--8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 7f ff ff f0 00 40 03 18 7f ff ff fc 
-Reading instruction 0x8fc20010 at program counter 0x00400058
-Access memory location 7ffffff0:
--8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 7f ff ff f0 00 40 03 18 7f ff ff fc 00 00 00 00 
-Reading instruction 0x8c420000 at program counter 0x0040005c
-Access memory location 00400318:
--8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 00 40 01 90 00 00 00 00 00 00 00 00 
-Reading instruction 0x8c420000 at program counter 0x00400060
-Access memory location 7fffffec:
--8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 7f ff ff f0 00 40 03 18 7f ff ff fc 
-Reading instruction 0x8fc40010 at program counter 0x00400064
-Reading instruction 0x0040f809 at program counter 0x00400068
-Access memory location 7ffffff0:
--8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 7f ff ff f0 00 40 03 18 7f ff ff fc 00 00 00 00 
-Reading instruction 0xafbf0014 at program counter 0x00400194
-Access memory location 7fffffec:
--8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 7f ff ff f0 00 40 00 68 7f ff ff fc 
-Reading instruction 0xafbe0010 at program counter 0x00400198
-Reading instruction 0x03a0f025 at program counter 0x0040019c
-Access memory location 7ffffff4:
--8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-7f ff ff dc 00 40 00 68 7f ff ff fc 00 00 00 00 00 00 00 00 
-Reading instruction 0xafc40018 at program counter 0x004001a0
-Reading instruction 0x3c020040 at program counter 0x004001a4
-Reading instruction 0x244402ec at program counter 0x004001a8
-Reading instruction 0x0c10009b at program counter 0x004001ac
-Reading instruction 0x27bdfff8 at program counter 0x0040026c
-Access memory location 7fffffd8:
--8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 7f ff ff dc 00 40 00 48 7f ff ff f0 00 00 00 00 
-Reading instruction 0xafbe0004 at program counter 0x00400270
-Reading instruction 0x03a0f025 at program counter 0x00400274
-Access memory location 7fffffdc:
--8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-7f ff ff dc 7f ff ff dc 7f ff ff f0 00 00 00 00 00 00 00 00 
-Reading instruction 0xafc40008 at program counter 0x00400278
-Access memory location 7fffffdc:
--8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-7f ff ff dc 7f ff ff dc 00 40 02 ec 00 00 00 00 00 00 00 00 
-Reading instruction 0x8fc30008 at program counter 0x0040027c
-Reading instruction 0x00602025 at program counter 0x00400280
-Reading instruction 0x24020004 at program counter 0x00400284
-Reading instruction 0x0000000c at program counter 0x00400288
-Reading instruction 0x0c000060 at program counter 0x80000630
-Reading instruction 0x27bdfea0 at program counter 0x80000180
-Access memory location 80003cd8:
--8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3e 64 00 00 00 00 00 00 00 00 80 00 3c e4 
-Reading instruction 0xafbf015c at program counter 0x80000184
-Access memory location 80003cd4:
--8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 80 00 3e 64 00 00 00 00 00 00 00 00 
-Reading instruction 0xafbe0158 at program counter 0x80000188
-Reading instruction 0x03a0f025 at program counter 0x8000018c
-Reading instruction 0x0c00001e at program counter 0x80000190
+00 00 00 00 00 00 00 00 80 00 7e 64 00 00 00 00 00 00 00 00 
+Reading instruction 0xafbe0158 at program counter 0x80000c3c
+Reading instruction 0x03a0f025 at program counter 0x80000c40
+Reading instruction 0x0c00001e at program counter 0x80000c44
 Reading instruction 0x27bdffe0 at program counter 0x80000078
-Access memory location 80003c78:
+Access memory location 80007c78:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
 Reading instruction 0xafbf001c at program counter 0x8000007c
-Access memory location 80003c74:
+Access memory location 80007c74:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 00 00 00 00 80 00 01 90 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 80 00 0c 44 00 00 00 00 
 Reading instruction 0xafbe0018 at program counter 0x80000080
 Reading instruction 0x03a0f025 at program counter 0x80000084
 Reading instruction 0x0c00002c at program counter 0x80000088
 Reading instruction 0x27bdfff0 at program counter 0x800000b0
-Access memory location 80003c58:
+Access memory location 80007c58:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
 Reading instruction 0xafbe000c at program counter 0x800000b4
 Reading instruction 0x03a0f025 at program counter 0x800000b8
 Reading instruction 0x03401025 at program counter 0x800000bc
-Access memory location 80003c4c:
+Access memory location 80007c4c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
 Reading instruction 0xafc20000 at program counter 0x800000c0
-Access memory location 80003c4c:
+Access memory location 80007c4c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 80 00 3d dc 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 80 00 7d dc 00 00 00 00 00 00 00 00 
 Reading instruction 0x8fc20000 at program counter 0x800000c4
 Reading instruction 0x03c0e825 at program counter 0x800000c8
-Access memory location 80003c58:
+Access memory location 80007c58:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 80 00 3c 5c 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 80 00 7c 5c 00 00 00 00 00 00 00 00 
 Reading instruction 0x8fbe000c at program counter 0x800000cc
 Reading instruction 0x27bd0010 at program counter 0x800000d0
 Reading instruction 0x03e00008 at program counter 0x800000d4
 Reading instruction 0x00000000 at program counter 0x8000008c
-Access memory location 80003c6c:
+Access memory location 80007c6c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 00 3c 7c 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 00 7c 7c 
 Reading instruction 0xafc20010 at program counter 0x80000090
-Access memory location 80003c6c:
+Access memory location 80007c6c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 80 00 3d dc 00 00 00 00 80 00 3c 7c 
+00 00 00 00 00 00 00 00 80 00 7d dc 00 00 00 00 80 00 7c 7c 
 Reading instruction 0x8fc20010 at program counter 0x80000094
 Reading instruction 0x03c0e825 at program counter 0x80000098
-Access memory location 80003c78:
+Access memory location 80007c78:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3c 7c 80 00 01 90 00 00 00 00 00 00 00 00 
+00 00 00 00 80 00 7c 7c 80 00 0c 44 00 00 00 00 00 00 00 00 
 Reading instruction 0x8fbf001c at program counter 0x8000009c
-Access memory location 80003c74:
+Access memory location 80007c74:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3d dc 00 00 00 00 80 00 3c 7c 80 00 01 90 00 00 00 00 
+80 00 7d dc 00 00 00 00 80 00 7c 7c 80 00 0c 44 00 00 00 00 
 Reading instruction 0x8fbe0018 at program counter 0x800000a0
 Reading instruction 0x27bd0020 at program counter 0x800000a4
 Reading instruction 0x03e00008 at program counter 0x800000a8
-Reading instruction 0x00000000 at program counter 0x80000194
-Access memory location 80003c94:
+Reading instruction 0x00000000 at program counter 0x80000c48
+Access memory location 80007c94:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xafc20018 at program counter 0x80000198
-Access memory location 80003c94:
+Reading instruction 0xafc20018 at program counter 0x80000c4c
+Access memory location 80007c94:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 80 00 3d dc 00 00 00 00 00 00 00 00 
-Reading instruction 0x8fc20018 at program counter 0x8000019c
-Access memory location 80003e60:
+00 00 00 00 00 00 00 00 80 00 7d dc 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc20018 at program counter 0x80000c50
+Access memory location 80007e60:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 40 02 88 00 00 00 02 00 00 00 20 00 00 00 00 00 00 00 04 
-Reading instruction 0x8c420084 at program counter 0x800001a0
-Reading instruction 0x00021082 at program counter 0x800001a4
-Access memory location 80003c98:
+Reading instruction 0x8c420084 at program counter 0x80000c54
+Reading instruction 0x00021082 at program counter 0x80000c58
+Access memory location 80007c98:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3d dc 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xafc2001c at program counter 0x800001a8
-Access memory location 80003c98:
+00 00 00 00 80 00 7d dc 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xafc2001c at program counter 0x80000c5c
+Access memory location 80007c98:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3d dc 00 00 00 08 00 00 00 00 00 00 00 00 
-Reading instruction 0x8fc3001c at program counter 0x800001ac
-Reading instruction 0x2402000c at program counter 0x800001b0
-Reading instruction 0x1062009f at program counter 0x800001b4
-Reading instruction 0x00000000 at program counter 0x800001b8
-Access memory location 80003c98:
+00 00 00 00 80 00 7d dc 00 00 00 08 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc3001c at program counter 0x80000c60
+Reading instruction 0x2402000c at program counter 0x80000c64
+Reading instruction 0x1062009f at program counter 0x80000c68
+Reading instruction 0x00000000 at program counter 0x80000c6c
+Access memory location 80007c98:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3d dc 00 00 00 08 00 00 00 00 00 00 00 00 
-Reading instruction 0x8fc2001c at program counter 0x800001bc
-Reading instruction 0x2c42000d at program counter 0x800001c0
-Reading instruction 0x104000bb at program counter 0x800001c4
-Reading instruction 0x00000000 at program counter 0x800001c8
-Access memory location 80003c98:
+00 00 00 00 80 00 7d dc 00 00 00 08 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc2001c at program counter 0x80000c70
+Reading instruction 0x2c42000d at program counter 0x80000c74
+Reading instruction 0x104000bb at program counter 0x80000c78
+Reading instruction 0x00000000 at program counter 0x80000c7c
+Access memory location 80007c98:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3d dc 00 00 00 08 00 00 00 00 00 00 00 00 
-Reading instruction 0x8fc3001c at program counter 0x800001cc
-Reading instruction 0x24020008 at program counter 0x800001d0
-Reading instruction 0x10620007 at program counter 0x800001d4
-Access memory location 80003c94:
+00 00 00 00 80 00 7d dc 00 00 00 08 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc3001c at program counter 0x80000c80
+Reading instruction 0x24020008 at program counter 0x80000c84
+Reading instruction 0x10620007 at program counter 0x80000c88
+Access memory location 80007c94:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 80 00 3d dc 00 00 00 08 00 00 00 00 
-Reading instruction 0x8fc20018 at program counter 0x800001f4
-Access memory location 80003de0:
+00 00 00 00 00 00 00 00 80 00 7d dc 00 00 00 08 00 00 00 00 
+Reading instruction 0x8fc20018 at program counter 0x80000ca8
+Access memory location 80007de0:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 06 30 00 00 00 00 00 00 00 04 00 40 02 ec 00 40 02 ec 
-Reading instruction 0x8c420004 at program counter 0x800001f8
-Reading instruction 0x2403000a at program counter 0x800001fc
-Reading instruction 0x10430049 at program counter 0x80000200
-Reading instruction 0x00000000 at program counter 0x80000204
-Reading instruction 0x2c43000b at program counter 0x80000208
-Reading instruction 0x10600056 at program counter 0x8000020c
-Reading instruction 0x00000000 at program counter 0x80000210
-Reading instruction 0x24030005 at program counter 0x80000214
-Reading instruction 0x10430030 at program counter 0x80000218
-Reading instruction 0x00000000 at program counter 0x8000021c
-Reading instruction 0x2c430006 at program counter 0x80000220
-Reading instruction 0x10600050 at program counter 0x80000224
-Reading instruction 0x00000000 at program counter 0x80000228
-Reading instruction 0x24030001 at program counter 0x8000022c
-Reading instruction 0x10430006 at program counter 0x80000230
-Reading instruction 0x00000000 at program counter 0x80000234
-Reading instruction 0x24030004 at program counter 0x80000238
-Reading instruction 0x10430015 at program counter 0x8000023c
-Access memory location 80003c94:
+80 00 11 80 00 00 00 00 00 00 00 04 00 40 02 ec 00 40 02 ec 
+Reading instruction 0x8c420004 at program counter 0x80000cac
+Reading instruction 0x2403000a at program counter 0x80000cb0
+Reading instruction 0x10430049 at program counter 0x80000cb4
+Reading instruction 0x00000000 at program counter 0x80000cb8
+Reading instruction 0x2c43000b at program counter 0x80000cbc
+Reading instruction 0x10600056 at program counter 0x80000cc0
+Reading instruction 0x00000000 at program counter 0x80000cc4
+Reading instruction 0x24030005 at program counter 0x80000cc8
+Reading instruction 0x10430030 at program counter 0x80000ccc
+Reading instruction 0x00000000 at program counter 0x80000cd0
+Reading instruction 0x2c430006 at program counter 0x80000cd4
+Reading instruction 0x10600050 at program counter 0x80000cd8
+Reading instruction 0x00000000 at program counter 0x80000cdc
+Reading instruction 0x24030001 at program counter 0x80000ce0
+Reading instruction 0x10430006 at program counter 0x80000ce4
+Reading instruction 0x00000000 at program counter 0x80000ce8
+Reading instruction 0x24030004 at program counter 0x80000cec
+Reading instruction 0x10430015 at program counter 0x80000cf0
+Access memory location 80007c94:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 80 00 3d dc 00 00 00 08 00 00 00 00 
-Reading instruction 0x8fc20018 at program counter 0x80000294
-Access memory location 80003de8:
+00 00 00 00 00 00 00 00 80 00 7d dc 00 00 00 08 00 00 00 00 
+Reading instruction 0x8fc20018 at program counter 0x80000d48
+Access memory location 80007de8:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 04 00 40 02 ec 00 40 02 ec 00 00 00 00 00 00 00 00 
-Reading instruction 0x8c42000c at program counter 0x80000298
-Reading instruction 0x27c30128 at program counter 0x8000029c
-Access memory location 80003c8c:
+Reading instruction 0x8c42000c at program counter 0x80000d4c
+Reading instruction 0x27c30128 at program counter 0x80000d50
+Access memory location 80007c8c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 00 3d dc 
-Reading instruction 0xafa00010 at program counter 0x800002a0
-Reading instruction 0x00003825 at program counter 0x800002a4
-Reading instruction 0x00403025 at program counter 0x800002a8
-Reading instruction 0x24050002 at program counter 0x800002ac
-Reading instruction 0x00602025 at program counter 0x800002b0
-Reading instruction 0x0c000170 at program counter 0x800002b4
-Reading instruction 0x27bdfff8 at program counter 0x800005c0
-Access memory location 80003c78:
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 00 7d dc 
+Reading instruction 0xafa00010 at program counter 0x80000d54
+Reading instruction 0x00003825 at program counter 0x80000d58
+Reading instruction 0x00403025 at program counter 0x80000d5c
+Reading instruction 0x24050002 at program counter 0x80000d60
+Reading instruction 0x00602025 at program counter 0x80000d64
+Reading instruction 0x0c000444 at program counter 0x80000d68
+Reading instruction 0x27bdfff8 at program counter 0x80001110
+Access memory location 80007c78:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3c 7c 80 00 01 90 00 00 00 00 00 00 00 00 
-Reading instruction 0xafbe0004 at program counter 0x800005c4
-Reading instruction 0x03a0f025 at program counter 0x800005c8
-Access memory location 80003c7c:
+00 00 00 00 80 00 7c 7c 80 00 0c 44 00 00 00 00 00 00 00 00 
+Reading instruction 0xafbe0004 at program counter 0x80001114
+Reading instruction 0x03a0f025 at program counter 0x80001118
+Access memory location 80007c7c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3c 7c 80 00 3c 7c 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xafc40008 at program counter 0x800005cc
-Access memory location 80003c80:
+80 00 7c 7c 80 00 7c 7c 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xafc40008 at program counter 0x8000111c
+Access memory location 80007c80:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3c 7c 80 00 3d a4 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xafc5000c at program counter 0x800005d0
-Access memory location 80003c84:
+80 00 7c 7c 80 00 7d a4 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xafc5000c at program counter 0x80001120
+Access memory location 80007c84:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3d a4 00 00 00 02 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xafc60010 at program counter 0x800005d4
-Access memory location 80003c88:
+80 00 7d a4 00 00 00 02 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xafc60010 at program counter 0x80001124
+Access memory location 80007c88:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 02 00 40 02 ec 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xafc70014 at program counter 0x800005d8
-Access memory location 80003c7c:
+Reading instruction 0xafc70014 at program counter 0x80001128
+Access memory location 80007c7c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3c 7c 80 00 3c 7c 80 00 3d a4 00 00 00 02 00 40 02 ec 
-Reading instruction 0x8fc20008 at program counter 0x800005dc
-Access memory location 80003c80:
+80 00 7c 7c 80 00 7c 7c 80 00 7d a4 00 00 00 02 00 40 02 ec 
+Reading instruction 0x8fc20008 at program counter 0x8000112c
+Access memory location 80007c80:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3c 7c 80 00 3d a4 00 00 00 02 00 40 02 ec 00 00 00 00 
-Reading instruction 0x8fc3000c at program counter 0x800005e0
-Access memory location 80003da4:
+80 00 7c 7c 80 00 7d a4 00 00 00 02 00 40 02 ec 00 00 00 00 
+Reading instruction 0x8fc3000c at program counter 0x80001130
+Access memory location 80007da4:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 80 00 3e ec 00 00 00 08 00 00 00 00 
-Reading instruction 0xac430000 at program counter 0x800005e4
-Access memory location 80003c7c:
+00 00 00 00 00 00 00 00 80 00 7e ec 00 00 00 08 00 00 00 00 
+Reading instruction 0xac430000 at program counter 0x80001134
+Access memory location 80007c7c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3c 7c 80 00 3c 7c 80 00 3d a4 00 00 00 02 00 40 02 ec 
-Reading instruction 0x8fc20008 at program counter 0x800005e8
-Access memory location 80003c84:
+80 00 7c 7c 80 00 7c 7c 80 00 7d a4 00 00 00 02 00 40 02 ec 
+Reading instruction 0x8fc20008 at program counter 0x80001138
+Access memory location 80007c84:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3d a4 00 00 00 02 00 40 02 ec 00 00 00 00 00 00 00 00 
-Reading instruction 0x8fc30010 at program counter 0x800005ec
-Access memory location 80003da8:
+80 00 7d a4 00 00 00 02 00 40 02 ec 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc30010 at program counter 0x8000113c
+Access memory location 80007da8:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 00 00 00 00 02 00 00 00 08 00 00 00 00 00 00 00 00 
-Reading instruction 0xac430004 at program counter 0x800005f0
-Access memory location 80003c7c:
+Reading instruction 0xac430004 at program counter 0x80001140
+Access memory location 80007c7c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3c 7c 80 00 3c 7c 80 00 3d a4 00 00 00 02 00 40 02 ec 
-Reading instruction 0x8fc20008 at program counter 0x800005f4
-Access memory location 80003c88:
--8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 02 00 40 02 ec 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0x8fc30014 at program counter 0x800005f8
-Access memory location 80003dac:
+80 00 7c 7c 80 00 7c 7c 80 00 7d a4 00 00 00 02 00 40 02 ec 
+Reading instruction 0x8fc20008 at program counter 0x80001144
+Access memory location 80007c88:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 02 00 40 02 ec 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xac430008 at program counter 0x800005fc
-Access memory location 80003c7c:
+Reading instruction 0x8fc30014 at program counter 0x80001148
+Access memory location 80007dac:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3c 7c 80 00 3c 7c 80 00 3d a4 00 00 00 02 00 40 02 ec 
-Reading instruction 0x8fc20008 at program counter 0x80000600
-Access memory location 80003c8c:
+00 00 00 02 00 40 02 ec 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xac430008 at program counter 0x8000114c
+Access memory location 80007c7c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 40 02 ec 00 00 00 00 00 00 00 00 00 00 00 00 80 00 3d dc 
-Reading instruction 0x8fc30018 at program counter 0x80000604
-Access memory location 80003db0:
+80 00 7c 7c 80 00 7c 7c 80 00 7d a4 00 00 00 02 00 40 02 ec 
+Reading instruction 0x8fc20008 at program counter 0x80001150
+Access memory location 80007c8c:
+-8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
+00 40 02 ec 00 00 00 00 00 00 00 00 00 00 00 00 80 00 7d dc 
+Reading instruction 0x8fc30018 at program counter 0x80001154
+Access memory location 80007db0:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 40 02 ec 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xac43000c at program counter 0x80000608
-Reading instruction 0x00000000 at program counter 0x8000060c
-Reading instruction 0x03c0e825 at program counter 0x80000610
-Access memory location 80003c78:
+Reading instruction 0xac43000c at program counter 0x80001158
+Reading instruction 0x00000000 at program counter 0x8000115c
+Reading instruction 0x03c0e825 at program counter 0x80001160
+Access memory location 80007c78:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3c 7c 80 00 3c 7c 80 00 3d a4 00 00 00 02 
-Reading instruction 0x8fbe0004 at program counter 0x80000614
-Reading instruction 0x27bd0008 at program counter 0x80000618
-Reading instruction 0x03e00008 at program counter 0x8000061c
-Reading instruction 0x00000000 at program counter 0x800002b8
-Reading instruction 0x27c20138 at program counter 0x800002bc
-Reading instruction 0x27c30128 at program counter 0x800002c0
-Reading instruction 0x00602825 at program counter 0x800002c4
-Reading instruction 0x00402025 at program counter 0x800002c8
-Reading instruction 0x0c000000 at program counter 0x800002cc
+00 00 00 00 80 00 7c 7c 80 00 7c 7c 80 00 7d a4 00 00 00 02 
+Reading instruction 0x8fbe0004 at program counter 0x80001164
+Reading instruction 0x27bd0008 at program counter 0x80001168
+Reading instruction 0x03e00008 at program counter 0x8000116c
+Reading instruction 0x00000000 at program counter 0x80000d6c
+Reading instruction 0x27c20138 at program counter 0x80000d70
+Reading instruction 0x27c30128 at program counter 0x80000d74
+Reading instruction 0x00602825 at program counter 0x80000d78
+Reading instruction 0x00402025 at program counter 0x80000d7c
+Reading instruction 0x0c000000 at program counter 0x80000d80
 Reading instruction 0x27bdfff0 at program counter 0x80000000
-Access memory location 80003c78:
+Access memory location 80007c78:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3c 7c 80 00 3c 7c 80 00 3d a4 00 00 00 02 
+00 00 00 00 80 00 7c 7c 80 00 7c 7c 80 00 7d a4 00 00 00 02 
 Reading instruction 0xafbe000c at program counter 0x80000004
 Reading instruction 0x03a0f025 at program counter 0x80000008
-Access memory location 80003c7c:
+Access memory location 80007c7c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3c 7c 80 00 3c 7c 80 00 3d a4 00 00 00 02 00 40 02 ec 
+80 00 7c 7c 80 00 7c 7c 80 00 7d a4 00 00 00 02 00 40 02 ec 
 Reading instruction 0xafc40010 at program counter 0x8000000c
-Access memory location 80003c80:
+Access memory location 80007c80:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3c 7c 80 00 3d b4 00 00 00 02 00 40 02 ec 00 00 00 00 
+80 00 7c 7c 80 00 7d b4 00 00 00 02 00 40 02 ec 00 00 00 00 
 Reading instruction 0xafc50014 at program counter 0x80000010
-Access memory location 80003c80:
+Access memory location 80007c80:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3c 7c 80 00 3d b4 80 00 3d a4 00 40 02 ec 00 00 00 00 
+80 00 7c 7c 80 00 7d b4 80 00 7d a4 00 40 02 ec 00 00 00 00 
 Reading instruction 0x8fc20014 at program counter 0x80000014
-Access memory location 80003da4:
+Access memory location 80007da4:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 00 00 00 00 00 00 00 00 02 00 40 02 ec 00 00 00 00 
 Reading instruction 0x8c420000 at program counter 0x80000018
 Reading instruction 0x14400007 at program counter 0x8000001c
-Access memory location 80003c80:
+Access memory location 80007c80:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3c 7c 80 00 3d b4 80 00 3d a4 00 40 02 ec 00 00 00 00 
+80 00 7c 7c 80 00 7d b4 80 00 7d a4 00 40 02 ec 00 00 00 00 
 Reading instruction 0x8fc30014 at program counter 0x8000003c
 Reading instruction 0x00602025 at program counter 0x80000040
 Reading instruction 0x03c01025 at program counter 0x80000044
 Reading instruction 0x0000003f at program counter 0x80000048
-Access memory location 80003c7c:
+Access memory location 80007c7c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3c 7c 80 00 3c 7c 80 00 3d b4 80 00 3d a4 00 40 02 ec 
+80 00 7c 7c 80 00 7c 7c 80 00 7d b4 80 00 7d a4 00 40 02 ec 
 Reading instruction 0x8fc20010 at program counter 0x8000004c
-Access memory location 80003c6c:
+Access memory location 80007c6c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 00 3c 7c 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 00 7c 7c 
 Reading instruction 0x8fc40000 at program counter 0x80000050
-Access memory location 80003c70:
+Access memory location 80007c70:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 00 00 00 00 80 00 3c 7c 80 00 3c 7c 
+00 00 00 00 00 00 00 00 00 00 00 00 80 00 7c 7c 80 00 7c 7c 
 Reading instruction 0x8fc30004 at program counter 0x80000054
-Access memory location 80003db4:
+Access memory location 80007db4:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
 Reading instruction 0xac440000 at program counter 0x80000058
-Access memory location 80003db8:
+Access memory location 80007db8:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
 Reading instruction 0xac430004 at program counter 0x8000005c
-Access memory location 80003c7c:
+Access memory location 80007c7c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3c 7c 80 00 3c 7c 80 00 3d b4 80 00 3d a4 00 40 02 ec 
+80 00 7c 7c 80 00 7c 7c 80 00 7d b4 80 00 7d a4 00 40 02 ec 
 Reading instruction 0x8fc20010 at program counter 0x80000060
 Reading instruction 0x03c0e825 at program counter 0x80000064
-Access memory location 80003c78:
+Access memory location 80007c78:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3c 7c 80 00 3c 7c 80 00 3d b4 80 00 3d a4 
+00 00 00 00 80 00 7c 7c 80 00 7c 7c 80 00 7d b4 80 00 7d a4 
 Reading instruction 0x8fbe000c at program counter 0x80000068
 Reading instruction 0x27bd0010 at program counter 0x8000006c
 Reading instruction 0x03e00008 at program counter 0x80000070
-Reading instruction 0x00000000 at program counter 0x800002d0
-Reading instruction 0x10000035 at program counter 0x800002d4
-Reading instruction 0x1000007d at program counter 0x800003ac
-Reading instruction 0x03c0e825 at program counter 0x800005a4
-Access memory location 80003cd8:
+Reading instruction 0x00000000 at program counter 0x80000d84
+Reading instruction 0x10000035 at program counter 0x80000d88
+Reading instruction 0x1000007d at program counter 0x80000e60
+Reading instruction 0x03c0e825 at program counter 0x80001058
+Access memory location 80007cd8:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3e 64 00 00 00 00 00 00 00 00 80 00 3c e4 
-Reading instruction 0x8fbf015c at program counter 0x800005a8
-Access memory location 80003cd4:
+00 00 00 00 80 00 7e 64 00 00 00 00 00 00 00 00 80 00 7c e4 
+Reading instruction 0x8fbf015c at program counter 0x8000105c
+Access memory location 80007cd4:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 80 00 3e 64 00 00 00 00 00 00 00 00 
-Reading instruction 0x8fbe0158 at program counter 0x800005ac
-Reading instruction 0x27bd0160 at program counter 0x800005b0
-Reading instruction 0x03e00008 at program counter 0x800005b4
-Reading instruction 0x00000000 at program counter 0x80000634
-Reading instruction 0x42000018 at program counter 0x80000638
-Reading instruction 0x00000000 at program counter 0x0040028c
-Reading instruction 0x03c0e825 at program counter 0x00400290
-Access memory location 7fffffd8:
+00 00 00 00 00 00 00 00 80 00 7e 64 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fbe0158 at program counter 0x80001060
+Reading instruction 0x27bd0160 at program counter 0x80001064
+Reading instruction 0x03e00008 at program counter 0x80001068
+Reading instruction 0x00000000 at program counter 0x80001184
+Reading instruction 0x42000018 at program counter 0x80001188
+Reading instruction 0x0c00030d at program counter 0x80001180
+Reading instruction 0x27bdfea0 at program counter 0x80000c34
+Access memory location 80007c50:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 7f ff ff dc 7f ff ff dc 00 40 02 ec 00 00 00 00 
-Reading instruction 0x8fbe0004 at program counter 0x00400294
-Reading instruction 0x27bd0008 at program counter 0x00400298
-Reading instruction 0x03e00008 at program counter 0x0040029c
-Reading instruction 0x00000000 at program counter 0x004001b0
-Reading instruction 0x00000000 at program counter 0x004001b4
-Reading instruction 0x03c0e825 at program counter 0x004001b8
-Access memory location 7ffffff0:
+00 00 00 00 80 00 7d dc 00 00 00 00 00 00 00 00 80 00 7c 5c 
+Reading instruction 0xafbf015c at program counter 0x80000c38
+Access memory location 80007c4c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 7f ff ff dc 00 40 00 68 7f ff ff f0 00 00 00 00 
-Reading instruction 0x8fbf0014 at program counter 0x004001bc
-Access memory location 7fffffec:
--8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 7f ff ff dc 00 40 00 68 7f ff ff f0 
-Reading instruction 0x8fbe0010 at program counter 0x004001c0
-Reading instruction 0x27bd0018 at program counter 0x004001c4
-Reading instruction 0x03e00008 at program counter 0x004001c8
-Reading instruction 0x00000000 at program counter 0x0040006c
-Reading instruction 0x0c100074 at program counter 0x00400070
-Reading instruction 0x27bdfff8 at program counter 0x004001d0
-Access memory location 7ffffff0:
--8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 7f ff ff dc 00 40 00 68 7f ff ff f0 00 00 00 00 
-Reading instruction 0xafbe0004 at program counter 0x004001d4
-Reading instruction 0x03a0f025 at program counter 0x004001d8
-Reading instruction 0x2402000a at program counter 0x004001dc
-Reading instruction 0x0000000c at program counter 0x004001e0
-Reading instruction 0x0c000060 at program counter 0x80000630
-Reading instruction 0x27bdfea0 at program counter 0x80000180
-Access memory location 80003c50:
--8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3d dc 00 00 00 00 00 00 00 00 80 00 3c 5c 
-Reading instruction 0xafbf015c at program counter 0x80000184
-Access memory location 80003c4c:
--8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 80 00 3d dc 00 00 00 00 00 00 00 00 
-Reading instruction 0xafbe0158 at program counter 0x80000188
-Reading instruction 0x03a0f025 at program counter 0x8000018c
-Reading instruction 0x0c00001e at program counter 0x80000190
+00 00 00 00 00 00 00 00 80 00 7d dc 00 00 00 00 00 00 00 00 
+Reading instruction 0xafbe0158 at program counter 0x80000c3c
+Reading instruction 0x03a0f025 at program counter 0x80000c40
+Reading instruction 0x0c00001e at program counter 0x80000c44
 Reading instruction 0x27bdffe0 at program counter 0x80000078
-Access memory location 80003bf0:
+Access memory location 80007bf0:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
 Reading instruction 0xafbf001c at program counter 0x8000007c
-Access memory location 80003bec:
+Access memory location 80007bec:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 00 00 00 00 80 00 01 90 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 80 00 0c 44 00 00 00 00 
 Reading instruction 0xafbe0018 at program counter 0x80000080
 Reading instruction 0x03a0f025 at program counter 0x80000084
 Reading instruction 0x0c00002c at program counter 0x80000088
 Reading instruction 0x27bdfff0 at program counter 0x800000b0
-Access memory location 80003bd0:
+Access memory location 80007bd0:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
 Reading instruction 0xafbe000c at program counter 0x800000b4
 Reading instruction 0x03a0f025 at program counter 0x800000b8
 Reading instruction 0x03401025 at program counter 0x800000bc
-Access memory location 80003bc4:
+Access memory location 80007bc4:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
 Reading instruction 0xafc20000 at program counter 0x800000c0
-Access memory location 80003bc4:
+Access memory location 80007bc4:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 80 00 3d 54 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 80 00 7d 54 00 00 00 00 00 00 00 00 
 Reading instruction 0x8fc20000 at program counter 0x800000c4
 Reading instruction 0x03c0e825 at program counter 0x800000c8
-Access memory location 80003bd0:
+Access memory location 80007bd0:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 80 00 3b d4 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 80 00 7b d4 00 00 00 00 00 00 00 00 
 Reading instruction 0x8fbe000c at program counter 0x800000cc
 Reading instruction 0x27bd0010 at program counter 0x800000d0
 Reading instruction 0x03e00008 at program counter 0x800000d4
 Reading instruction 0x00000000 at program counter 0x8000008c
-Access memory location 80003be4:
+Access memory location 80007be4:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 00 3b f4 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 00 7b f4 
 Reading instruction 0xafc20010 at program counter 0x80000090
-Access memory location 80003be4:
+Access memory location 80007be4:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 80 00 3d 54 00 00 00 00 80 00 3b f4 
+00 00 00 00 00 00 00 00 80 00 7d 54 00 00 00 00 80 00 7b f4 
 Reading instruction 0x8fc20010 at program counter 0x80000094
 Reading instruction 0x03c0e825 at program counter 0x80000098
-Access memory location 80003bf0:
+Access memory location 80007bf0:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3b f4 80 00 01 90 00 00 00 00 00 00 00 00 
+00 00 00 00 80 00 7b f4 80 00 0c 44 00 00 00 00 00 00 00 00 
 Reading instruction 0x8fbf001c at program counter 0x8000009c
-Access memory location 80003bec:
+Access memory location 80007bec:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3d 54 00 00 00 00 80 00 3b f4 80 00 01 90 00 00 00 00 
+80 00 7d 54 00 00 00 00 80 00 7b f4 80 00 0c 44 00 00 00 00 
 Reading instruction 0x8fbe0018 at program counter 0x800000a0
 Reading instruction 0x27bd0020 at program counter 0x800000a4
 Reading instruction 0x03e00008 at program counter 0x800000a8
-Reading instruction 0x00000000 at program counter 0x80000194
-Access memory location 80003c0c:
+Reading instruction 0x00000000 at program counter 0x80000c48
+Access memory location 80007c0c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xafc20018 at program counter 0x80000198
-Access memory location 80003c0c:
+Reading instruction 0xafc20018 at program counter 0x80000c4c
+Access memory location 80007c0c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 80 00 3d 54 00 00 00 00 00 00 00 00 
-Reading instruction 0x8fc20018 at program counter 0x8000019c
-Access memory location 80003dd8:
+00 00 00 00 00 00 00 00 80 00 7d 54 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc20018 at program counter 0x80000c50
+Access memory location 80007dd8:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 40 01 e0 00 00 00 02 00 00 00 20 00 00 00 00 00 00 00 04 
-Reading instruction 0x8c420084 at program counter 0x800001a0
-Reading instruction 0x00021082 at program counter 0x800001a4
-Access memory location 80003c10:
+Reading instruction 0x8c420084 at program counter 0x80000c54
+Reading instruction 0x00021082 at program counter 0x80000c58
+Access memory location 80007c10:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3d 54 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xafc2001c at program counter 0x800001a8
-Access memory location 80003c10:
+00 00 00 00 80 00 7d 54 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xafc2001c at program counter 0x80000c5c
+Access memory location 80007c10:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3d 54 00 00 00 08 00 00 00 00 00 00 00 00 
-Reading instruction 0x8fc3001c at program counter 0x800001ac
-Reading instruction 0x2402000c at program counter 0x800001b0
-Reading instruction 0x1062009f at program counter 0x800001b4
-Reading instruction 0x00000000 at program counter 0x800001b8
-Access memory location 80003c10:
+00 00 00 00 80 00 7d 54 00 00 00 08 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc3001c at program counter 0x80000c60
+Reading instruction 0x2402000c at program counter 0x80000c64
+Reading instruction 0x1062009f at program counter 0x80000c68
+Reading instruction 0x00000000 at program counter 0x80000c6c
+Access memory location 80007c10:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3d 54 00 00 00 08 00 00 00 00 00 00 00 00 
-Reading instruction 0x8fc2001c at program counter 0x800001bc
-Reading instruction 0x2c42000d at program counter 0x800001c0
-Reading instruction 0x104000bb at program counter 0x800001c4
-Reading instruction 0x00000000 at program counter 0x800001c8
-Access memory location 80003c10:
+00 00 00 00 80 00 7d 54 00 00 00 08 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc2001c at program counter 0x80000c70
+Reading instruction 0x2c42000d at program counter 0x80000c74
+Reading instruction 0x104000bb at program counter 0x80000c78
+Reading instruction 0x00000000 at program counter 0x80000c7c
+Access memory location 80007c10:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3d 54 00 00 00 08 00 00 00 00 00 00 00 00 
-Reading instruction 0x8fc3001c at program counter 0x800001cc
-Reading instruction 0x24020008 at program counter 0x800001d0
-Reading instruction 0x10620007 at program counter 0x800001d4
-Access memory location 80003c0c:
+00 00 00 00 80 00 7d 54 00 00 00 08 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc3001c at program counter 0x80000c80
+Reading instruction 0x24020008 at program counter 0x80000c84
+Reading instruction 0x10620007 at program counter 0x80000c88
+Access memory location 80007c0c:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 80 00 3d 54 00 00 00 08 00 00 00 00 
-Reading instruction 0x8fc20018 at program counter 0x800001f4
-Access memory location 80003d58:
+00 00 00 00 00 00 00 00 80 00 7d 54 00 00 00 08 00 00 00 00 
+Reading instruction 0x8fc20018 at program counter 0x80000ca8
+Access memory location 80007d58:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 06 30 00 00 00 00 00 00 00 0a 00 40 02 ec 00 40 02 ec 
-Reading instruction 0x8c420004 at program counter 0x800001f8
-Reading instruction 0x2403000a at program counter 0x800001fc
-Reading instruction 0x10430049 at program counter 0x80000200
-Reading instruction 0x27c200f8 at program counter 0x80000328
-Access memory location 80003c04:
+80 00 11 80 00 00 00 00 00 00 00 0a 00 40 02 ec 00 40 02 ec 
+Reading instruction 0x8c420004 at program counter 0x80000cac
+Reading instruction 0x2403000a at program counter 0x80000cb0
+Reading instruction 0x10430049 at program counter 0x80000cb4
+Reading instruction 0x27c200f8 at program counter 0x80000ddc
+Access memory location 80007c04:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 00 3d 54 
-Reading instruction 0xafa00010 at program counter 0x8000032c
-Reading instruction 0x00003825 at program counter 0x80000330
-Reading instruction 0x00003025 at program counter 0x80000334
-Reading instruction 0x24050001 at program counter 0x80000338
-Reading instruction 0x00402025 at program counter 0x8000033c
-Reading instruction 0x0c000170 at program counter 0x80000340
-Reading instruction 0x27bdfff8 at program counter 0x800005c0
-Access memory location 80003bf0:
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 00 7d 54 
+Reading instruction 0xafa00010 at program counter 0x80000de0
+Reading instruction 0x00003825 at program counter 0x80000de4
+Reading instruction 0x00003025 at program counter 0x80000de8
+Reading instruction 0x24050001 at program counter 0x80000dec
+Reading instruction 0x00402025 at program counter 0x80000df0
+Reading instruction 0x0c000444 at program counter 0x80000df4
+Reading instruction 0x27bdfff8 at program counter 0x80001110
+Access memory location 80007bf0:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3b f4 80 00 01 90 00 00 00 00 00 00 00 00 
-Reading instruction 0xafbe0004 at program counter 0x800005c4
-Reading instruction 0x03a0f025 at program counter 0x800005c8
-Access memory location 80003bf4:
+00 00 00 00 80 00 7b f4 80 00 0c 44 00 00 00 00 00 00 00 00 
+Reading instruction 0xafbe0004 at program counter 0x80001114
+Reading instruction 0x03a0f025 at program counter 0x80001118
+Access memory location 80007bf4:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3b f4 80 00 3b f4 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xafc40008 at program counter 0x800005cc
-Access memory location 80003bf8:
+80 00 7b f4 80 00 7b f4 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xafc40008 at program counter 0x8000111c
+Access memory location 80007bf8:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3b f4 80 00 3c ec 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xafc5000c at program counter 0x800005d0
-Access memory location 80003bfc:
+80 00 7b f4 80 00 7c ec 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xafc5000c at program counter 0x80001120
+Access memory location 80007bfc:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3c ec 00 00 00 01 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xafc60010 at program counter 0x800005d4
-Access memory location 80003c00:
+80 00 7c ec 00 00 00 01 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0xafc60010 at program counter 0x80001124
+Access memory location 80007c00:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xafc70014 at program counter 0x800005d8
-Access memory location 80003bf4:
+Reading instruction 0xafc70014 at program counter 0x80001128
+Access memory location 80007bf4:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3b f4 80 00 3b f4 80 00 3c ec 00 00 00 01 00 00 00 00 
-Reading instruction 0x8fc20008 at program counter 0x800005dc
-Access memory location 80003bf8:
+80 00 7b f4 80 00 7b f4 80 00 7c ec 00 00 00 01 00 00 00 00 
+Reading instruction 0x8fc20008 at program counter 0x8000112c
+Access memory location 80007bf8:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3b f4 80 00 3c ec 00 00 00 01 00 00 00 00 00 00 00 00 
-Reading instruction 0x8fc3000c at program counter 0x800005e0
-Access memory location 80003cec:
+80 00 7b f4 80 00 7c ec 00 00 00 01 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc3000c at program counter 0x80001130
+Access memory location 80007cec:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xac430000 at program counter 0x800005e4
-Access memory location 80003bf4:
+Reading instruction 0xac430000 at program counter 0x80001134
+Access memory location 80007bf4:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3b f4 80 00 3b f4 80 00 3c ec 00 00 00 01 00 00 00 00 
-Reading instruction 0x8fc20008 at program counter 0x800005e8
-Access memory location 80003bfc:
+80 00 7b f4 80 00 7b f4 80 00 7c ec 00 00 00 01 00 00 00 00 
+Reading instruction 0x8fc20008 at program counter 0x80001138
+Access memory location 80007bfc:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3c ec 00 00 00 01 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0x8fc30010 at program counter 0x800005ec
-Access memory location 80003cf0:
+80 00 7c ec 00 00 00 01 00 00 00 00 00 00 00 00 00 00 00 00 
+Reading instruction 0x8fc30010 at program counter 0x8000113c
+Access memory location 80007cf0:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0xac430004 at program counter 0x800005f0
-Access memory location 80003bf4:
+Reading instruction 0xac430004 at program counter 0x80001140
+Access memory location 80007bf4:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3b f4 80 00 3b f4 80 00 3c ec 00 00 00 01 00 00 00 00 
-Reading instruction 0x8fc20008 at program counter 0x800005f4
-Access memory location 80003c00:
+80 00 7b f4 80 00 7b f4 80 00 7c ec 00 00 00 01 00 00 00 00 
+Reading instruction 0x8fc20008 at program counter 0x80001144
+Access memory location 80007c00:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
-Reading instruction 0x8fc30014 at program counter 0x800005f8
-Access memory location 80003cf4:
+Reading instruction 0x8fc30014 at program counter 0x80001148
+Access memory location 80007cf4:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 01 00 00 00 00 00 00 00 00 00 00 00 00 80 00 3d 04 
-Reading instruction 0xac430008 at program counter 0x800005fc
-Access memory location 80003bf4:
+00 00 00 01 00 00 00 00 00 00 00 00 00 00 00 00 80 00 7d 04 
+Reading instruction 0xac430008 at program counter 0x8000114c
+Access memory location 80007bf4:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3b f4 80 00 3b f4 80 00 3c ec 00 00 00 01 00 00 00 00 
-Reading instruction 0x8fc20008 at program counter 0x80000600
-Access memory location 80003c04:
+80 00 7b f4 80 00 7b f4 80 00 7c ec 00 00 00 01 00 00 00 00 
+Reading instruction 0x8fc20008 at program counter 0x80001150
+Access memory location 80007c04:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 00 3d 54 
-Reading instruction 0x8fc30018 at program counter 0x80000604
-Access memory location 80003cf8:
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 00 7d 54 
+Reading instruction 0x8fc30018 at program counter 0x80001154
+Access memory location 80007cf8:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 00 00 00 00 00 00 00 00 80 00 3d 04 80 00 3d 04 
-Reading instruction 0xac43000c at program counter 0x80000608
-Reading instruction 0x00000000 at program counter 0x8000060c
-Reading instruction 0x03c0e825 at program counter 0x80000610
-Access memory location 80003bf0:
+00 00 00 00 00 00 00 00 00 00 00 00 80 00 7d 04 80 00 7d 04 
+Reading instruction 0xac43000c at program counter 0x80001158
+Reading instruction 0x00000000 at program counter 0x8000115c
+Reading instruction 0x03c0e825 at program counter 0x80001160
+Access memory location 80007bf0:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3b f4 80 00 3b f4 80 00 3c ec 00 00 00 01 
-Reading instruction 0x8fbe0004 at program counter 0x80000614
-Reading instruction 0x27bd0008 at program counter 0x80000618
-Reading instruction 0x03e00008 at program counter 0x8000061c
-Reading instruction 0x00000000 at program counter 0x80000344
-Reading instruction 0x27c20108 at program counter 0x80000348
-Reading instruction 0x27c300f8 at program counter 0x8000034c
-Reading instruction 0x00602825 at program counter 0x80000350
-Reading instruction 0x00402025 at program counter 0x80000354
-Reading instruction 0x0c000000 at program counter 0x80000358
+00 00 00 00 80 00 7b f4 80 00 7b f4 80 00 7c ec 00 00 00 01 
+Reading instruction 0x8fbe0004 at program counter 0x80001164
+Reading instruction 0x27bd0008 at program counter 0x80001168
+Reading instruction 0x03e00008 at program counter 0x8000116c
+Reading instruction 0x00000000 at program counter 0x80000df8
+Reading instruction 0x27c20108 at program counter 0x80000dfc
+Reading instruction 0x27c300f8 at program counter 0x80000e00
+Reading instruction 0x00602825 at program counter 0x80000e04
+Reading instruction 0x00402025 at program counter 0x80000e08
+Reading instruction 0x0c000000 at program counter 0x80000e0c
 Reading instruction 0x27bdfff0 at program counter 0x80000000
-Access memory location 80003bf0:
+Access memory location 80007bf0:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-00 00 00 00 80 00 3b f4 80 00 3b f4 80 00 3c ec 00 00 00 01 
+00 00 00 00 80 00 7b f4 80 00 7b f4 80 00 7c ec 00 00 00 01 
 Reading instruction 0xafbe000c at program counter 0x80000004
 Reading instruction 0x03a0f025 at program counter 0x80000008
-Access memory location 80003bf4:
+Access memory location 80007bf4:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3b f4 80 00 3b f4 80 00 3c ec 00 00 00 01 00 00 00 00 
+80 00 7b f4 80 00 7b f4 80 00 7c ec 00 00 00 01 00 00 00 00 
 Reading instruction 0xafc40010 at program counter 0x8000000c
-Access memory location 80003bf8:
+Access memory location 80007bf8:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3b f4 80 00 3c fc 00 00 00 01 00 00 00 00 00 00 00 00 
+80 00 7b f4 80 00 7c fc 00 00 00 01 00 00 00 00 00 00 00 00 
 Reading instruction 0xafc50014 at program counter 0x80000010
-Access memory location 80003bf8:
+Access memory location 80007bf8:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3b f4 80 00 3c fc 80 00 3c ec 00 00 00 00 00 00 00 00 
+80 00 7b f4 80 00 7c fc 80 00 7c ec 00 00 00 00 00 00 00 00 
 Reading instruction 0x8fc20014 at program counter 0x80000014
-Access memory location 80003cec:
+Access memory location 80007cec:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 00 
 Reading instruction 0x8c420000 at program counter 0x80000018
 Reading instruction 0x14400007 at program counter 0x8000001c
-Access memory location 80003bf8:
+Access memory location 80007bf8:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3b f4 80 00 3c fc 80 00 3c ec 00 00 00 00 00 00 00 00 
+80 00 7b f4 80 00 7c fc 80 00 7c ec 00 00 00 00 00 00 00 00 
 Reading instruction 0x8fc30014 at program counter 0x8000003c
 Reading instruction 0x00602025 at program counter 0x80000040
 Reading instruction 0x03c01025 at program counter 0x80000044
 Reading instruction 0x0000003f at program counter 0x80000048
-Access memory location 80003bf4:
+Access memory location 80007bf4:
 -8 -7 -6 -5 -4 -3 -2 -1 00 01 02 03 04 05 06 07 08 09 10 11 
-80 00 3b f4 80 00 3b f4 80 00 3c fc 80 00 3c ec 00 00 00 00 
+80 00 7b f4 80 00 7b f4 80 00 7c fc 80 00 7c ec 00 00 00 00 
 Reading instruction 0x8fc20010 at program counter 0x8000004c

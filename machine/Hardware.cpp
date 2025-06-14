@@ -7,9 +7,9 @@
 #define DATA_ENTRY 0x10008000
 #define TEXT_START 0x00400024
 #define KERNEL_TEXT_START 0x80000000
-#define KERNEL_DATA_ENTRY 0x80001000
+#define KERNEL_DATA_ENTRY 0x80005000
 #define KERNEL_STACK_OFFSET 8188
-#define KERNEL_GLOBAL_PTR_DEFAULT 0x80005000
+#define KERNEL_GLOBAL_PTR_DEFAULT 0x80007500
 
 // -------------------------------------------------------------
 // Hardware Emulation

@@ -51,7 +51,7 @@ int main(int argc, char** argv) {
     machine.loadProgram(exe->readText(), exe->readData(), exe->readEntry());
 
     machine.run(DBGHOOK((
-        makeCombinedHook<memoryAccess, printInstr>()
+        makeConditionalCombinedHook<focusKernel, memoryAccess, printInstr>()
     )));
 
     return 0;

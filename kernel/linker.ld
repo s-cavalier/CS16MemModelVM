@@ -1,5 +1,5 @@
 ENTRY(main)
-__global_pointer = 0x80005000;
+__global_pointer = 0x80007500;
 
 SECTIONS
 {
@@ -11,14 +11,14 @@ SECTIONS
         _etext = .;
     }
 
-    .data 0x80001000 :
+    .data 0x80005000 :
     {
         _data_start = .;
         *(.data*)
         _edata = .;
     }
 
-    .bss  0x80001200 :
+    .bss  0x80005500 :
     {
         _bss_start = .;
         *(.bss*)

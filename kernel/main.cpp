@@ -2,6 +2,7 @@
 #include "ASMInterface.h"
 // --- These should be the first includes, especially HeapManager so everything after is correctly linked with the new operator
 
+#include "kstl/Vector.h"
 
 #define K_STACK_SIZE 16384
 
@@ -12,13 +13,14 @@ unsigned int newline = (unsigned int)("\n");
 
 struct Foo {
     Foo() { PrintString("Constructed Foo\n"); }
+    void Hello() { PrintString("Hello!\n"); }
     ~Foo() { PrintString("Deconstructed Foo\n"); }
 };
 
 int main() {
     // just eret assuming that EPC already has the right PC loaded
-    Foo* x = new Foo();
-    delete x;
+    
+
 
     PrintString("\nKernel booted!\n");
 

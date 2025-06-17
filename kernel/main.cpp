@@ -2,7 +2,6 @@
 #include "ASMInterface.h"
 // --- These should be the first includes, especially HeapManager so everything after is correctly linked with the new operator
 
-#include "kstl/Array.h"
 
 #define K_STACK_SIZE 16384
 
@@ -18,20 +17,10 @@ struct Foo {
 
 int main() {
     // just eret assuming that EPC already has the right PC loaded
-    PrintString("Kernel booted!\n");
+    Foo* x = new Foo();
+    delete x;
 
-    int x[4];
-    x[0] = 0;
-    x[1] = 1;
-    x[2] = 2;
-    x[3] = 3;
-
-    ministl::array<int, 4> y(x, 4);
-
-    for (size_t i = 0; i < y.size(); ++i) {
-        PrintInteger(y[i]);
-        PrintString(newline);
-    }
+    PrintString("\nKernel booted!\n");
 
 
     Halt;    

@@ -1,12 +1,11 @@
 #ifndef __HEAP_MANAGER_H__
 #define __HEAP_MANAGER_H__
 
-#define K_HEAP_START 0x80000000
+void* sbrk(int offset);
+void brk(void* addr);
 
-static void* heap_ptr = (void*)K_HEAP_START;
-
-inline void* sbrk(int offset) { heap_ptr = ((char*)heap_ptr + offset); return heap_ptr; }
-inline void brk(void* addr) { heap_ptr = addr; }
+// TODO: ADD IN CHECKS FOR:
+// Double frees, free(0), access after free
 
 #define align4(x) (((x) + 3) & ~0x3)
 
@@ -41,7 +40,7 @@ namespace Heap {
         BlockHeader* fusion(BlockHeader* block);
 
     public:
-        FreeList() : block_count(0), total_size(0), head(nullptr), last_visited(nullptr) { }
+        FreeList() : block_count(0), total_size(0), head(nullptr), last_visited(nullptr) {}
 
         inline const size_t& totalBytes() const { return total_size; }
         inline const size_t& totalBlocks() const { return block_count; }
@@ -54,7 +53,5 @@ namespace Heap {
     static FreeList freeList;
 
 }
-
-
 
 #endif

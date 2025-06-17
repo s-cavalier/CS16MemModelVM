@@ -1,5 +1,10 @@
 #include "HeapManager.h"
 
+void* heap_ptr = (void*)0xC0000000;
+
+void* sbrk(int offset) { return (heap_ptr = (char*)heap_ptr + offset); }
+void brk(void* addr) { heap_ptr = addr; }
+
 Heap::BlockHeader* Heap::FreeList::getBlock(void* p) {
     return (BlockHeader*)((char*)p - BLOCKHEADER_OFFSET);
 
@@ -20,8 +25,8 @@ Heap::BlockHeader* Heap::FreeList::findBlock(size_t s) {
 
 Heap::BlockHeader* Heap::FreeList::extendHeap(size_t s) {
     BlockHeader* it = (BlockHeader*)sbrk(0);
-    void* sb = sbrk(BLOCKHEADER_OFFSET + s);
-    if (!sb) return nullptr;
+    sbrk(BLOCKHEADER_OFFSET + s);
+    
     it->size = s;
     it->next = nullptr;
     it->prev = last_visited;
@@ -60,7 +65,6 @@ void* Heap::FreeList::malloc(size_t size) {
         if (!it) return nullptr;
         head = it;
     }
-
     return (it->data);
 }
 
@@ -100,27 +104,9 @@ void Heap::FreeList::free(void* ptr) {
     }
 }
 
-
-void* operator new(size_t size) {
-    return Heap::freeList.malloc(size);
-}
-
-void operator delete(void* ptr) noexcept {
-    Heap::freeList.free(ptr);
-}
-
-void operator delete(void* ptr, size_t) noexcept {
-    Heap::freeList.free(ptr);
-}
-
-void* operator new[](size_t size) {
-    return Heap::freeList.malloc(size);
-}
-
-void operator delete[](void* ptr) noexcept {
-    Heap::freeList.free(ptr);
-}
-
-void operator delete[](void* ptr, size_t) noexcept {
-    Heap::freeList.free(ptr);
-}
+void* operator new(size_t size) { return Heap::freeList.malloc(size); }
+void* operator new[](size_t size) { return Heap::freeList.malloc(size); }
+void operator delete(void* ptr) noexcept {return Heap::freeList.free(ptr); }
+void operator delete[](void* ptr) noexcept {  return Heap::freeList.free(ptr); }
+void operator delete(void* ptr, size_t) noexcept {  return Heap::freeList.free(ptr); }
+void operator delete[](void* ptr, size_t) noexcept { return Heap::freeList.free(ptr); }

@@ -61,6 +61,7 @@
         "bitset": "cpp",
         "regex": "cpp",
         "chrono": "cpp",
-        "optional": "cpp"
+        "optional": "cpp",
+        "cassert": "cpp"
     }
 }

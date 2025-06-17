@@ -1,20 +1,40 @@
-#include "ASMInterface.h"
 #include "HeapManager.h"
+#include "ASMInterface.h"
+// --- These should be the first includes, especially HeapManager so everything after is correctly linked with the new operator
 
-#define K_STACK_SIZE 8192
+#include "kstl/Array.h"
+
+#define K_STACK_SIZE 16384
 
 __attribute__((aligned(K_STACK_SIZE)))
 char kernel_stack[K_STACK_SIZE];
 
 unsigned int newline = (unsigned int)("\n");
 
+struct Foo {
+    Foo() { PrintString("Constructed Foo\n"); }
+    ~Foo() { PrintString("Deconstructed Foo\n"); }
+};
 
 int main() {
     // just eret assuming that EPC already has the right PC loaded
-    const char* startup = "Booted kernel!\n";
-    PrintString(startup);
-    
-    Halt;
+    PrintString("Kernel booted!\n");
+
+    int x[4];
+    x[0] = 0;
+    x[1] = 1;
+    x[2] = 2;
+    x[3] = 3;
+
+    ministl::array<int, 4> y(x, 4);
+
+    for (size_t i = 0; i < y.size(); ++i) {
+        PrintInteger(y[i]);
+        PrintString(newline);
+    }
+
+
+    Halt;    
     __asm__ volatile ("eret\n" : : :);
     return 0;
 }

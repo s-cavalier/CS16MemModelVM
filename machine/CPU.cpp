@@ -110,10 +110,14 @@ std::unique_ptr<Hardware::Instruction> Hardware::CPU::decode(const Word& binary_
         I_GEN_INIT(ADDIU, AddImmediateUnsigned);
         I_GEN_INIT(ANDI, AndImmediate);
         I_GEN_INIT(SLTI, SetLessThanImmediate);
+        I_GEN_INIT(XORI, XorImmediate);
         I_GEN_INIT(SLTIU, SetLessThanImmediateUnsigned);
         I_GEN_INIT(ORI, OrImmediate);
         I_MEM_INIT(LW, LoadWord);
         I_MEM_INIT(SW, StoreWord);
+        I_MEM_INIT(SB, StoreByte);
+        I_MEM_INIT(LBU, LoadByteUnsigned);
+        I_MEM_INIT(LB, LoadByte);
         I_BRANCH_INIT(BEQ, BranchOnEqual);
         I_BRANCH_INIT(BNE, BranchOnNotEqual);
         FPMEM_INIT(LWC1, LoadFPSingle);

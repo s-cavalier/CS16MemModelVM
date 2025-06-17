@@ -28,32 +28,31 @@ void Hardware::Machine::raiseTrap(const Byte& exceptionCode) {
     using namespace Binary;
 
     SystemControlUnit* sys_ctrl = dynamic_cast<SystemControlUnit*>(coprocessors[0].get());  // if this errors, we can just get rid of it since all that happens is reg interaction
+    
+    sys_ctrl->setEPC( cpu.readProgramCounter() );
+    sys_ctrl->setEXL(true);
 
-    if (!(sys_ctrl->accessRegister(STATUS).ui & 0b10)) {
-        sys_ctrl->setEPC( cpu.readProgramCounter() );
-        sys_ctrl->setEXL(true);
-    }
 
     sys_ctrl->setCause(exceptionCode);
 
     cpu.accessProgramCounter() = (exceptionCode == 24 ? bootEntry : trapEntry);
 
     // store trap frame on kernel stack
-    auto& ksp = coprocessors[0]->accessRegister(K_SP).ui;
+    auto& ksp = sys_ctrl->accessRegister(K_SP).ui;
     Word end = 34 * 4;  // all registers - $0 + EPC + STATUS + CAUSE
     ksp -= end;
 
     for (Byte i = 1; i < 32; ++i) RAM.setWord(ksp + ((i - 1) << 2), cpu.accessRegister(i).ui);
 
     RAM.setWord(ksp + SP * 4, cpu.accessRegister(SP).ui);  // save user $sp
-    RAM.setWord(ksp + 31 * 4, coprocessors[0]->readRegister(EPC).ui);
-    RAM.setWord(ksp + 32 * 4, coprocessors[0]->readRegister(STATUS).ui);
-    RAM.setWord(ksp + 33 * 4, coprocessors[0]->readRegister(CAUSE).ui);
+    RAM.setWord(ksp + 31 * 4, sys_ctrl->readRegister(EPC).ui);
+    RAM.setWord(ksp + 32 * 4, sys_ctrl->readRegister(STATUS).ui);
+    RAM.setWord(ksp + 33 * 4, sys_ctrl->readRegister(CAUSE).ui);
 
     cpu.accessRegister(K0).ui = ksp;  // store trap frame address in $k0
-    coprocessors[0]->accessRegister(K_TF).ui = ksp;  // store in K_TF
+    sys_ctrl->accessRegister(K_TF).ui = ksp;  // store in K_TF
 
-    cpu.accessRegister(SP).ui = coprocessors[0]->accessRegister(K_SP).ui;  // switch to kernel stack
+    cpu.accessRegister(SP).ui = sys_ctrl->accessRegister(K_SP).ui;  // switch to kernel stack
     cpu.accessRegister(GP).ui = KERNEL_GLOBAL_PTR_DEFAULT;
 
 }

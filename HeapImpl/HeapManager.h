@@ -1,11 +1,15 @@
 #ifndef __HEAP_MANAGER_H__
 #define __HEAP_MANAGER_H__
-#include <unistd.h>
 
-// replace these macros later
-#define CURR_BRK sbrk(0)
-#define MOVE_BRK(x) sbrk(x)
-#define SET_BRK(x) brk(x)
+// remove if need be
+#define TESTING
+
+#ifdef TESTING
+    #include <unistd.h>
+#endif
+
+// TODO: ADD IN CHECKS FOR:
+// Double frees, free(0), access after free
 
 #define align4(x) (((x) + 3) & ~0x3)
 

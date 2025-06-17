@@ -8,17 +8,13 @@ char kernel_stack[K_STACK_SIZE];
 
 unsigned int newline = (unsigned int)("\n");
 
+
 int main() {
     // just eret assuming that EPC already has the right PC loaded
     const char* startup = "Booted kernel!\n";
     PrintString(startup);
-
-    int* x = new int[5]();
-
-    delete[] x;
-    PrintInteger((unsigned int)Heap::freeList.sbrk(0));
-    PrintString(newline);
-
+    
+    Halt;
     __asm__ volatile ("eret\n" : : :);
     return 0;
 }
@@ -41,9 +37,10 @@ extern "C" void handleTrap() {
                 case 5:
                     trapFrame->v0 = ReadInteger.res;
                     break;
-                case 10:
+                case 10: {
                     Halt;
                     break;
+                }
                 default:
                     PrintString("[KERNEL] Unrecognized syscall code. Returning without doing anything.\n");
                     break;
@@ -52,6 +49,7 @@ extern "C" void handleTrap() {
         }
         case 10:
             PrintString("[KERNEL] Attempted privilieged instruction outside of kernel. Killing process...\n");
+            PrintInteger( (unsigned int)(trapFrame->epc) );
             Halt;
             break;
         case 12:

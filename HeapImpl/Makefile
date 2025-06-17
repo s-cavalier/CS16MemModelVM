@@ -1,7 +1,7 @@
 # Simple Makefile
 
 CXX := g++
-CXXFLAGS := -std=c++17 -Wall -O2
+CXXFLAGS := -m32 -std=c++17 -Wall -O2
 TARGET := heap
 SRCS := $(wildcard *.cpp)
 OBJS := $(SRCS:.cpp=.o)

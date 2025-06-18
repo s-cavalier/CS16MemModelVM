@@ -40,6 +40,11 @@ namespace ministl {
             storage[_size++] = ministl::move(value);
         }
 
+        void pop_back() {
+            assert(_size > 0);
+            storage[_size--].~T();
+        }
+
         T& operator[](size_t index) {
             // No bounds checking for minimal implementation
             return storage[index];
@@ -102,6 +107,14 @@ namespace ministl {
                 other._capacity = 0;
             }
             return *this;
+        }
+
+        inline T* data() {
+            return storage.get();
+        }
+
+        inline const T* data() const {
+            return storage.get();
         }
     };
 

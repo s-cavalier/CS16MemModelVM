@@ -2,8 +2,6 @@
 #include "ASMInterface.h"
 // --- These should be the first includes, especially HeapManager so everything after is correctly linked with the new operator
 
-#include "kstl/Vector.h"
-
 #define K_STACK_SIZE 16384
 
 __attribute__((aligned(K_STACK_SIZE)))
@@ -11,21 +9,10 @@ char kernel_stack[K_STACK_SIZE];
 
 unsigned int newline = (unsigned int)("\n");
 
-struct Foo {
-    Foo() { PrintString("Constructed Foo\n"); }
-    void Hello() { PrintString("Hello!\n"); }
-    ~Foo() { PrintString("Deconstructed Foo\n"); }
-};
-
 int main() {
     // just eret assuming that EPC already has the right PC loaded
-    
+    PrintString("Kernel booted!\n");
 
-
-    PrintString("\nKernel booted!\n");
-
-
-    Halt;    
     __asm__ volatile ("eret\n" : : :);
     return 0;
 }

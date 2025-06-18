@@ -1,6 +1,6 @@
 #ifndef M__UNIQUE_PTR_H__
 #define M__UNIQUE_PTR_H__
-
+#include "Error.h"
 
 namespace ministl {
 

@@ -116,9 +116,10 @@ namespace kernel {
 
 }
 
-#define Halt                kernel::VMPackage(kernel::HALT).send()
-#define PrintString(ptr)    kernel::VMPackage(kernel::PRINT_STRING, (kernel::uint32_t)(ptr) ).send()
-#define PrintInteger(num)   kernel::VMPackage(kernel::PRINT_INTEGER, (num)).send()
-#define ReadInteger         kernel::VMPackage(kernel::READ_INTEGER).send()
+#define Halt                    kernel::VMPackage(kernel::HALT).send()
+#define PrintString(ptr)        kernel::VMPackage(kernel::PRINT_STRING, (kernel::uint32_t)(ptr) ).send()
+#define PrintWrapped(l, m, r)   PrintString(l); PrintInteger(m); PrintString(r)
+#define PrintInteger(num)       kernel::VMPackage(kernel::PRINT_INTEGER, (num)).send()
+#define ReadInteger             kernel::VMPackage(kernel::READ_INTEGER).send()
 
 #endif

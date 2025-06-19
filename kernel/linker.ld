@@ -14,6 +14,13 @@ SECTIONS
     .data 0x80005000 :
     {
         _data_start = .;
+
+        __init_array_start = .;
+        KEEP (*(SORT(.init_array.*)))
+        KEEP (*(.init_array))
+        __init_array_end = .;
+
+
         *(.data*)
         _edata = .;
     }

@@ -7,45 +7,45 @@ namespace kernel {
     using uint32_t = unsigned int;
 
     struct TrapFrame {
-        unsigned int at;
-        unsigned int v0;
-        unsigned int v1;
-        unsigned int a0;
-        unsigned int a1;
-        unsigned int a2;
-        unsigned int a3;
+        unsigned int at = 0;
+        unsigned int v0 = 0;
+        unsigned int v1 = 0;
+        unsigned int a0 = 0;
+        unsigned int a1 = 0;
+        unsigned int a2 = 0;
+        unsigned int a3 = 0;
 
-        unsigned int t0;
-        unsigned int t1;
-        unsigned int t2; 
-        unsigned int t3; 
-        unsigned int t4; 
-        unsigned int t5; 
-        unsigned int t6; 
-        unsigned int t7; 
+        unsigned int t0 = 0;
+        unsigned int t1 = 0;
+        unsigned int t2 = 0; 
+        unsigned int t3 = 0; 
+        unsigned int t4 = 0; 
+        unsigned int t5 = 0; 
+        unsigned int t6 = 0; 
+        unsigned int t7 = 0; 
 
-        unsigned int s0; 
-        unsigned int s1; 
-        unsigned int s2; 
-        unsigned int s3; 
-        unsigned int s4; 
-        unsigned int s5; 
-        unsigned int s6; 
-        unsigned int s7; 
+        unsigned int s0 = 0; 
+        unsigned int s1 = 0; 
+        unsigned int s2 = 0; 
+        unsigned int s3 = 0; 
+        unsigned int s4 = 0; 
+        unsigned int s5 = 0; 
+        unsigned int s6 = 0; 
+        unsigned int s7 = 0; 
 
-        unsigned int t8; 
-        unsigned int t9; 
+        unsigned int t8 = 0; 
+        unsigned int t9 = 0; 
 
-        unsigned int k0;    
-        unsigned int k1;    
-        unsigned int gp; 
-        unsigned int sp;    
-        unsigned int fp; 
-        unsigned int ra; 
+        unsigned int k0 = 0;    
+        unsigned int k1 = 0;    
+        unsigned int gp = 0; 
+        unsigned int sp = 0;    
+        unsigned int fp = 0; 
+        unsigned int ra = 0; 
 
-        unsigned int epc;
-        unsigned int status;
-        unsigned int cause;
+        unsigned int epc = 0;
+        unsigned int status = 0;
+        unsigned int cause = 0;
 
     };
 

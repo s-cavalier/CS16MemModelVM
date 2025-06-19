@@ -4,17 +4,23 @@
 
 namespace kernel {
 
-    enum ProcessState {
+    enum ProcessState : uint32_t {
         READY,
         RUNNING,
         BLOCKED,
         ZOMBIE
     };
 
-    struct PCB {
-        uint32_t pid_t;
+    class PCB {
+        uint32_t PID;
 
+    public:
+        ProcessState state;
+        TrapFrame trapFrame; // maybe just use a pointer?
+        
+        PCB(const char* binaryFile);
 
+        void run();
     };
 
 

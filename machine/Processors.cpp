@@ -57,9 +57,9 @@ std::unique_ptr<Hardware::Instruction> Hardware::SystemControlUnit::decode(const
 
     auto& statusReg = machine.accessCoprocessor(0)->accessRegister(STATUS).ui;
 
-    if (funct == ERET) return std::make_unique<ExceptionReturn>(machine);
+    if (rs == 0x10 && funct == ERET) return std::make_unique<ExceptionReturn>(machine);
     if (rs == 0) return std::make_unique<MoveFromCoprocessor0>(statusReg, machine.accessCPU().accessRegister(rt).i, registerFile[rd].i );
-    if (rt == 4) return std::make_unique<MoveToCoprocessor0>(statusReg, machine.readCPU().readRegister(rt).i, registerFile[rd].i );
+    if (rs == 4) return std::make_unique<MoveToCoprocessor0>(statusReg, machine.readCPU().readRegister(rt).i, registerFile[rd].i );
 
     throw Trap(Trap::ExceptionCode::RI);
     return std::make_unique<NoOp>();

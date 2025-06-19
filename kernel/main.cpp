@@ -1,6 +1,8 @@
 #include "HeapManager.h"
-#include "ASMInterface.h"
+#include "Process.h"
 // --- These should be the first includes, especially HeapManager so everything after is correctly linked with the new operator
+
+#include "kstl/Error.h"
 
 // -- Stack Init --
 
@@ -31,13 +33,22 @@ void call_global_constructors() {
     }
 }
 
+extern "C" void printInteger(unsigned int num) {
+    PrintInteger(num);
+}
+
+
+kernel::PCB* userprog;
 
 extern "C" void cppmain() {
     // just eret assuming that EPC already has the right PC loaded
     call_global_constructors();
     PrintString("Kernel booted!\n");
 
-    for (unsigned int i = 0; i < argc; ++i) PrintString(argv[i]);
+    assert(argc > 1);
+
+    userprog = new kernel::PCB("tests/asm/spimbin/printint");
+    userprog->run();
 
     return;
 }

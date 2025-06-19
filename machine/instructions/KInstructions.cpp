@@ -59,7 +59,7 @@ void VMTunnel::run() {
             break;
 
         case 3: // printInteger(int)
-            std::cout << arg0;
+            std::cout << arg0 << std::flush;
 
             break;
         
@@ -78,6 +78,7 @@ void VMTunnel::run() {
         case 6: { // fread(int fd, char* buf, int nbytes)
             auto bytes = machine.accessFileSystem()[arg0]->read(arg2);
             for (Word i = 0; i < bytes.size(); ++i) machine.accessMemory().setByte(arg1 + i, bytes[i]);
+            res = bytes.size();
 
             break;
         }

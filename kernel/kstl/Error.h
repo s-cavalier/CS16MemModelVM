@@ -4,7 +4,7 @@
 
 typedef decltype(sizeof(0)) size_t;
 
-void assert_fail(const char* cond, const char* file, int line, const char* func) {    
+static void assert_fail(const char* cond, const char* file, int line, const char* func) {    
     PrintString("Assertion triggered: \n'");
     PrintString(cond);
     PrintString("'\nfailed in file:\n'");
@@ -19,8 +19,6 @@ void assert_fail(const char* cond, const char* file, int line, const char* func)
 
 #define __ASSERT_FUNCTION __extension__ __PRETTY_FUNCTION__
 #define assert(expr) (static_cast <bool> (expr) ? void (0) : assert_fail(#expr, __FILE__, __LINE__, __ASSERT_FUNCTION))
-
-
 
 
 #endif

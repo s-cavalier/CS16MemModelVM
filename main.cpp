@@ -46,7 +46,7 @@ int main(int argc, char** argv) {
     Hardware::Machine machine;
     machine.loadKernel( kernel.kernelInfo, kernelArgs);
     machine.run(DBGHOOK((
-        makeConditionalCombinedHook<onKilled, memorySection<0x8000c000, 0x8000c004>, memorySection<0x8000c004, 0x8000c004 + 0xc8>>()
+        makeCombinedHook<printRegs, printInstr>()
     )));
 
     return 0;

@@ -86,10 +86,26 @@ namespace kernel {
     
     enum VMRequestType : uint32_t {
         UNKNOWN,
-        HALT,
-        PRINT_STRING,
+        HALT,               
+        PRINT_STRING,     
         PRINT_INTEGER,
-        READ_INTEGER
+        READ_INTEGER,
+
+        FOPEN,
+        FREAD,
+        FWRITE,
+        FSEEK,
+        FCLOSE
+    };
+
+    enum FileFlags {
+        O_RDONLY = 0,
+        O_WRONLY = 1,
+        O_RDWR   = 2,
+        O_CREAT  = 0x40,
+        O_EXCL   = 0x80,
+        O_TRUNC  = 0x200,
+        O_APPEND = 0x400
     };
 
     struct VMResponse {
@@ -99,13 +115,28 @@ namespace kernel {
 
     struct VMPackage {
         VMRequestType reqType;
-        uint32_t arg0;
-        uint32_t arg1;
-        uint32_t arg2;
+        union {
+            struct { uint32_t arg0; uint32_t arg1; uint32_t arg2; } generic;
+            struct { uint32_t c_str; } printString;
+            struct { uint32_t num; } printInteger;
+            struct { uint32_t path; uint32_t flags; } fopen;
+            struct { uint32_t fd; uint32_t buffer; uint32_t nbytes; } fread;
+            struct { uint32_t fd; uint32_t buffer; uint32_t nbytes; } fwrite;
+            struct { uint32_t fd; uint32_t offset; uint32_t whence; } fseek;
+            struct { uint32_t fd; } fclose;
+        } args;
 
-        VMPackage(VMRequestType reqType = UNKNOWN, uint32_t arg0 = 0, uint32_t arg1 = 0, uint32_t arg2 = 0) : reqType(reqType), arg0(arg0), arg1(arg1), arg2(arg2) {}
+        // No-args request
+        VMPackage(VMRequestType reqType) : reqType(reqType) {}
+
+        // Argument request
+        VMPackage(VMRequestType reqType, uint32_t arg0, uint32_t arg1 = 0, uint32_t arg2 = 0) : reqType(reqType), args{arg0, arg1, arg2} {}
+
+        // File-based request
+        VMPackage(const char* filePath, uint32_t fileFlags, VMRequestType openType);
 
         VMResponse send() const;
+
     };
 
     // frame needs to be manually loaded

@@ -1,5 +1,14 @@
 #include "ASMInterface.h"
 
+kernel::VMPackage::VMPackage(const char* filePath, uint32_t fileFlags, VMRequestType openType) {
+    reqType = FOPEN;
+    args.fopen.path = (uint32_t)filePath;
+    args.fopen.flags = fileFlags;
+    VMResponse fd = send();
+    reqType = openType;
+    args.generic = { fd.res, fd.err, 0 };
+}
+
 kernel::VMResponse kernel::VMPackage::send() const {
     if (reqType == UNKNOWN) return {0, 0};
 

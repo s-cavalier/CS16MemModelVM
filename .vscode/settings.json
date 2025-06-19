@@ -62,6 +62,9 @@
         "regex": "cpp",
         "chrono": "cpp",
         "optional": "cpp",
-        "cassert": "cpp"
+        "cassert": "cpp",
+        "forward_list": "cpp",
+        "unordered_set": "cpp",
+        "typeindex": "cpp"
     }
 }

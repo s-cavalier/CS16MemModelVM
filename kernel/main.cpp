@@ -2,6 +2,8 @@
 #include "ASMInterface.h"
 // --- These should be the first includes, especially HeapManager so everything after is correctly linked with the new operator
 
+#include "kstl/Array.h"
+
 // -- Stack Init --
 
 #define K_STACK_SIZE 16384
@@ -9,7 +11,7 @@
 __attribute__((aligned(K_STACK_SIZE)))
 char kernel_stack[K_STACK_SIZE];
 
-
+char* k_sp = kernel_stack + K_STACK_SIZE;
 
 // -- Nice Utility --
 unsigned int newline = (unsigned int)("\n");
@@ -29,13 +31,28 @@ void call_global_constructors() {
 }
 
 
-int main() {
+extern "C" void cppmain() {
     // just eret assuming that EPC already has the right PC loaded
     call_global_constructors();
     PrintString("Kernel booted!\n");
 
-    __asm__ volatile ("eret\n" : : :);
-    return 0;
+    kernel::VMPackage filePkg("disk", kernel::O_RDONLY, kernel::FREAD);
+    ministl::array<char, 11> buf;
+    
+    // -- Place span --
+    filePkg.args.fread.buffer = (unsigned int)buf.data();
+    filePkg.args.fread.nbytes = buf.capacity();
+    filePkg.send();
+
+    buf[buf.capacity() - 1] = '\0';
+
+    // -- Close file --
+    filePkg.reqType = kernel::FCLOSE;
+    filePkg.send();
+
+    PrintString(buf.data());
+
+    return;
 }
 
 extern "C" void handleTrap() {

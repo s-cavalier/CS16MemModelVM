@@ -8,7 +8,6 @@
 #define TEXT_START 0x00400024
 #define KERNEL_TEXT_START 0x80000000
 #define KERNEL_DATA_ENTRY 0x80005000
-#define KERNEL_STACK_OFFSET 8188
 #define KERNEL_GLOBAL_PTR_DEFAULT 0x80007500
 
 // -------------------------------------------------------------
@@ -17,8 +16,6 @@
 
 Hardware::Machine::Machine() : cpu(*this), killed(false) {
 
-    cpu.accessRegister(Binary::SP).ui = 0x7ffffffc;
-    cpu.accessRegister(Binary::GP).ui = DATA_ENTRY; 
     coprocessors[0] = std::make_unique<SystemControlUnit>(*this);
     coprocessors[1] = std::make_unique<FloatingPointUnit>(*this);
     coprocessors[2] = nullptr;
@@ -30,36 +27,17 @@ void Hardware::Machine::raiseTrap(const Byte& exceptionCode) {
     SystemControlUnit* sys_ctrl = dynamic_cast<SystemControlUnit*>(coprocessors[0].get());  // if this errors, we can just get rid of it since all that happens is reg interaction
     
     sys_ctrl->setEPC( cpu.readProgramCounter() );
-    sys_ctrl->setEXL(true);
+    sys_ctrl->setEXL( true );
 
 
     sys_ctrl->setCause(exceptionCode);
 
-    cpu.accessProgramCounter() = (exceptionCode == 24 ? bootEntry : trapEntry);
-
-    // store trap frame on kernel stack
-    auto& ksp = sys_ctrl->accessRegister(K_SP).ui;
-    Word end = 34 * 4;  // all registers - $0 + EPC + STATUS + CAUSE
-    ksp -= end;
-
-    for (Byte i = 1; i < 32; ++i) RAM.setWord(ksp + ((i - 1) << 2), cpu.accessRegister(i).ui);
-
-    RAM.setWord(ksp + SP * 4, cpu.accessRegister(SP).ui);  // save user $sp
-    RAM.setWord(ksp + 31 * 4, sys_ctrl->readRegister(EPC).ui);
-    RAM.setWord(ksp + 32 * 4, sys_ctrl->readRegister(STATUS).ui);
-    RAM.setWord(ksp + 33 * 4, sys_ctrl->readRegister(CAUSE).ui);
-
-    cpu.accessRegister(K0).ui = ksp;  // store trap frame address in $k0
-    sys_ctrl->accessRegister(K_TF).ui = ksp;  // store in K_TF
-
-    cpu.accessRegister(SP).ui = sys_ctrl->accessRegister(K_SP).ui;  // switch to kernel stack
-    cpu.accessRegister(GP).ui = KERNEL_GLOBAL_PTR_DEFAULT;
+    cpu.accessProgramCounter() = trapEntry;
 
 }
 
 void Hardware::Machine::loadKernel(const ExternalInfo::KernelBootInformation& kernelInfo) {
     trapEntry = kernelInfo.trapEntry;
-    bootEntry = kernelInfo.bootEntry;
     Word at = KERNEL_TEXT_START;
     for (const auto& instr : kernelInfo.text) {
         RAM.setWord(at, instr);
@@ -72,11 +50,12 @@ void Hardware::Machine::loadKernel(const ExternalInfo::KernelBootInformation& ke
         ++at;
     }
 
-    coprocessors[0]->accessRegister(Binary::K_SP).ui = kernelInfo.kernelStackPointerAddr + KERNEL_STACK_OFFSET;
+    cpu.accessProgramCounter() = kernelInfo.bootEntry;
+    coprocessors[0]->accessRegister(Binary::STATUS).ui = 0b10;  // enable exl at boot <- has to be done by hardware
 
 }
 
-
+// effectively deprecated
 void Hardware::Machine::loadProgram(const std::vector<Word>& instructions, const std::vector<Byte>& bytes, const Word& entry) {
     // for right now, just load according to mips for no patricular reason
     // will figure out exact specifications later
@@ -91,9 +70,6 @@ void Hardware::Machine::loadProgram(const std::vector<Word>& instructions, const
         RAM.setByte(at, byte);
         ++at;
     }
-
-    cpu.accessProgramCounter() = entry - 4;
-    raiseTrap(24);  // boot
 
     // set memory bounds
 }

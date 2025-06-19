@@ -1,6 +1,7 @@
 #include "KInstructions.h"
 #include "../BinaryUtils.h"
 #include <iostream>
+#include <string>
 
 #define EXL_CHECK if (!checkEXL()) throw Hardware::Trap(Hardware::Trap::RI)
 
@@ -19,24 +20,7 @@ ExceptionReturn::ExceptionReturn(Hardware::Machine& machine) : KInstruction(mach
 
 void ExceptionReturn::run() { 
     EXL_CHECK; 
-    auto& spu = machine.accessCoprocessor(0);
-
-    machine.accessCPU().accessProgramCounter() = spu->readRegister(Binary::EPC).ui;
-    // don't need to flip exl bit, just restore the status with trap frame
-
-    // restore trap frame based on value in $k0
-    Word trapFramePointer = spu->accessRegister(Binary::K_TF).ui;
-
-    for (Byte i = 1; i < 32; ++i)
-        machine.accessCPU().accessRegister(i).ui = machine.readMemory().getWord(trapFramePointer + ((i - 1) << 2));
-
-    spu->accessRegister(Binary::EPC).ui = machine.readMemory().getWord(trapFramePointer + 31 * 4);
-    spu->accessRegister(Binary::STATUS).ui = machine.readMemory().getWord(trapFramePointer + 32 * 4);
-    spu->accessRegister(Binary::STATUS).ui &= ~Word(0b10);  // clear EXL
-    spu->accessRegister(Binary::CAUSE).ui = machine.readMemory().getWord(trapFramePointer + 33 * 4);
-
-    // restore user $sp (which was saved in the trap frame)
-    machine.accessCPU().accessRegister(Binary::SP).ui = machine.readMemory().getWord(trapFramePointer + Binary::SP * 4);
+    machine.accessCPU().accessProgramCounter() = machine.accessCoprocessor(0)->readRegister(Binary::EPC).ui;
 
 }
 
@@ -61,21 +45,49 @@ void VMTunnel::run() {
     Word res = 0;
     Word err = 0;
 
+
+    // todo: do some optimizations with the string inputs
     switch (req) {
-        case 1: // halt
+        case 1: // halt()
             machine.killed = true;
+
             break;
 
-        case 2: // print string
+        case 2: // printString(const char*)
             for (Word i = arg0; machine.readMemory().getByte(i) != '\0'; ++i) std::cout << machine.readMemory().getByte(i);
+
             break;
 
-        case 3: // print integer
+        case 3: // printInteger(int)
             std::cout << arg0;
+
             break;
         
-        case 4: // read integer
+        case 4: // readInteger()
             std::cin >> res;
+
+            break;
+
+        case 5: { // fopen(const char* pathname, uint flags) -- need to consider error handling
+            std::string filePath;
+            for (Word i = arg0; machine.readMemory().getByte(i) != '\0'; ++i) filePath.push_back( machine.readMemory().getByte(i) ); 
+            res = machine.accessFileSystem().open(filePath, arg1);
+
+            break;
+        }
+        case 6: { // fread(int fd, char* buf, int nbytes)
+            auto bytes = machine.accessFileSystem()[arg0]->read(arg2);
+            for (Word i = 0; i < bytes.size(); ++i) machine.accessMemory().setByte(arg1 + i, bytes[i]);
+
+            break;
+        }
+        case 7: // fwrite
+
+        case 8: // fseek
+
+        case 9: // fclose(int fd)
+            machine.accessFileSystem().close(arg0);
+
             break;
         default:
             break;

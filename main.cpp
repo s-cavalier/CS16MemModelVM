@@ -48,7 +48,6 @@ int main(int argc, char** argv) {
     Hardware::Machine machine;
 
     machine.loadKernel( kernel.kernelInfo );
-    machine.loadProgram(exe->readText(), exe->readData(), exe->readEntry());
 
     machine.run(DBGHOOK((
         makeConditionalCombinedHook<focusKernel, printRegs, printInstr>()

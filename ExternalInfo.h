@@ -19,7 +19,8 @@ namespace ExternalInfo {
         std::vector<Byte> data;
         Word bootEntry;
         Word trapEntry;
-        Word kernelStackPointerAddr;
+        Word argc;
+        Word argv;
     };
 }
 

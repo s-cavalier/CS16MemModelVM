@@ -2,8 +2,6 @@
 #include "ASMInterface.h"
 // --- These should be the first includes, especially HeapManager so everything after is correctly linked with the new operator
 
-#include "kstl/Array.h"
-
 // -- Stack Init --
 
 #define K_STACK_SIZE 16384
@@ -16,6 +14,9 @@ char* k_sp = kernel_stack + K_STACK_SIZE;
 // -- Nice Utility --
 unsigned int newline = (unsigned int)("\n");
 
+// -- Command Line Args --
+unsigned int argc;
+char argv[10][20]; // 10 total arguments of length 20 (not including filename - this is the kernel not a user process)
 
 // -- Init Array --
 extern "C" {
@@ -36,21 +37,7 @@ extern "C" void cppmain() {
     call_global_constructors();
     PrintString("Kernel booted!\n");
 
-    kernel::VMPackage filePkg("disk", kernel::O_RDONLY, kernel::FREAD);
-    ministl::array<char, 11> buf;
-    
-    // -- Place span --
-    filePkg.args.fread.buffer = (unsigned int)buf.data();
-    filePkg.args.fread.nbytes = buf.capacity();
-    filePkg.send();
-
-    buf[buf.capacity() - 1] = '\0';
-
-    // -- Close file --
-    filePkg.reqType = kernel::FCLOSE;
-    filePkg.send();
-
-    PrintString(buf.data());
+    for (unsigned int i = 0; i < argc; ++i) PrintString(argv[i]);
 
     return;
 }

@@ -5,6 +5,7 @@
 #include "../ExternalInfo.h"
 #include <unordered_map>
 #include <array>
+#include <string>
 
 
 // TODO: Implement memory access guards
@@ -45,7 +46,7 @@ namespace Hardware {
         void raiseTrap(const Byte& exceptionCode);
         bool killed;
 
-        void loadKernel(const ExternalInfo::KernelBootInformation& kernelInfo);
+        void loadKernel(const ExternalInfo::KernelBootInformation& kernelInfo, const std::vector<std::string>& kernelArguments);
         void loadProgram(const std::vector<Word>& instructions, const std::vector<Byte>& bytes, const Word& entry);
 
         void step();

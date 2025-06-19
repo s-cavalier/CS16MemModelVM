@@ -1,8 +1,6 @@
 #include "Hardware.h"
 #include "BinaryUtils.h"
 #include "instructions/Instruction.h"
-#include <iostream>
-#include <iomanip>
 
 #define DATA_ENTRY 0x10008000
 #define TEXT_START 0x00400024
@@ -36,7 +34,7 @@ void Hardware::Machine::raiseTrap(const Byte& exceptionCode) {
 
 }
 
-void Hardware::Machine::loadKernel(const ExternalInfo::KernelBootInformation& kernelInfo) {
+void Hardware::Machine::loadKernel(const ExternalInfo::KernelBootInformation& kernelInfo, const std::vector<std::string>& kernelArgs) {
     trapEntry = kernelInfo.trapEntry;
     Word at = KERNEL_TEXT_START;
     for (const auto& instr : kernelInfo.text) {
@@ -48,6 +46,13 @@ void Hardware::Machine::loadKernel(const ExternalInfo::KernelBootInformation& ke
     for (const auto& byte : kernelInfo.data) {
         RAM.setByte(at, byte);
         ++at;
+    }
+
+    RAM.setWord(kernelInfo.argc, kernelArgs.size());
+
+    for (Word i = 0; i < kernelArgs.size(); ++i) {
+        Word indirectPtr = kernelInfo.argv + 20 * i;    // argv[i] = *(argv + i)
+        for (Word j = 0; j < kernelArgs[i].size(); ++j) RAM.setByte(indirectPtr + j, kernelArgs[i][j]); // argv[i][j]
     }
 
     cpu.accessProgramCounter() = kernelInfo.bootEntry;

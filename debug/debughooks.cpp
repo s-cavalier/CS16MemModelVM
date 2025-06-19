@@ -28,6 +28,17 @@ bool focusKernel(const Hardware::Machine& machine) { return (machine.readCoproce
 #define HOOK_TEMPLATE(func_name) void func_name (const Hardware::Machine& machine)
 // print all written memory above this addr
 
+// only read memory within [lower, upper]
+template <unsigned int lower, unsigned int upper>
+HOOK_TEMPLATE(memorySection) {
+    DBG_OUT << "Printing memory section in region [" << lower << ", " << upper << "]:\n";
+    for (const auto& kv : machine.readMemory()) {
+        if (kv.first < lower || kv.first > upper) continue;
+        DBG_OUT << kv.first << "=" << Word(kv.second) << ',';
+    }
+    DBG_OUT << DBG_END;
+}
+
 HOOK_TEMPLATE(memoryAccess) {
     Word instr = machine.readMemory().getWord( machine.readCPU().readProgramCounter() );
     Binary::Opcode opcode = Binary::Opcode((instr >> 26) & 0b111111);

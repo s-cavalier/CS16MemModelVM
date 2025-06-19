@@ -120,8 +120,11 @@ FileLoader::KernelLoader::KernelLoader(const std::string& path) : _bad(false) {
                     if (name == "kernel_trap") {
                         kernelInfo.trapEntry = static_cast<Word>(value);
                     }
-                    if (name == "kernel_stack") {
-                        kernelInfo.kernelStackPointerAddr = static_cast<Word>(value);
+                    if (name == "argc") {
+                        kernelInfo.argc = static_cast<Word>(value);
+                    }
+                    if (name == "argv") {
+                        kernelInfo.argv = static_cast<Word>(value);
                     }
                 }
             }

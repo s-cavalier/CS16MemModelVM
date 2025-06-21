@@ -84,8 +84,12 @@ void VMTunnel::run() {
         }
         case 7: // fwrite
 
-        case 8: // fseek
-
+        case 8: {// fseek(int fd, uint offset, int whence)
+            auto& file = machine.accessFileSystem()[arg0];
+            res = file->seek(arg1, arg2);
+            err = file->error();
+            break;
+        }
         case 9: // fclose(int fd)
             machine.accessFileSystem().close(arg0);
 

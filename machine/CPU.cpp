@@ -75,6 +75,7 @@ std::unique_ptr<Hardware::Instruction> Hardware::CPU::decode(const Word& binary_
             R_VAR_INIT(OR, Or);
             R_VAR_INIT(SLT, SetLessThan);
             R_VAR_INIT(SLTU, SetLessThanUnsigned);
+            R_VAR_INIT(MOVN, MoveOnNotZero);
             R_SHFT_INIT(SLL, ShiftLeftLogical);
             R_SHFT_INIT(SRL, ShiftRightLogical);
             R_SHFT_INIT(SRA, ShiftRightArithmetic);
@@ -118,6 +119,9 @@ std::unique_ptr<Hardware::Instruction> Hardware::CPU::decode(const Word& binary_
         I_MEM_INIT(SB, StoreByte);
         I_MEM_INIT(LBU, LoadByteUnsigned);
         I_MEM_INIT(LB, LoadByte);
+        I_MEM_INIT(LHU, LoadHalfwordUnsigned);
+        I_MEM_INIT(LH, LoadHalfword);
+        I_MEM_INIT(SH, StoreHalfword);
         I_BRANCH_INIT(BEQ, BranchOnEqual);
         I_BRANCH_INIT(BNE, BranchOnNotEqual);
         FPMEM_INIT(LWC1, LoadFPSingle);

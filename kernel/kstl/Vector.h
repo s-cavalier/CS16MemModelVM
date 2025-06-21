@@ -64,12 +64,47 @@ namespace ministl {
         void reserve(size_t new_capacity) {
             if (new_capacity <= _capacity) return;
 
-            unique_ptr<T[]> new_storage(new T[new_capacity]);
+            // Allocate new array with default-constructed elements
+            ministl::unique_ptr<T[]> new_storage(new T[new_capacity]);
+            T* old_data = storage.get();
+            T* new_data = new_storage.get();
+
+            // Move-construct over first _size slots
             for (size_t i = 0; i < _size; ++i) {
-                new_storage[i] = ministl::move(storage[i]);
+                // Destroy the default-constructed new element
+                new_data[i].~T();
+                // Placement-new move-construct from old
+                new (new_data + i) T(ministl::move(old_data[i]));
+                // Destroy old element
+                old_data[i].~T();
             }
+
+            // Replace storage
             storage = ministl::move(new_storage);
             _capacity = new_capacity;
+        }
+
+        void resize(size_t newSize) {
+            // Access raw pointer from unique_ptr
+            T* data = storage.get();
+
+            if (newSize < _size) {
+                // Destroy elements beyond newSize
+                for (size_t i = newSize; i < _size; ++i) {
+                    data[i].~T();
+                }
+            } else if (newSize > _size) {
+                // Ensure capacity (reserve uses move construction, no memcpy)
+                if (newSize > _capacity) {
+                    reserve(newSize);
+                    data = storage.get(); // raw pointer might change
+                }
+                // Default-construct new elements in-place
+                for (size_t i = _size; i < newSize; ++i) {
+                    new (data + i) T();
+                }
+            }
+            _size = newSize;
         }
 
         vector(const vector& other)

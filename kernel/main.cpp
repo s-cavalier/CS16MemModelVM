@@ -2,7 +2,7 @@
 #include "Process.h"
 // --- These should be the first includes, especially HeapManager so everything after is correctly linked with the new operator
 
-#include "kstl/Error.h"
+#include "kstl/File.h"
 
 // -- Stack Init --
 
@@ -45,9 +45,7 @@ extern "C" void cppmain() {
     call_global_constructors();
     PrintString("Kernel booted!\n");
 
-    assert(argc > 1);
-
-    userprog = new kernel::PCB("tests/asm/spimbin/printint");
+    userprog = new kernel::PCB("programs/fibonnaci/fib.elf");
     userprog->run();
 
     return;

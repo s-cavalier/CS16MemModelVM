@@ -45,6 +45,7 @@ namespace Binary {
 
     enum Funct : unsigned char {
         SYSCALL = 0xc,      //
+        MOVN = 0xb,
         BREAK = 0xd,
         ERET = 0x18,
 

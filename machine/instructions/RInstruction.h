@@ -63,6 +63,7 @@ R_VAR_INSTR(SubtractUnsigned);
 R_VAR_INSTR(ShiftLeftLogicalVariable);
 R_VAR_INSTR(ShiftRightLogicalVariable);
 R_VAR_INSTR(ShiftRightArithmeticVariable);
+R_VAR_INSTR(MoveOnNotZero);
 
 // ------------------------------
 // R Shift Instruction Prototypes

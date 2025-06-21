@@ -18,7 +18,7 @@ namespace kernel {
         ProcessState state;
         TrapFrame trapFrame; // maybe just use a pointer?
         
-        PCB(const char* binaryFile);
+        PCB(const char* binaryFile, bool fromSpim = false);
 
         void run();
     };

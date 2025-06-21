@@ -4,6 +4,8 @@
 
 namespace ministl {
 
+    bool streq(const char* l, const char* r);
+
     // rework later
     
     class string {

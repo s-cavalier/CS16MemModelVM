@@ -29,6 +29,7 @@ namespace Hardware {
         OpenFile(const std::string& filePath, Word flags);
 
         std::vector<Byte> read(Word count);
+        Word seek(Word offset, int whence);
         inline Word error() const { return err; }
 
         ~OpenFile();

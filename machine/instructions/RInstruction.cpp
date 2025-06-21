@@ -18,6 +18,7 @@ R_VAR_CONSTRCTR_INIT(SubtractUnsigned) { rd = Word(rs) - Word(rt); }
 R_VAR_CONSTRCTR_INIT(ShiftLeftLogicalVariable) { rd = rt << Word(rs); }
 R_VAR_CONSTRCTR_INIT(ShiftRightLogicalVariable) { rd = Word(rt) >> Word(rs); }
 R_VAR_CONSTRCTR_INIT(ShiftRightArithmeticVariable) { rd = rt >> Word(rs); }
+R_VAR_CONSTRCTR_INIT(MoveOnNotZero) { if (rt) rd = rs; }
 
 #define R_SHFT_CONSTRCTR_INIT(x) x::x(R_SHFT_INSTR_ARGS) : RShiftInstruction(rd, rt, shamt) {} void x::run()
 R_SHFT_CONSTRCTR_INIT(ShiftLeftLogical) { rd = rt << shamt; }

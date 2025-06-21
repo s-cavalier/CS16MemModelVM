@@ -44,9 +44,9 @@ int main(int argc, char** argv) {
 
     // -- Setup and run machine --
     Hardware::Machine machine;
-    machine.loadKernel( kernel.kernelInfo, kernelArgs);
+    machine.loadKernel( kernel.kernelInfo, kernelArgs );
     machine.run(DBGHOOK((
-        makeCombinedHook<printRegs, printInstr>()
+        makeCombinedHook<printInstr>()
     )));
 
     return 0;

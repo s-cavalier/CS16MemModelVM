@@ -26,6 +26,12 @@ std::vector<Byte> Hardware::OpenFile::read(Word count) {
     return buffer;
 }
 
+Word Hardware::OpenFile::seek(Word offset, int whence) {
+    Word bytesFromOffset = lseek(fd, offset, whence);
+    if (bytesFromOffset == Word(-1)) err = errno;
+    return bytesFromOffset;
+}
+
 Hardware::OpenFile::~OpenFile() {
     assert((close(fd) == 0) && "Recieved an error on fileclose"); // should be a valid file
 }

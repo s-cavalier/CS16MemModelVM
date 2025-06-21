@@ -4,6 +4,7 @@
 
 #include "kstl/File.h"
 #include "kstl/String.h"
+#include "kstl/Bitmap.h"
 
 // -- Stack Init --
 
@@ -36,17 +37,18 @@ void call_global_constructors() {
 
 kernel::PCB* userprog;
 
+
 extern "C" void cppmain() {
     // just eret assuming that EPC already has the right PC loaded
     call_global_constructors();
     PrintString("Kernel booted!\n");
-
+    
     bool fromSpim = (argc > 1 && ministl::streq(argv[1], "-spim"));
 
     userprog = new kernel::PCB(argv[0], fromSpim);
     userprog->run();
 
-    return;
+    return; // this return kills the system, so hopefully it doesn't run
 }
 
 extern "C" void handleTrap() {

@@ -10,8 +10,8 @@ main:
 
     la $t0, k_sp                # t0 = &k_sp (double ptr)
     lw $sp, 0($t0)              # sp = *(&k_sp) = *($t0)
-    la $t0, __global_pointer    # t0 = &__gp (double ptr)
-    lw $gp, 0($t0)              # gp = *(&__gp) = *($t0)
+    # la $t0, __global_pointer    # t0 = &__gp (double ptr)
+    # lw $gp, 0($t0)              # gp = *(&__gp) = *($t0)
 
     jal cppmain
 

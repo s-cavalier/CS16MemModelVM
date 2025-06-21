@@ -2,6 +2,11 @@
 #define M__ERROR_H__
 #include "../ASMInterface.h"
 
+namespace ministl {
+    using size_t = unsigned int;
+}
+
+
 typedef decltype(sizeof(0)) size_t;
 
 inline void assert_fail(const char* cond, const char* file, int line, const char* func) {    

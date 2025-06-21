@@ -12,9 +12,6 @@
 
 #define DATA_ENTRY 0x10008000
 #define TEXT_START 0x00400024
-#define KERNEL_TEXT_START 0x80000000
-#define KERNEL_DATA_ENTRY 0x80005000
-#define KERNEL_GLOBAL_PTR_DEFAULT 0x80007500
 
 // -------------------------------------------------------------
 // Hardware Emulation
@@ -44,13 +41,14 @@ void Hardware::Machine::raiseTrap(const Byte& exceptionCode) {
 
 void Hardware::Machine::loadKernel(const ExternalInfo::KernelBootInformation& kernelInfo, const std::vector<std::string>& kernelArgs) {
     trapEntry = kernelInfo.trapEntry;
-    Word at = KERNEL_TEXT_START;
+    Word at = kernelInfo.textStart;
+
     for (const auto& instr : kernelInfo.text) {
         RAM.setWord(at, instr);
         at += 4;
     }
 
-    at = KERNEL_DATA_ENTRY;
+    at = kernelInfo.dataStart;
     for (const auto& byte : kernelInfo.data) {
         RAM.setByte(at, byte);
         ++at;

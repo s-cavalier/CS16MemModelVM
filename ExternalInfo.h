@@ -21,6 +21,8 @@ namespace ExternalInfo {
         Word trapEntry;
         Word argc;
         Word argv;
+        Word textStart;
+        Word dataStart;
     };
 }
 

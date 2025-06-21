@@ -1,5 +1,5 @@
 ENTRY(main)
-__global_pointer = 0x80007500;
+
 
 SECTIONS
 {
@@ -11,21 +11,28 @@ SECTIONS
         _etext = .;
     }
 
-    .data 0x80005000 :
+    . = ALIGN(8);
+
+/* consider adding small data section */
+
+    . = ALIGN(4);
+
+    .data :
     {
         _data_start = .;
 
         __init_array_start = .;
-        KEEP (*(SORT(.init_array.*)))
-        KEEP (*(.init_array))
+          KEEP(*(SORT(.init_array.*)))
+          KEEP(*(.init_array))
         __init_array_end = .;
-
 
         *(.data*)
         _edata = .;
     }
 
-    .bss  0x80005500 :
+    . = ALIGN(4);
+
+    .bss (NOLOAD) :
     {
         _bss_start = .;
         *(.bss*)

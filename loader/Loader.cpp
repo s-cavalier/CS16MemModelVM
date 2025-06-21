@@ -120,10 +120,10 @@ FileLoader::KernelLoader::KernelLoader(const std::string& path) : _bad(false) {
                     if (name == "kernel_trap") {
                         kernelInfo.trapEntry = static_cast<Word>(value);
                     }
-                    if (name == "argc") {
+                    else if (name == "argc") {
                         kernelInfo.argc = static_cast<Word>(value);
                     }
-                    if (name == "argv") {
+                    else if (name == "argv") {
                         kernelInfo.argv = static_cast<Word>(value);
                     }
                 }
@@ -139,6 +139,8 @@ FileLoader::KernelLoader::KernelLoader(const std::string& path) : _bad(false) {
         std::size_t       sz    = text_sec->get_size();
         std::size_t       count = sz / sizeof(unsigned int);
         kernelInfo.text.reserve(count);
+
+        kernelInfo.textStart = static_cast<Word>(text_sec->get_address());
 
         for (std::size_t i = 0; i < count; ++i) {
             const unsigned char* p = reinterpret_cast<const unsigned char*>(bytes + i * sizeof(unsigned int));
@@ -165,6 +167,8 @@ FileLoader::KernelLoader::KernelLoader(const std::string& path) : _bad(false) {
     if (data_sec) {
         const char*       bytes = data_sec->get_data();
         std::size_t       sz    = data_sec->get_size();
+
+        kernelInfo.dataStart = static_cast<Word>(data_sec->get_address());
         
         kernelInfo.data.assign(
             reinterpret_cast<const unsigned char*>(bytes),

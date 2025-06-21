@@ -3,6 +3,19 @@
 #include "ASMInterface.h"
 
 namespace kernel {
+    extern "C" char _end[];
+
+    class MemoryManager {
+
+    public:
+        MemoryManager();
+
+        static MemoryManager& instance() {
+            static MemoryManager inst;
+            return inst;
+        }
+
+    };
 
     enum ProcessState : uint32_t {
         READY,

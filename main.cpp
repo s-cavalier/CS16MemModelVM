@@ -26,7 +26,9 @@ int main(int argc, char** argv) {
     }
     ios_base::sync_with_stdio(false);
 
-    std::vector<std::string> kernelArgs(argc - 1);
+    std::vector<std::string> kernelArgs;
+    kernelArgs.reserve(argc - 1);
+
     for (int i = 1; i < argc; ++i) kernelArgs.push_back(argv[i]);
 
     // -- Setup debugging if enabled --

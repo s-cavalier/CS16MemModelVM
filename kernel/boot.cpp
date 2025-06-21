@@ -3,6 +3,7 @@
 // --- These should be the first includes, especially HeapManager so everything after is correctly linked with the new operator
 
 #include "kstl/File.h"
+#include "kstl/String.h"
 
 // -- Stack Init --
 
@@ -18,7 +19,7 @@ unsigned int newline = (unsigned int)("\n");
 
 // -- Command Line Args --
 unsigned int argc;
-char argv[10][20]; // 10 total arguments of length 20 (not including filename - this is the kernel not a user process)
+char argv[4][64]; // 4 args of length 64 (total 256 chars) not including prog name (this is the kernel not a user process, the name is always kernel.elf)
 
 // -- Init Array --
 extern "C" {
@@ -33,11 +34,6 @@ void call_global_constructors() {
     }
 }
 
-extern "C" void printInteger(unsigned int num) {
-    PrintInteger(num);
-}
-
-
 kernel::PCB* userprog;
 
 extern "C" void cppmain() {
@@ -45,7 +41,9 @@ extern "C" void cppmain() {
     call_global_constructors();
     PrintString("Kernel booted!\n");
 
-    userprog = new kernel::PCB("programs/fibonnaci/fib.elf");
+    bool fromSpim = (argc > 1 && ministl::streq(argv[1], "-spim"));
+
+    userprog = new kernel::PCB(argv[0], fromSpim);
     userprog->run();
 
     return;

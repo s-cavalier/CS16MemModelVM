@@ -2,6 +2,14 @@
 #include "BinaryUtils.h"
 #include "instructions/Instruction.h"
 
+#ifdef DEBUG
+    #include <iostream>
+    #include <iomanip>
+    #define debug(x) x
+#else
+    #define debug(x)
+#endif
+
 #define DATA_ENTRY 0x10008000
 #define TEXT_START 0x00400024
 #define KERNEL_TEXT_START 0x80000000
@@ -51,7 +59,7 @@ void Hardware::Machine::loadKernel(const ExternalInfo::KernelBootInformation& ke
     RAM.setWord(kernelInfo.argc, kernelArgs.size());
 
     for (Word i = 0; i < kernelArgs.size(); ++i) {
-        Word indirectPtr = kernelInfo.argv + 20 * i;    // argv[i] = *(argv + i)
+        Word indirectPtr = kernelInfo.argv + 64 * i;    // argv[i] = *(argv + i)
         for (Word j = 0; j < kernelArgs[i].size(); ++j) RAM.setByte(indirectPtr + j, kernelArgs[i][j]); // argv[i][j]
     }
 

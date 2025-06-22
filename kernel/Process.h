@@ -1,11 +1,17 @@
 #ifndef __PROCESS_H__
 #define __PROCESS_H__
 #include "ASMInterface.h"
+#include "kstl/Bitset.h"
 
 namespace kernel {
-    extern "C" char _end[];
+    
+    size_t constexpr MEM_AVAIL = 256 * 1024 * 1024;
+    size_t constexpr PAGE_SIZE = 4096;
+    size_t constexpr NUM_PAGES = MEM_AVAIL / PAGE_SIZE;
 
     class MemoryManager {
+        ministl::bitset<NUM_PAGES> freePages;
+        size_t kernelReservedBoundary;
 
     public:
         MemoryManager();
@@ -15,6 +21,8 @@ namespace kernel {
             return inst;
         }
 
+        size_t reserveFreeFrame();
+        size_t freeFrame();
     };
 
     enum ProcessState : uint32_t {

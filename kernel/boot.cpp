@@ -11,8 +11,7 @@
 
 __attribute__((aligned(K_STACK_SIZE)))
 char kernel_stack[K_STACK_SIZE];
-
-char* k_sp = kernel_stack + K_STACK_SIZE;
+extern "C" char* const top_kstack = kernel_stack + K_STACK_SIZE; // don't want the pointer to be mutable, but the values within can be mutable
 
 // -- Nice Utility --
 unsigned int newline = (unsigned int)("\n");
@@ -34,39 +33,57 @@ void call_global_constructors() {
     }
 }
 
-kernel::PCB* userprog;
+kernel::PCB* currentThread;
+// Current thread. When handleTrap returns, run_process(currentThread->regCtx) gets called.
 
-extern "C" void cppmain() {
+extern "C" void run_process(kernel::RegisterContext& context); 
+// Asmglue function. It will set up the registers based on the context reference, which is enough to run a thread.
+// Using this has no guarantee of return (in fact, it probably won't ever return) and will likely corrupt the stack if it did.
+// This is fine in the cppmain function because we don't care about it's stack or running anything after running the init process.
+// However, this should be reserved for asmglue.
+
+unsigned char exceptionDepth = 1; // asmglue.asm will handle this
+
+extern "C" __attribute__((noreturn)) void cppmain() {
     // just eret assuming that EPC already has the right PC loaded
     call_global_constructors();
     PrintString("Kernel booted!\n");
 
     bool fromSpim = (argc > 1 && ministl::streq(argv[1], "-spim"));
 
-    userprog = new kernel::PCB(argv[0], fromSpim);
-    userprog->run();
+    currentThread = new kernel::PCB(argv[0], fromSpim);
 
-    return; // this return kills the system, so hopefully it doesn't run
+    exceptionDepth -= 1;
+    run_process(currentThread->regCtx);
+
+    //  return here kills the system, so hopefully it doesn't run
 }
 
+
+// Called from handle_trap in asmglue.asm. Calls run_process(currentThread->ctx) on exit.
 extern "C" void handleTrap() {
+    assert(currentThread);
+    kernel::RegisterContext* trapCtx = (kernel::RegisterContext*)kernel::getK0Register();
+    // The register context of the trapping thread is saved to k0. We need to use this context on the stack in case of >1 nested exceptions.
 
-    kernel::TrapFrame* trapFrame = kernel::loadTrapFrame();
+    kernel::PCB* oldThread = currentThread;                                     // save oldThread
+    currentThread = &kernel::PCB::kernel();                                     // set currentThread to kernel PCB
 
-    unsigned int cause = trapFrame->cause >> 2; // need to consider interrupt mask later
+    unsigned int cause = trapCtx->cause >> 2; // need to consider interrupt mask later
 
     switch (cause) {
         case 8: {
-            switch ( trapFrame->v0 ) { 
+            switch ( trapCtx->accessRegister(kernel::V0) ) { 
                 case 1:
-                    PrintInteger( trapFrame->a0 );
+                    PrintInteger( trapCtx->accessRegister(kernel::A0) );
                     break;  //shoudn't hit here
                 case 4:
-                    PrintString( trapFrame->a0 );
+                    PrintString( trapCtx->accessRegister(kernel::A0) );
                     break;
                 case 5:
-                    trapFrame->v0 = ReadInteger.res;
+                    trapCtx->accessRegister(kernel::V0) = ReadInteger.res;
                     break;
+    
                 case 10: {
                     Halt;
                     break;
@@ -75,11 +92,12 @@ extern "C" void handleTrap() {
                     PrintString("[KERNEL] Unrecognized syscall code. Returning without doing anything.\n");
                     break;
             }
-            return;
+            
+            break;
         }
         case 10:
             PrintString("[KERNEL] Attempted privilieged instruction outside of kernel. Killing process...\n");
-            PrintInteger( (unsigned int)(trapFrame->epc) );
+            PrintInteger( trapCtx->epc );
             Halt;
             break;
         case 12:
@@ -92,5 +110,6 @@ extern "C" void handleTrap() {
             PrintString(newline);
     }
 
-    Halt;
+    currentThread = oldThread;
+    currentThread->regCtx = *trapCtx; // Save the registers to the current thread so asmglue can restore it later
 }

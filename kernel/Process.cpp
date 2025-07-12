@@ -20,19 +20,18 @@ size_t kernel::MemoryManager::reserveFreeFrame() {
     assert(frame != size_t(-1)); // ran out of pages
 }
 
-
-extern "C" void run_process(kernel::TrapFrame& trapFrame);
+kernel::PCB::PCB() : PID(0), state(RUNNING) {}
 
 kernel::PCB::PCB(const char* binaryFile, bool fromSpim) : PID(1), state(READY) {
     // init non-zero regs
-    trapFrame.sp  = 0x7ffffffc;
-    trapFrame.gp  = 0x10008000;
+    regCtx.accessRegister(kernel::SP)  = 0x7ffffffc;
+    regCtx.accessRegister(kernel::GP)  = 0x10008000;
 
     // write the binary into memory, will have to replace this with ELF handling later on
 
     if (fromSpim) {
-        trapFrame.epc = 0x00400020; // will implicitly gain a +4
-        char* placeFile = (char*)(trapFrame.epc + 4);
+        regCtx.epc = 0x00400020; // will implicitly gain a +4
+        char* placeFile = (char*)(regCtx.epc + 4);
 
         ministl::vector<char> bytes;
         File file(binaryFile, O_RDONLY);
@@ -97,9 +96,5 @@ kernel::PCB::PCB(const char* binaryFile, bool fromSpim) : PID(1), state(READY) {
     placeFile = (char*)0x10008000;
     for (uint32_t i = 0; i < dataSection.size(); ++i) placeFile[i] = dataSection[i];
 
-    trapFrame.epc = info.entry - 4;
-}
-
-void kernel::PCB::run() {
-    run_process(trapFrame);
+    regCtx.epc = info.entry - 4;
 }

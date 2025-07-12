@@ -112,6 +112,15 @@ struct Syscall : public Hardware::Instruction {
     void run();
 };
 
+class TrapIfEqual : public Hardware::Instruction {
+    const int& rs;
+    const int& rt;
+
+public:
+    TrapIfEqual(const int& rs, const int& rt);
+    void run();
+};
+
 // -----
 // No-Op
 // -----
@@ -119,5 +128,8 @@ struct NoOp : public Hardware::Instruction {
     inline void run() {}
 };
 
+struct Sync : public Hardware::Instruction {
+    inline void run() {}
+}; // needs impl when making multi-core systems
 
 #endif

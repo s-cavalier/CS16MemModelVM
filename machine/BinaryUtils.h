@@ -45,9 +45,12 @@ namespace Binary {
 
     enum Funct : unsigned char {
         SYSCALL = 0xc,      //
+        SYNC = 0xf,
         MOVN = 0xb,
         BREAK = 0xd,
         ERET = 0x18,
+
+        TEQ = 0x34,
 
         // CUSTOM INSTR
         VMTUNNEL = 0x3f,

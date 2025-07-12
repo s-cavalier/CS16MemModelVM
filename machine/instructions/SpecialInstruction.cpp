@@ -35,5 +35,8 @@ HL_OP_CNSTCTR_INIT(MultiplyUnsigned) { DoubleWord res = Word(rs) * Word(rt); hiL
 HL_OP_CNSTCTR_INIT(Divide) { hiLo.hi = rs % rt; hiLo.lo = rs / rt; }
 HL_OP_CNSTCTR_INIT(DivideUnsigned) { hiLo.hi = Word(rs) % Word(rt); hiLo.lo = Word(rs) / Word(rt); }
 
+TrapIfEqual::TrapIfEqual(const int& rs, const int& rt) : rs(rs), rt(rt) {}
+void TrapIfEqual::run() { if (rs == rt) throw Hardware::Trap(Hardware::Trap::TRAP); }
+
 Syscall::Syscall() {}
 void Syscall::run() { throw Hardware::Trap(Hardware::Trap::SYSCALL); }

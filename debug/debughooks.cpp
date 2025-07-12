@@ -39,6 +39,10 @@ HOOK_TEMPLATE(memorySection) {
     DBG_OUT << DBG_END;
 }
 
+HOOK_TEMPLATE(printEPC) {
+    DBG_OUT << std::hex << machine.readCoprocessor(0)->readRegister(Binary::EPC).ui << std::dec << DBG_END;
+}
+
 HOOK_TEMPLATE(memoryAccess) {
     Word instr = machine.readMemory().getWord( machine.readCPU().readProgramCounter() );
     Binary::Opcode opcode = Binary::Opcode((instr >> 26) & 0b111111);

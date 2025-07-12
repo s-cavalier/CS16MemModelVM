@@ -1,5 +1,21 @@
 #include "ASMInterface.h"
 
+kernel::RegisterContext::RegisterContext() : regs{0}, epc(0), status(0), cause(0) {}
+kernel::RegisterContext::RegisterContext(const RegisterContext& other) : epc(other.epc), status(other.status), cause(other.cause) {
+    for (unsigned char i = 0; i < 31; ++i) regs[i] = other.regs[i];
+}
+
+kernel::RegisterContext& kernel::RegisterContext::operator=(const RegisterContext& other) {
+    if (this == &other) return *this;
+    epc = other.epc;
+    status = other.status;
+    cause = other.cause;
+
+    for (unsigned char i = 0; i < 31; ++i) regs[i] = other.regs[i];
+    
+    return *this;
+}
+
 kernel::VMPackage::VMPackage(const char* filePath, uint32_t fileFlags, VMRequestType openType) {
     reqType = FOPEN;
     args.fopen.path = (uint32_t)filePath;
@@ -24,11 +40,6 @@ kernel::VMResponse kernel::VMPackage::send() const {
     );
 
     return res;
-}
-
-kernel::TrapFrame* kernel::loadTrapFrame() {
-    TrapFrame* ptr = (TrapFrame*)( (unsigned int)( kernel::getK0Register() ) );
-    return ptr;
 }
 
 int kernel::getK0Register() {

@@ -6,49 +6,6 @@
 namespace kernel {
     using uint32_t = unsigned int;
 
-    struct TrapFrame {
-        unsigned int at = 0;
-        unsigned int v0 = 0;
-        unsigned int v1 = 0;
-        unsigned int a0 = 0;
-        unsigned int a1 = 0;
-        unsigned int a2 = 0;
-        unsigned int a3 = 0;
-
-        unsigned int t0 = 0;
-        unsigned int t1 = 0;
-        unsigned int t2 = 0; 
-        unsigned int t3 = 0; 
-        unsigned int t4 = 0; 
-        unsigned int t5 = 0; 
-        unsigned int t6 = 0; 
-        unsigned int t7 = 0; 
-
-        unsigned int s0 = 0; 
-        unsigned int s1 = 0; 
-        unsigned int s2 = 0; 
-        unsigned int s3 = 0; 
-        unsigned int s4 = 0; 
-        unsigned int s5 = 0; 
-        unsigned int s6 = 0; 
-        unsigned int s7 = 0; 
-
-        unsigned int t8 = 0; 
-        unsigned int t9 = 0; 
-
-        unsigned int k0 = 0;    
-        unsigned int k1 = 0;    
-        unsigned int gp = 0; 
-        unsigned int sp = 0;    
-        unsigned int fp = 0; 
-        unsigned int ra = 0; 
-
-        unsigned int epc = 0;
-        unsigned int status = 0;
-        unsigned int cause = 0;
-
-    };
-
     enum Register : unsigned char {
         ZERO = 0,
         AT = 1,
@@ -82,6 +39,23 @@ namespace kernel {
         SP = 29,
         FP = 30,
         RA = 31
+    };
+
+
+    class RegisterContext {
+        uint32_t regs[31]; // doesn't include $zero
+    
+    public:
+        uint32_t epc;
+        uint32_t status;
+        uint32_t cause;
+    
+        uint32_t& accessRegister(Register reg) { return regs[reg - 1]; }
+
+        RegisterContext();
+        RegisterContext(const RegisterContext& other);              // copy and assignment to manage the regs ptr properly
+        RegisterContext& operator=(const RegisterContext& other);
+
     };
     
     enum VMRequestType : uint32_t {
@@ -126,6 +100,7 @@ namespace kernel {
             struct { uint32_t fd; } fclose;
         } args;
 
+
         // No-args request
         VMPackage(VMRequestType reqType) : reqType(reqType) {}
 
@@ -138,9 +113,6 @@ namespace kernel {
         VMResponse send() const;
 
     };
-
-    // frame needs to be manually loaded
-    TrapFrame* loadTrapFrame();
 
     int getK0Register();
     int getK1Register();

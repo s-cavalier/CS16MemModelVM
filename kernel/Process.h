@@ -33,15 +33,23 @@ namespace kernel {
     };
 
     class PCB {
+    public:
+        RegisterContext regCtx;
+
+    private:
         uint32_t PID;
+
+        PCB();  // private PCB constctr for kernel
 
     public:
         ProcessState state;
-        TrapFrame trapFrame; // maybe just use a pointer?
-        
+
         PCB(const char* binaryFile, bool fromSpim = false);
 
-        void run();
+        static PCB& kernel() {
+            static PCB kpcb;
+            return kpcb;
+        }
     };
 
 

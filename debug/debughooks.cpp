@@ -59,7 +59,7 @@ HOOK_TEMPLATE(memoryAccess) {
 
 HOOK_TEMPLATE(printInstr) {
     const Word& pc = machine.readCPU().readProgramCounter();
-    DBG_OUT << "Reading instruction 0x"<< std::hex << std::setw(8) << std::setfill('0') << machine.readMemory().getWord(pc) << " at program counter 0x" << std::setw(8) << std::setfill('0') << pc << std::dec << DBG_END;
+    DBG_OUT << std::hex << std::setw(8) << std::setfill('0') << machine.readMemory().getWord(pc) << " : " << std::setw(8) << std::setfill('0') << pc << std::dec << DBG_END;
 }
 
 HOOK_TEMPLATE(printEXL) {

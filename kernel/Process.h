@@ -46,13 +46,23 @@ namespace kernel {
 
         PCB(const char* binaryFile, bool fromSpim = false);
 
-        static PCB& kernel() {
+        static PCB& kernelThread() {
             static PCB kpcb;
             return kpcb;
         }
+        
     };
 
 
 }
+
+inline kernel::PCB* currentThread;
+// Current thread. When handleTrap returns, run_process(currentThread->regCtx) gets called.
+
+extern "C" void run_process(kernel::RegisterContext& context); 
+// Asmglue function. It will set up the registers based on the context reference, which is enough to run a thread.
+// Using this has no guarantee of return (in fact, it probably won't ever return) and will likely corrupt the stack if it did.
+// This is fine in the cppmain function because we don't care about it's stack or running anything after running the init process.
+// However, this should be reserved for asmglue.
 
 #endif

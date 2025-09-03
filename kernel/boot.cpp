@@ -43,10 +43,8 @@ extern "C" void cppmain() {
     currentThread = new kernel::PCB(argv[0], fromSpim);
 
     exceptionDepth -= 1;
-    run_process(currentThread->regCtx);
-
-    //  return here kills the system, so hopefully it doesn't run
-}
+    
+}   // Return here calls run_process(currentThread->regCtx)
 
 
 

@@ -14,15 +14,12 @@ main:
     jal cppmain
     nop
 
-    # Kill machine if we return here
-    li $t0, 1
-    addiu $sp, $sp, -4  # reduce stack by 4
+    # run first proc
 
-    sw $t0, 0($sp)      # *sp = 1
+    la $a0, currentThread
+    lw $a0, 0($a0)
 
-    move $a0, $sp       # a0 = sp
-                        # v0 doesn't matter, we don't care ab return just care ab killing the process
-    .word 0x3f          # VMTUNNEL with HALT argument, should kill the system
+    j run_process
 
 .globl kernel_trap
 kernel_trap:

@@ -42,10 +42,8 @@ namespace kernel {
     };
 
 
-    class RegisterContext {
+    struct RegisterContext {
         uint32_t regs[31]; // doesn't include $zero
-    
-    public:
         uint32_t epc;
         uint32_t status;
         uint32_t cause;

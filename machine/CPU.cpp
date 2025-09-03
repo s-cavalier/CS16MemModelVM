@@ -63,6 +63,15 @@ std::unique_ptr<Hardware::Instruction> Hardware::CPU::decode(const Word& binary_
         }
     }
 
+    if (opcode == SPECIAL2) {
+        switch (funct) {
+            case MUL: return std::make_unique<MultiplyToGPR>(registerFile[rd].i, registerFile[rt].i, registerFile[rs].i);
+            
+            default:
+                throw Trap(Trap::RI);
+        }
+    }
+
     #define R_VAR_INIT(oc, instr) case oc: return std::make_unique<instr>(registerFile[rd].i, registerFile[rt].i, registerFile[rs].i)
     #define R_SHFT_INIT(oc, instr) case oc: return std::make_unique<instr>(registerFile[rd].i, registerFile[rt].i, shamt)
     #define HL_MOVE_INIT(oc, instr, reg) case oc: return std::make_unique<instr>(registerFile[reg].i, hiLo)

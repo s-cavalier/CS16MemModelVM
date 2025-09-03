@@ -22,6 +22,7 @@ namespace Binary {
         BNE = 0x5,          //
         BLEZ = 0x6,         //
         BGTZ = 0x7,         //
+        SPECIAL2 = 0x1c,
         LB = 0x20,          //
         LBU = 0x24,         //
         LH = 0x21,          //
@@ -44,6 +45,7 @@ namespace Binary {
     };
 
     enum Funct : unsigned char {
+        MUL = 2,
         SYSCALL = 0xc,      //
         SYNC = 0xf,
         MOVN = 0xb,

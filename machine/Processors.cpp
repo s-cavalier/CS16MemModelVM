@@ -28,7 +28,7 @@ std::unique_ptr<Hardware::Instruction> Hardware::FloatingPointUnit::decode(const
     #define FR_INIT(oc, instr) case oc: \
     assert(fmt == D || fmt == S); \
     if (fmt == S) return std::make_unique<instr<Single>>(registerFile[ft].f, registerFile[fs].f, registerFile[fd].f); \
-    else return std::make_unique<instr<Double>>( getDouble(ft), getDouble(fs), getDouble(fd) );
+    return std::make_unique<instr<Double>>( getDouble(ft), getDouble(fs), getDouble(fd) );
     // ensure if double that we are aligned to even regs (can't store double in any odd register)
     // maybe just replace with an exception later
 

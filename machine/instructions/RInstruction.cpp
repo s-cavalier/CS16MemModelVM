@@ -19,6 +19,7 @@ R_VAR_CONSTRCTR_INIT(ShiftLeftLogicalVariable) { rd = rt << Word(rs); }
 R_VAR_CONSTRCTR_INIT(ShiftRightLogicalVariable) { rd = Word(rt) >> Word(rs); }
 R_VAR_CONSTRCTR_INIT(ShiftRightArithmeticVariable) { rd = rt >> Word(rs); }
 R_VAR_CONSTRCTR_INIT(MoveOnNotZero) { if (rt) rd = rs; }
+R_VAR_CONSTRCTR_INIT(MultiplyToGPR) { long long res = (long long)(rs) * (long long)(rt); rd = (Word)( res ); }
 
 #define R_SHFT_CONSTRCTR_INIT(x) x::x(R_SHFT_INSTR_ARGS) : RShiftInstruction(rd, rt, shamt) {} void x::run()
 R_SHFT_CONSTRCTR_INIT(ShiftLeftLogical) { rd = rt << shamt; }

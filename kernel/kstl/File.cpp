@@ -17,30 +17,25 @@ kernel::File::~File() {
     fileIO.send();
 }
 
-ministl::vector<char> kernel::File::read(uint32_t bytes) {
-    fileIO.reqType = FREAD;
-    ministl::array<char, 128> buffer;
-    ministl::vector<char> out;
-    out.reserve(257);
+kernel::uint32_t kernel::File::read(char* buffer, uint32_t bytes) {
+    if (!buffer || bytes == 0) return 0;
 
-    uint32_t error = 0;
+    fileIO.reqType           = FREAD;
+    fileIO.args.fread.buffer = (uint32_t)buffer;
 
-    while (error == 0 && bytes > 0) {
-        uint32_t chunk = (bytes < 128) ? bytes : 128;
-        fileIO.args.fread.buffer = (uint32_t)(buffer.data());
-        fileIO.args.fread.nbytes = chunk;
+    const uint32_t maxChunkSize = 256;
+    fileIO.args.fread.nbytes = (bytes < maxChunkSize) ? bytes : maxChunkSize;
 
-        VMResponse response = fileIO.send();
-        error = response.err;
-
-        for (uint32_t i = 0; i < response.res; ++i) out.push_back(buffer[i]);
-        bytes -= response.res;
-
-        if (response.res == 0) break;  // Prevent infinite loop on partial reads
+    VMResponse response = fileIO.send();
+    if (response.err) {
+        bad = true;
+        return 0;
     }
 
-    return out;
+    return response.res;
 }
+
+
 
 kernel::uint32_t kernel::File::seek(uint32_t offset, int whence) {
     fileIO.reqType = FSEEK;

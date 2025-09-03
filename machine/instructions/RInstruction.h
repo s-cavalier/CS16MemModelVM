@@ -64,6 +64,7 @@ R_VAR_INSTR(ShiftLeftLogicalVariable);
 R_VAR_INSTR(ShiftRightLogicalVariable);
 R_VAR_INSTR(ShiftRightArithmeticVariable);
 R_VAR_INSTR(MoveOnNotZero);
+R_VAR_INSTR(MultiplyToGPR);
 
 // ------------------------------
 // R Shift Instruction Prototypes

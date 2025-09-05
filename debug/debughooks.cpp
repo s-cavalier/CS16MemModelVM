@@ -29,15 +29,6 @@ bool focusKernel(const Hardware::Machine& machine) { return (machine.readCoproce
 // print all written memory above this addr
 
 // only read memory within [lower, upper]
-template <unsigned int lower, unsigned int upper>
-HOOK_TEMPLATE(memorySection) {
-    DBG_OUT << "Printing memory section in region [" << lower << ", " << upper << "]:\n";
-    for (const auto& kv : machine.readMemory()) {
-        if (kv.first < lower || kv.first > upper) continue;
-        DBG_OUT << kv.first << "=" << Word(kv.second) << ',';
-    }
-    DBG_OUT << DBG_END;
-}
 
 HOOK_TEMPLATE(printEPC) {
     DBG_OUT << std::hex << machine.readCoprocessor(0)->readRegister(Binary::EPC).ui << std::dec << DBG_END;
@@ -83,16 +74,6 @@ HOOK_TEMPLATE(printFPRegs) {
     for (int i = 0; i < 32; ++i) DBG_OUT << "$f" << i << ":" << machine.readCoprocessor(1)->readRegister(i).f << ' ';
     DBG_OUT << DBG_END;
 }
-
-template <unsigned int dbgPrintMemLowerBound>
-HOOK_TEMPLATE(printMem) {
-    DBG_OUT << "MEMORY:\n";
-    for (const auto& kv : machine.readMemory()) {
-        if (kv.first < dbgPrintMemLowerBound) continue;
-        DBG_OUT << "0x" << std::hex << std::setw(8) << std::setfill('0') << kv.first << ":" << std::dec << (int(kv.second) & 0xFF) << ' ';
-    }
-    DBG_OUT << DBG_END;
-};
 
 template <condEval condition, dbgHook Hook>
 HOOK_TEMPLATE(conditionalHook) {

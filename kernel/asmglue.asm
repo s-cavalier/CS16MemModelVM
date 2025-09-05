@@ -20,6 +20,7 @@ main:
     lw $a0, 0($a0)
 
     j run_process
+    nop
 
 .globl kernel_trap
 kernel_trap:

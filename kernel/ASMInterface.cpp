@@ -63,3 +63,14 @@ int kernel::getK1Register() {
     );
     return value;
 }
+
+kernel::uint32_t kernel::getBadVAddr() {
+    uint32_t value;
+    __asm__ volatile (
+        "mfc0 %0, $8\n"
+        : "=r"(value)
+        :
+        : "memory"
+    );
+    return value;
+}

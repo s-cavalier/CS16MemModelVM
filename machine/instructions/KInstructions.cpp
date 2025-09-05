@@ -24,7 +24,55 @@ void ExceptionReturn::run() {
 
 }
 
+TLBInstruction::TLBInstruction(TLB_INSTR_ARGS) : KInstruction(statusRegister), tlb(tlb) {}
 
+TLBProbe::TLBProbe(TLB_INSTR_ARGS, Word& indexRegister, Word& entryHiRegister) : TLBInstruction(statusRegister, tlb), indexRegister(indexRegister), entryHiRegister(entryHiRegister) {}
+void TLBProbe::run() {
+    EXL_CHECK;
+    Hardware::TLBEntry fakeEntry(entryHiRegister, 0);
+    for (Byte i = 0; i < TLB_ENTRIES; ++i) {
+        if ( tlb[i].vpn == fakeEntry.vpn && ( tlb[i].global || (tlb[i].asid == fakeEntry.asid) ) ) {
+            indexRegister = i;
+            return;
+        }
+
+    }
+
+    indexRegister = 0x80000000;
+}
+
+TLBReadIndexed::TLBReadIndexed(TLB_INSTR_ARGS, const Word& indexRegister, Word& entryHiRegister, Word& entryLoRegister) : TLBInstruction(statusRegister, tlb),
+    indexRegister(indexRegister), entryHiRegister(entryHiRegister), entryLoRegister(entryLoRegister) {}
+
+void TLBReadIndexed::run() {
+    EXL_CHECK;
+
+    assert(indexRegister < TLB_ENTRIES);
+
+    auto [hi, lo] = tlb[indexRegister].hiLoPair();
+    entryHiRegister = hi;
+    entryLoRegister = lo;
+}
+
+TLBWriteIndexed::TLBWriteIndexed(TLB_INSTR_ARGS, Word& indexRegister, Word& entryHiRegister, Word& entryLoRegister) : TLBInstruction(statusRegister, tlb),
+    indexRegister(indexRegister), entryHiRegister(entryHiRegister), entryLoRegister(entryLoRegister) {}
+
+void TLBWriteIndexed::run() {
+    EXL_CHECK;
+
+    assert(indexRegister < TLB_ENTRIES);
+
+   tlb[indexRegister] = Hardware::TLBEntry( entryHiRegister, entryLoRegister );
+}
+
+TLBWriteRandom::TLBWriteRandom(TLB_INSTR_ARGS, Word& indexRegister, Word& entryHiRegister, Word& entryLoRegister) : 
+    TLBWriteIndexed(statusRegister, tlb, indexRegister, entryHiRegister, entryLoRegister) {}
+
+void TLBWriteRandom::run() {
+    TLBWriteIndexed::run();
+    ++indexRegister;
+    indexRegister %= TLB_ENTRIES;
+}
 
 // custom
 VMTunnel::VMTunnel(K_INSTR_ARGS, Hardware::Machine& machine) : KInstruction(statusRegister), machine(machine) {}

@@ -27,7 +27,7 @@ inline void assert_fail(const char* cond, const char* file, int line, const char
 
 inline void* operator new(size_t, void* ptr) { return ptr; }
 
-
-
+constexpr size_t operator""_kb(unsigned long long x) { return x << 10; }
+constexpr size_t operator""_mb(unsigned long long x) { return x << 20; }
 
 #endif

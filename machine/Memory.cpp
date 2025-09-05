@@ -1,106 +1,119 @@
 #include "Memory.h"
 #include "BinaryUtils.h"
+#include "CPU.h"
 #include <cstring>
 
-Hardware::Memory::Iterator::Iterator(const std::unordered_map<Word, char>::const_iterator& src) {
-    it = src;
+#include <iostream>
+
+Hardware::TLBEntry::TLBEntry(Word hi, Word lo) {
+    // Based on https://pages.cs.wisc.edu/~remzi/OSTEP/vm-tlbs.pdf
+    vpn = (hi >> 12);
+    global = bool(hi & (1 << 11));
+    asid = Byte(hi & 0xFF);
+    pfn = (lo >> 6);
+    cc = Byte( (lo >> 3) & 0b111 );
+    dirty = bool(lo & 0b100);
+    valid = bool(lo & 0b10);
 }
 
-Hardware::Memory::Iterator::~Iterator() {
+std::pair<Word, Word> Hardware::TLBEntry::hiLoPair() const {
+    return {
+        (vpn << 12) |
+        (Word(global) << 11) |
+        asid,
 
-}
-
-const std::pair<const Word, char>& Hardware::Memory::Iterator::operator*() const {
-    return *it;
-}
-
-const std::pair<const Word, char>* Hardware::Memory::Iterator::operator->() const {
-    return it.operator->();
-}
-
-Hardware::Memory::Iterator& Hardware::Memory::Iterator::operator++() {
-    ++it;
-    return *this;
-}
-
-Hardware::Memory::Iterator Hardware::Memory::Iterator::operator++(int) {
-    auto tmp = *this;
-    ++*this;
-    return tmp;
-}
-
-bool Hardware::Memory::Iterator::operator==(const Iterator& other) const {
-    return it == other.it;
-}
-
-bool Hardware::Memory::Iterator::operator!=(const Iterator& other) const {
-    return it != other.it;
-}
-
-Hardware::Memory::Iterator Hardware::Memory::begin() const {
-    return Iterator(RAM.cbegin());
-}
-
-Hardware::Memory::Iterator Hardware::Memory::end() const {
-    return Iterator(RAM.cend());
-}
-
-// we using big endian around here
-
-Hardware::Memory::Memory() {}
-Hardware::Memory::Memory(const boundRegisters& bounds) {
-    memoryBounds = bounds;
-}
-
-Word Hardware::Memory::getWord(const Word& addr) const {
-    Byte word[4] = {
-        getByte(addr),
-        getByte(addr + 1),
-        getByte(addr + 2),
-        getByte(addr + 3)
+        (pfn << 6) |
+        (cc << 3) |
+        (Word(dirty) << 2) |
+        (Word(valid) << 1)
     };
-
-    return Binary::loadBigEndian(word);
 }
 
-HalfWord Hardware::Memory::getHalfWord(const Word& addr) const {
-    Byte halfword[2] = {
-        getByte(addr),
-        getByte(addr + 1),
-    };
+Hardware::TLBEntry Hardware::TLB::lookup(Word vaddr, LookupType type) const {
+    Word vpn = vaddr >> 12;
 
-    return (halfword[0] << 8) | halfword[1];
+    for (Byte i = 0; i < TLB_ENTRIES; ++i) {
+        const auto& entry = tlbEntries[i];
+        
+        if (vpn != entry.vpn || !entry.valid) continue;
+        return entry;
+
+    }
+
+    throw Trap(type == LOAD ? Trap::TLB_L : Trap::TLB_S, vaddr);
 }
 
-Byte Hardware::Memory::getByte(const Word& addr) const {
-    auto ret = RAM.find(addr);
-    return ret != RAM.end() ? ret->second : 0;
+Hardware::Memory::Memory() : physMem(new Byte[PHYS_MEM_SIZE]) {}
+
+Word Hardware::Memory::runTLB(Word vaddr, TLB::LookupType type ) const {
+    if ( vaddr >= 0x80000000 && vaddr < 0xC0000000 ) return vaddr - 0x80000000;
+
+    Word offset = vaddr & 0xFFF;
+    TLBEntry tlbe = tlb.lookup( vaddr, type );
+
+    return (tlbe.pfn << 12) | offset;
 }
 
-void Hardware::Memory::setWord(const Word& addr, const Word& word) {
-    RAM[addr] =     (word >> 24);
-    RAM[addr + 1] = (word >> 16) & 0xFF;
-    RAM[addr + 2] = (word >> 8) & 0xFF;
-    RAM[addr + 3] =  word & 0xFF;
+Byte Hardware::Memory::getByte(Word addr) const {
+    Word paddr = runTLB(addr, TLB::LOAD);
+    
+    return physMem[paddr];
 }
 
-void Hardware::Memory::setHalfWord(const Word& addr, const HalfWord& halfword) {
-    RAM[addr]     = (halfword >> 8);
-    RAM[addr + 1] =  halfword & 0xFF;
+HalfWord Hardware::Memory::getHalfWord(Word addr) const {
+    Word paddr = runTLB(addr, TLB::LOAD);
+
+    assert( (paddr % 2 == 0) && "Invalid load 2 -> switch to a trap later" );
+    Byte* loc = physMem.get() + paddr;
+
+    return HalfWord(loc[0] << 8) | HalfWord(loc[1]);
 }
 
-void Hardware::Memory::setByte(const Word& addr, const Byte& byte) {
-    RAM[addr] = byte;
+Word Hardware::Memory::getWord(Word addr) const {
+    Word paddr = runTLB(addr, TLB::LOAD);
+
+    assert( (paddr % 4 == 0) && "Invalid load 4 -> switch to a trap later" );
+    Byte* loc = physMem.get() + paddr;
+
+    return Binary::loadBigEndian( loc );
 }
 
-float Hardware::Memory::getSingle(const Word& addr) const {
+void Hardware::Memory::setByte(Word addr, Byte byte) {
+    Word paddr = runTLB(addr, TLB::STORE);
+    
+    physMem[paddr] = byte;
+}
+
+void Hardware::Memory::setHalfWord(Word addr, HalfWord halfword) {
+    Word paddr = runTLB(addr, TLB::STORE);
+
+    assert( (paddr % 2 == 0) && "Invalid store 2 -> switch to a trap later" );
+    Byte* loc = physMem.get() + paddr;
+
+    loc[0] = (halfword >> 8);
+    loc[1] = (halfword & 0xFF);
+}
+
+void Hardware::Memory::setWord(Word addr, Word word) {
+    Word paddr = runTLB(addr, TLB::STORE);
+
+    assert( (paddr % 4 == 0) && "Invalid store 4 -> switch to a trap later" );
+    Byte* loc = physMem.get() + paddr;
+
+    loc[0] = word >> 24;
+    loc[1] = (word >> 16) & 0xFF;
+    loc[2] = (word >> 8) & 0xFF;
+    loc[3] = word & 0xFF;
+}
+
+float Hardware::Memory::getSingle(Word addr) const {
     Word tmpw = getWord(addr);
     float tmpf = 0;
     memcpy(&tmpf, &tmpw, 4);
     return tmpf;
 }
 
-void Hardware::Memory::setSingle(const Word& addr, const float& single) {
+void Hardware::Memory::setSingle(Word addr, float single) {
     Word tmpw = 0;
     memcpy(&tmpw, &single, 4);
     setWord(addr, tmpw);

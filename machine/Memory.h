@@ -1,6 +1,7 @@
 #ifndef __MEMORY_H__
 #define __MEMORY_H__
-#include <unordered_map>
+#include <array>
+#include <memory>
 
 using Byte = unsigned char;
 using HalfWord = unsigned short;
@@ -8,64 +9,67 @@ using Word = unsigned int;
 
 #define PAGE_SIZE 4096UL
 #define PHYS_MEM_SIZE 268435456ULL
+#define TLB_ENTRIES 64
+
 
 namespace Hardware {
+    
+    struct TLBEntry {
+        Word vpn = 0;
+        Word pfn = 0;
+        bool global = false;
+        bool dirty = false;
+        bool valid = false;
+        Byte asid = 0;
+        Byte cc = 0;
+
+        TLBEntry() = default;
+        TLBEntry(Word hi, Word lo); // Construct from hi / lo
+
+        std::pair<Word, Word> hiLoPair() const;
+    };
+
+    class TLB {
+        std::array<TLBEntry, TLB_ENTRIES> tlbEntries;
+
+    public:
+        TLB() = default;
+
+        enum LookupType : Byte {
+            LOAD,
+            STORE,
+        };
+        
+        TLBEntry lookup(Word vaddr, LookupType type) const;
+
+        inline TLBEntry& operator[](size_t idx) { return tlbEntries.at(idx); }
+        inline const TLBEntry& operator[](size_t idx) const { return tlbEntries.at(idx); }
+    };
 
     class Memory {
-        std::unordered_map<Word, char> RAM;
-    
+        std::unique_ptr<Byte[]> physMem;
+        TLB tlb;
+
+
+        Word runTLB( Word vaddr, TLB::LookupType type ) const;
     public:
-        class Iterator {
-            std::unordered_map<Word, char>::const_iterator it;
-
-        public:
-            using value_type = const std::pair<const Word, char>;
-            using reference = value_type&;
-            using pointer = value_type*;
-            using difference_type = std::ptrdiff_t;
-            using iterator_category = std::forward_iterator_tag;
-
-            Iterator(const std::unordered_map<Word, char>::const_iterator& src);
-            ~Iterator();
-
-            reference operator*() const;
-            pointer   operator->() const;
-
-            Iterator& operator++();
-            Iterator operator++(int);
-
-            bool operator==(const Iterator& other) const;
-            bool operator!=(const Iterator& other) const;
-        };
-
-        struct boundRegisters {
-            Word textBound;
-            Word staticBound;
-            Word dynamicBound;
-            Word stackBound;
-        };
-
-        boundRegisters memoryBounds;
-
-        Iterator begin() const;
-        Iterator end() const;
-
         Memory();
-        Memory(const boundRegisters& bounds);
+        TLB& accessTLB() { return tlb; }
+        const TLB& readTLB() const { return tlb; }
 
-        Word getWord(const Word& addr) const;
-        HalfWord getHalfWord(const Word& addr) const;
-        Byte getByte(const Word& addr) const;
+        Word getWord(Word addr) const;
+        HalfWord getHalfWord(Word addr) const;
+        Byte getByte(Word addr) const;
 
-        void setWord(const Word& addr, const Word& word);
-        void setHalfWord(const Word& addr, const HalfWord& halfword);
-        void setByte(const Word& addr, const Byte& byte);
+        void setWord(Word addr, Word word);
+        void setHalfWord(Word addr, HalfWord halfword);
+        void setByte(Word addr, Byte byte);
 
-        float getSingle(const Word& addr) const;
-        double getDouble(const Word& addr) const;
+        float getSingle(Word addr) const;
+        double getDouble(Word addr) const;
 
-        void setSingle(const Word& addr, const float& single);
-        void setDouble(const Word& addr, const double& dble);
+        void setSingle(Word addr, float single);
+        void setDouble(Word addr, double dble);
     };
 
     class VirtualMemory {

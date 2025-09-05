@@ -114,6 +114,7 @@ namespace kernel {
 
     int getK0Register();
     int getK1Register();
+    uint32_t getBadVAddr();
 
 }
 

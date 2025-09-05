@@ -24,14 +24,14 @@ Hardware::Machine::Machine() : cpu(*this), killed(false) {
     coprocessors[2] = nullptr;
 }
 
-void Hardware::Machine::raiseTrap(const Byte& exceptionCode) {
+void Hardware::Machine::raiseTrap(Byte exceptionCode, Word badVAddr) {
     using namespace Binary;
 
     SystemControlUnit* sys_ctrl = dynamic_cast<SystemControlUnit*>(coprocessors[0].get());  // if this errors, we can just get rid of it since all that happens is reg interaction
     
     sys_ctrl->setEPC( cpu.readProgramCounter() );
     sys_ctrl->setEXL( true );
-
+    sys_ctrl->setBadVAddr(badVAddr);
 
     sys_ctrl->setCause(exceptionCode);
 

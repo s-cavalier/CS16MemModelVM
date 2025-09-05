@@ -53,14 +53,23 @@ std::unique_ptr<Hardware::Instruction> Hardware::SystemControlUnit::decode(const
     const Byte rs = (binary >> 21) & 0x1F;
     const Byte rt = (binary >> 16) & 0x1F;
     const Byte rd = (binary >> 11) & 0x1F;
-    const Funct funct = Funct(binary & 0x3F);
+    const CP0Funct cp0funct = CP0Funct(binary & 0x3F);
 
     auto& statusReg = machine.accessCoprocessor(0)->accessRegister(STATUS).ui;
 
-    if (rs == 0x10 && funct == ERET) return std::make_unique<ExceptionReturn>(machine);
+    if (rs == 0x10) {
+        switch (cp0funct) {
+            case ERET: return std::make_unique<ExceptionReturn>(machine);
+            case TLBR: return std::make_unique<TLBReadIndexed>(statusReg, machine.accessMemory().accessTLB(), registerFile[INDEX].ui, registerFile[ENTRYHI].ui, registerFile[ENTRYLO0].ui );
+            case TLBWI: return std::make_unique<TLBWriteIndexed>(statusReg, machine.accessMemory().accessTLB(), registerFile[INDEX].ui, registerFile[ENTRYHI].ui, registerFile[ENTRYLO0].ui );
+            case TLBWR: return std::make_unique<TLBWriteRandom>(statusReg, machine.accessMemory().accessTLB(), registerFile[RANDOM].ui, registerFile[ENTRYHI].ui, registerFile[ENTRYLO0].ui );
+            case TLBP: return std::make_unique<TLBProbe>(statusReg, machine.accessMemory().accessTLB(), registerFile[INDEX].ui, registerFile[ENTRYHI].ui);
+            default: break;
+        }
+    }
+
     if (rs == 0) return std::make_unique<MoveFromCoprocessor0>(statusReg, machine.accessCPU().accessRegister(rt).i, registerFile[rd].i );
     if (rs == 4) return std::make_unique<MoveToCoprocessor0>(statusReg, machine.readCPU().readRegister(rt).i, registerFile[rd].i );
 
     throw Trap(Trap::ExceptionCode::RI);
-    return std::make_unique<NoOp>();
 }

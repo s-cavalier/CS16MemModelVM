@@ -15,7 +15,7 @@ SECTIONS
      * 1) .text at 0x00400024 
      *    (Assuming you reserved 0x80000000–0x8000017F for exception vectors or similar.)
      *------------------------------------------------------------------------------*/
-    .text 0x00400024 :
+    .text 0x00400000 :
     {
         _text_start = .;        /* optional symbol: start of .text */
         *(.text*)               /* all “.text” input from your .o files */

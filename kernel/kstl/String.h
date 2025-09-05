@@ -5,128 +5,54 @@
 namespace ministl {
 
     bool streq(const char* l, const char* r);
+    size_t strlen(const char* s);
 
-    // rework later
-    
     class string {
-    private:
-        ministl::vector<char> data;  // always null-terminated
-
+        ministl::vector<char> _data;
+    
     public:
-        // -- Constructors / Assignment --
+        static constexpr size_t npos = -1;
 
-        string() {
-            // start as empty string with just a '\0'
-            data.push_back('\0');
-        }
+        string();
+        string(const string& str);
+        string(const char* s);
+        string(char c);
+        string(string&& str);
 
-        string(const char* cstr) {
-            // build from NUL-terminated char*
-            for (const char* p = cstr; *p != '\0'; ++p) {
-                data.push_back(*p);
-            }
-            data.push_back('\0');
-        }
+        string& operator=(const string& str);
+        string& operator=(const char* s);
+        string& operator=(char c);
+        string& operator=(string&& str);
 
-        string(const string& other)
-            : data(other.data)
-        {}
+        ~string() = default;
 
-        string& operator=(const string& other) {
-            if (this != &other) {
-                data = other.data;
-            }
-            return *this;
-        }
+        size_t size() const;
+        size_t length() const;
+        size_t capacity() const;
+        void clear();
+        bool empty() const;
 
-        string(string&& other) noexcept
-            : data(ministl::move(other.data))
-        {}
+        char& operator[](size_t idx);
+        const char& operator[](size_t idx) const;
+        char& at(size_t idx);
+        const char& at(size_t idx) const;
+        char& front();
+        const char& front() const;
+        char& back();
+        const char& back() const;
 
-        string& operator=(string&& other) noexcept {
-            if (this != &other) {
-                data = ministl::move(other.data);
-            }
-            return *this;
-        }
+        string& operator+=(const string& str);
+        string& operator+=(const char* s);
+        string& operator+=(char c);
+        void push_back(char c);
+        void pop_back();
 
-        // -- Element access / c-string --
-
-        const char* c_str() const {
-            return data.data();
-        }
-
-        char& operator[](size_t idx) {
-            return data[idx];
-        }
-
-        const char& operator[](size_t idx) const {
-            return data[idx];
-        }
-
-        // -- Capacity --
-
-        size_t size() const {
-            return (data.size() > 0 ? data.size() - 1 : 0);
-        }
-
-        bool empty() const {
-            return size() == 0;
-        }
-
-        void clear() {
-            data.clear();
-            data.push_back('\0');
-        }
-
-        // -- Modifiers --
-
-        void push_back(char ch) {
-            // remove old null, append ch, then restore null
-            data.pop_back();
-            data.push_back(ch);
-            data.push_back('\0');
-        }
-
-        string& operator+=(const string& other) {
-            // remove our null, copy others' chars, then add null
-            data.pop_back();
-            for (size_t i = 0; i < other.size(); ++i) {
-                data.push_back(other[i]);
-            }
-            data.push_back('\0');
-            return *this;
-        }
-
-        string& operator+=(char x) {
-            // remove our null, copy others' chars, then add null
-            push_back(x);
-            return *this;
-        }
-
-        // -- Comparison --
-
-        bool operator==(const string& other) const {
-            if (size() != other.size()) return false;
-            for (size_t i = 0; i < size(); ++i) {
-                if (data[i] != other.data[i]) return false;
-            }
-            return true;
-        }
-
-        bool operator!=(const string& other) const {
-            return !(*this == other);
-        }
-
-        // -- Concatenation --
-
-        friend string operator+(string lhs, const string& rhs) {
-            lhs += rhs;
-            return lhs;
-        }
+        const char* c_str() const;
+        const char* data() const;
     };
 
-    
+    string to_string(int value);
+    string to_string(unsigned int value);
 
 }
 

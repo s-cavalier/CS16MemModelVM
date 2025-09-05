@@ -5,6 +5,7 @@
 #include "kstl/File.h"
 #include "kstl/String.h"
 
+#include "PageTables.h"
 // -- Stack Init --
 
 #define K_STACK_SIZE 8192
@@ -30,17 +31,23 @@ void call_global_constructors() {
     }
 }
 
-
 unsigned char exceptionDepth = 1; // asmglue.asm will handle this
+
+struct Foo {
+    Foo() { PrintString("hello from foo\n"); }
+    void bar() { PrintString("bar\n"); }
+    ~Foo() { PrintString("goodbye from foo\n"); }
+};
 
 extern "C" void cppmain() {
     // just eret assuming that EPC already has the right PC loaded
     call_global_constructors();
+    currentThread = &kernel::PCB::kernelThread();
     PrintString("Kernel booted!\n");
+    
+    auto firstProc = new kernel::PCB(argv[0], ministl::make_unique<kernel::SegmentedPageTable>(16, 8) );
 
-    bool fromSpim = (argc > 1 && ministl::streq(argv[1], "-spim"));
-
-    currentThread = new kernel::PCB(argv[0], fromSpim);
+    currentThread = firstProc;
 
     exceptionDepth -= 1;
     

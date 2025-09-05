@@ -14,7 +14,7 @@ void Hardware::CPU::cycle() {
         programCounter += 4;
         
     } catch (const Hardware::Trap& trap) {
-        machine.raiseTrap(trap.exceptionCode);
+        machine.raiseTrap(trap.exceptionCode, trap.badAddr);
     }
 }
 
@@ -147,6 +147,5 @@ std::unique_ptr<Hardware::Instruction> Hardware::CPU::decode(const Word& binary_
             throw Trap(Trap::RI);
     }
 
-    machine.raiseTrap(Word(Trap::RI)); 
-    return std::make_unique<NoOp>();
+    throw Trap(Trap::RI);
 }

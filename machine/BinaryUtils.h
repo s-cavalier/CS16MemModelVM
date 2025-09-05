@@ -22,7 +22,9 @@ namespace Binary {
         BNE = 0x5,          //
         BLEZ = 0x6,         //
         BGTZ = 0x7,         //
+
         SPECIAL2 = 0x1c,
+        
         LB = 0x20,          //
         LBU = 0x24,         //
         LH = 0x21,          //
@@ -44,13 +46,21 @@ namespace Binary {
         SC = 0x38   // only useful when implementing OS or multithreading (green threads)
     };
 
+    enum CP0Funct : unsigned char {
+        TLBR = 1,
+        TLBWI = 2,
+        TLBP = 8,
+        TLBWR = 0b110,
+        ERET = 0x18,
+    };
+
     enum Funct : unsigned char {
         MUL = 2,
         SYSCALL = 0xc,      //
         SYNC = 0xf,
         MOVN = 0xb,
         BREAK = 0xd,
-        ERET = 0x18,
+        
 
         TEQ = 0x34,
 

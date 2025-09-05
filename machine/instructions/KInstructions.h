@@ -1,4 +1,5 @@
 #include "../Hardware.h"
+#include "../Memory.h"
 
 // -------------------
 // Kernel Instructions
@@ -44,6 +45,54 @@ class ExceptionReturn : public KInstruction {
 
 public:
     ExceptionReturn(Hardware::Machine& machine);
+    void run();
+};
+
+// TLB Instructions
+
+#define TLB_INSTR_ARGS K_INSTR_ARGS, Hardware::TLB& tlb
+
+class TLBInstruction : public KInstruction {
+protected:
+    Hardware::TLB& tlb;
+
+public:
+    TLBInstruction(TLB_INSTR_ARGS);
+    virtual void run() = 0;
+};
+
+class TLBProbe : public TLBInstruction {
+    Word& indexRegister;
+    Word& entryHiRegister;
+
+public:
+    TLBProbe(TLB_INSTR_ARGS, Word& indexRegister, Word& entryHiRegister);
+    void run();
+};
+
+class TLBReadIndexed : public TLBInstruction {
+    const Word& indexRegister;
+    Word& entryHiRegister;
+    Word& entryLoRegister;
+
+public:
+    TLBReadIndexed(TLB_INSTR_ARGS, const Word& indexRegister, Word& entryHiRegister, Word& entryLoRegister);
+    void run();
+};
+
+class TLBWriteIndexed : public TLBInstruction {
+protected:
+    Word& indexRegister;
+    Word& entryHiRegister;
+    Word& entryLoRegister;
+
+public:
+    TLBWriteIndexed(TLB_INSTR_ARGS, Word& indexRegister, Word& entryHiRegister, Word& entryLoRegister);
+    void run();
+};
+
+struct TLBWriteRandom : public TLBWriteIndexed {
+    TLBWriteRandom(TLB_INSTR_ARGS, Word& indexRegister, Word& entryHiRegister, Word& entryLoRegister);
     void run();
 };
 

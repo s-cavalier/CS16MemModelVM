@@ -43,7 +43,7 @@ namespace Hardware {
         inline CPU& accessCPU() { return cpu; }
 
 
-        void raiseTrap(const Byte& exceptionCode);
+        void raiseTrap(Byte exceptionCode, Word badAddr);
         bool killed;
 
         void loadKernel(const ExternalInfo::KernelBootInformation& kernelInfo, const std::vector<std::string>& kernelArguments);

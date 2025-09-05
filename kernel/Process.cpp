@@ -3,25 +3,8 @@
 #include "kstl/File.h"
 #include "kstl/Elf.h"
 
-extern "C" char _end[];
-
-kernel::MemoryManager::MemoryManager() {
-    kernelReservedBoundary = ((size_t(_end) - 0x80000000) + PAGE_SIZE - 1) / PAGE_SIZE; // round up to closet page boundary in kernel image
-}
-
-size_t kernel::MemoryManager::reserveFreeFrame() {
-    size_t frame = size_t(-1);
-    for (size_t i = kernelReservedBoundary; i < freePages.size(); ++i) {
-        if (freePages[i]) continue; // reserved if bit[i] == 1
-        frame = i;
-        break;
-    }
-
-    assert(frame != size_t(-1)); // ran out of pages
-}
 
 kernel::PCB::PCB() : PID(0), state(RUNNING) {}
-
 
 // ----- internal helpers
 static bool read_full(kernel::File& f, void* dst, size_t n) {
@@ -65,25 +48,10 @@ static bool read_cstr_from_shstr(kernel::File& f, uint32_t shstr_off, uint32_t n
 }
 
 // ---- constructor (no dynamic allocation) 
-kernel::PCB::PCB(const char* binaryFile, bool fromSpim) : PID(1), state(READY) {
+kernel::PCB::PCB(const char* binaryFile, ministl::unique_ptr<PageTable> pageSystem) : addrSpace(ministl::move(pageSystem), 0), PID(1), state(READY) {
     // init non-zero regs
-    regCtx.accessRegister(kernel::SP) = 0x7ffffffc;
+    regCtx.accessRegister(kernel::SP) = 0x80000000;
     regCtx.accessRegister(kernel::GP) = 0x10008000;
-
-    if (fromSpim) {
-        regCtx.epc = 0x00400020; // will implicitly gain a +4
-        char* placeFile = reinterpret_cast<char*>(regCtx.epc + 4);
-
-        kernel::File file(binaryFile, O_RDONLY);
-
-        char buf[256];
-        for (;;) {
-            uint32_t got = file.read(buf, sizeof(buf));
-            if (got == 0) break; // EOF
-            for (uint32_t i = 0; i < got; ++i) *(placeFile++) = buf[i];
-        }
-        return;
-    }
 
     // --- ELF path (no heap allocations) ---
     kernel::File file(binaryFile, O_RDONLY);
@@ -138,13 +106,22 @@ kernel::PCB::PCB(const char* binaryFile, bool fromSpim) : PID(1), state(READY) {
     // 4) Stream sections directly into memory with a stack buffer
     if (info.text_size) {
         file.seek(info.text_offset, 0);
-        char* textDst = reinterpret_cast<char*>(0x00400024);
+        char* textDst = reinterpret_cast<char*>(0x00400000);
+
+        // Write in all of the pages pre-emptively since we're in the kernel
+        // Need to change later for text sections >= 256 kb (TLB only holds 64 entries)
+        for (uint32_t i = 0; i < ((info.text_size >> 12) + 1); ++i) addrSpace.translate( (uint32_t)(textDst) + (i << 12)).writeRandom();
+
         if (!stream_copy_to(file, textDst, info.text_size)) { state = ZOMBIE; return; }
     }
 
     if (info.data_size) {
         file.seek(info.data_offset, 0);
         char* dataDst = reinterpret_cast<char*>(0x10008000);
+        // Write in all of the pages pre-emptively since we're in the kernel
+        // Need to change later for data sections >= 256 kb (TLB only holds 64 entries)
+        for (uint32_t i = 0; i < ((info.text_size >> 12) + 1); ++i) addrSpace.translate( (uint32_t)(dataDst) + (i << 12)).writeRandom();
+
         if (!stream_copy_to(file, dataDst, info.data_size)) { state = ZOMBIE; return; }
     }
 

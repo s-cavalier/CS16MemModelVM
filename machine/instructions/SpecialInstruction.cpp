@@ -11,13 +11,13 @@ void Jump::run() { pc = target; }
 JumpAndLink::JumpAndLink(J_INSTR_ARGS, const Word& target, int& ra) : JInstruction(pc), ra(ra) {
     this->target = (((pc + 4) & 0xF0000000) | (target << 2)) - 4;
 }
-void JumpAndLink::run() { ra = pc; pc = target; }
+void JumpAndLink::run() { ra = pc + 4; pc = target; }
 
 JumpRegister::JumpRegister(J_INSTR_ARGS, const int& ra) : JInstruction(pc), ra(ra) {}
-void JumpRegister::run() { pc = ra; }
+void JumpRegister::run() { pc = ra - 4; }
 
 JumpAndLinkRegister::JumpAndLinkRegister(J_INSTR_ARGS, int& rd, const int& rs) : JInstruction(pc), rd(rd), rs(rs) {}
-void JumpAndLinkRegister::run() { rd = pc; pc = rs; }
+void JumpAndLinkRegister::run() { rd = pc + 4; pc = rs - 4; }
 
 HiLoInstruction::HiLoInstruction(Hardware::HiLoRegisters& hiLo) : hiLo(hiLo) { }
 HLMoveInstruction::HLMoveInstruction(HL_MOVE_INSTR_ARGS) : HiLoInstruction(hiLo), storage_register(storage_register) {}

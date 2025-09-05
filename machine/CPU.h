@@ -1,7 +1,7 @@
 #ifndef __CPU_H__
 #define __CPU_H__
 #include "Processors.h"
-#include <optional>
+#include <unordered_map>
 
 namespace Hardware {
 
@@ -9,7 +9,9 @@ namespace Hardware {
         enum ExceptionCode : unsigned char {
             INTERRUPT = 0,   // Interrupt (hardware)
 
-            // no TLB
+            TLB_MOD = 1,
+            TLB_L = 2,
+            TLB_S = 3,
 
             ADDRL = 4,   // Address error on load or fetch
             ADDRS = 5,   // Address error on store
@@ -25,9 +27,8 @@ namespace Hardware {
         };
 
         ExceptionCode exceptionCode;
-        std::optional<Word> badAddr;
-        explicit Trap(ExceptionCode exceptionCode) : exceptionCode(exceptionCode) {}
-        explicit Trap(ExceptionCode exceptionCode, const Word& badAddr) : exceptionCode(exceptionCode), badAddr(badAddr) {}
+        Word badAddr;
+        explicit Trap(ExceptionCode exceptionCode, Word badAddr = 0) : exceptionCode(exceptionCode), badAddr(badAddr) {}
     };
 
     struct HiLoRegisters { Word hi; Word lo; };

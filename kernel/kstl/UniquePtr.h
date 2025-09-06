@@ -56,6 +56,12 @@ namespace ministl {
             return *this;
         }
 
+        void reset(T* p = nullptr) {
+            if (p == ptr) return;
+            delete ptr;
+            ptr = p; 
+        }
+
         // Converting move constructor: unique_ptr<U> -> unique_ptr<T> if U* -> T*
         template<class U, class = typename enable_if<is_convertible<U*, T*>::value>::type>
         unique_ptr(unique_ptr<U>&& other) noexcept

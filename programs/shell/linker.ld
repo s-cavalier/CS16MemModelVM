@@ -24,10 +24,10 @@ SECTIONS
     }
 
     /*------------------------------------------------------------------------------
-     * 2) .data at 0x10008000 
+     * 2) .data at 0x10000000 
      *    (Place initialized globals/statics here.)
      *------------------------------------------------------------------------------*/
-    .data 0x10008000 :
+    .data 0x10000000 :
     {
         _data_start = .;        /* optional symbol: start of .data */
         *(.data*)               /* all initialized data from your .o files */

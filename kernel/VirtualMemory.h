@@ -123,19 +123,23 @@ namespace kernel {
         bool mapPTE(const Entry &pte, uint32_t vpn) override;
     };
 
+    static constexpr uint32_t BRK_DEFAULT = 0x10008000;
+    static constexpr uint32_t HEAP_LIMIT = BRK_DEFAULT + (1 * 1024 * 1024);
+
     class AddressSpace {
         ministl::unique_ptr<PageTable> _pageTable;
+        size_t brk;
         unsigned char _asid;
         
         // Private constructor for the kernel
-        AddressSpace() : _pageTable( ministl::unique_ptr<PageTable>( &KernelPageTable::instance() )), _asid(0) {} 
+        AddressSpace() : _pageTable( ministl::unique_ptr<PageTable>( &KernelPageTable::instance() )), brk(-1), _asid(0) {} 
         friend class PCB;
 
     public:
         AddressSpace(ministl::unique_ptr<PageTable> pageTable, unsigned char asid);
         
         TLBEntry translate(uint32_t vaddr);
-
+        bool updateBrk(uint32_t vaddr);
     };
 
 }

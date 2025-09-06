@@ -1,4 +1,4 @@
-#include "stdio.h"
+#include "asmio.h"
 
 void std::exit() {
     __asm__ volatile (

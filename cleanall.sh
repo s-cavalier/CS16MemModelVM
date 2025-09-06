@@ -7,6 +7,6 @@ make clean
 
 
 (
-    cd programs/fibonnaci;
+    cd programs/shell;
     make clean;
 )

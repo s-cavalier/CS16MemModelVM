@@ -20,7 +20,7 @@ SRCS := $(wildcard *.cpp) $(wildcard ../ministl/*.cpp)
 OBJS := $(SRCS:.cpp=.o)
 
 # Final output filename
-TARGET := fib.elf
+TARGET := shell.elf
 
 #————————————————————————————————————————————————————————————
 # Make rules

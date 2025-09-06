@@ -23,14 +23,15 @@ enum ExceptionType : unsigned char {
         PRINT_INTEGER = 1,
         PRINT_STRING = 4,
         READ_INTEGER = 5,
-        EXIT = 10
+        EXIT = 10,
+        BRK = 45,
     };
 
 // Called from handle_trap in asmglue.asm. Calls run_process(currentThread->ctx) on exit.
 extern "C" void handleTrap() {
     assert(currentThread);
     kernel::RegisterContext* trapCtx = (kernel::RegisterContext*)kernel::getK0Register();
-    size_t res = kernel::getBadVAddr();
+    size_t badVAddr = kernel::getBadVAddr();
     // The register context of the trapping thread is saved to k0. We need to use this context on the stack in case of >1 nested exceptions.
 
     kernel::PCB* oldThread = currentThread;                                     // save oldThread
@@ -39,14 +40,14 @@ extern "C" void handleTrap() {
     ExceptionType cause = ExceptionType(trapCtx->cause >> 2); // need to consider interrupt mask later
 
     switch (cause) {
-        case TLB_L: { 
-            oldThread->addrSpace.translate(res).writeRandom();
+        case TLB_L: {
+            oldThread->addrSpace.translate(badVAddr).writeRandom();
             trapCtx->epc -= 4;
             
             break;
         }
-        case TLB_S: { 
-            oldThread->addrSpace.translate(res).writeRandom();
+        case TLB_S: {
+            oldThread->addrSpace.translate(badVAddr).writeRandom();
             trapCtx->epc -= 4; 
             
             break;
@@ -65,6 +66,13 @@ extern "C" void handleTrap() {
                     break;
     
                 case EXIT: {
+                    Halt;
+                    break;
+                }
+                case BRK: {
+                    bool validBrkRequest = oldThread->addrSpace.updateBrk( trapCtx->accessRegister(kernel::A0) );
+                    if (validBrkRequest) break;
+                    PrintString("[KERNEL] Bad BRK request. Killing process...\n");
                     Halt;
                     break;
                 }

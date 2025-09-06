@@ -7,7 +7,7 @@ make debug
 )
 
 (
-    cd programs/fibonnaci;
+    cd programs/shell;
     make clean;
     make;
 )

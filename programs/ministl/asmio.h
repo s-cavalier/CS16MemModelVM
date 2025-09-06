@@ -1,5 +1,5 @@
-#ifndef M__STDIO_H__
-#define M__STDIO_H__
+#ifndef M__ASMIO_H__
+#define M__ASMIO_H__
 
 namespace std {
     

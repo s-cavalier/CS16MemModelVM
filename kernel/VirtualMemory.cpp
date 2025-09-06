@@ -8,6 +8,7 @@ kernel::MemoryManager::MemoryManager() {
 }
 
 size_t kernel::MemoryManager::reserveFrame() {
+
     for (size_t i = kernelReservedBoundary; i < reservedPages.size(); ++i) {
         if (reservedPages[i]) continue; // reserved if bit[i] == 1
         reservedPages.set(i);
@@ -130,7 +131,7 @@ bool kernel::KernelPageTable::mapPTE(const Entry &pte, uint32_t vpn) {
 } 
 
 kernel::AddressSpace::AddressSpace(ministl::unique_ptr<PageTable> pageTable, unsigned char asid)
-: _pageTable(ministl::move(pageTable)), _asid(asid)
+: _pageTable(ministl::move(pageTable)), brk(0), _asid(asid)
 {}
 
 kernel::TLBEntry kernel::AddressSpace::translate(uint32_t vaddr) {
@@ -139,3 +140,28 @@ kernel::TLBEntry kernel::AddressSpace::translate(uint32_t vaddr) {
     if (res && res->present) return res->toTLBEntry(vaddr >> 12, _asid);    
     assert(false && "not implemented yet");
 }
+
+bool kernel::AddressSpace::updateBrk(uint32_t vaddr) {
+    if (vaddr < BRK_DEFAULT || vaddr >= HEAP_LIMIT) return false;
+    uint32_t pageBoundary = ((vaddr - BRK_DEFAULT) >> 12) + 1;
+    if (pageBoundary <= brk) return true;
+
+    static constexpr uint32_t vpn_start = BRK_DEFAULT >> 12;
+    for (size_t i = brk; i < pageBoundary; ++i) {
+
+        PageTable::Entry pte{};
+        pte.pfn = MemoryManager::instance().reserveFrame() >> 12;;
+        pte.global = false;
+        pte.writable = true;
+        pte.user = true;
+        pte.present = true;
+
+        _pageTable->mapPTE(pte,  vpn_start + i);
+    }
+
+    brk = pageBoundary;
+
+    return true;
+}
+
+

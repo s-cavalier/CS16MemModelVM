@@ -79,6 +79,8 @@ bool kernel::SegmentedPageTable::mapPTE(const Entry& pte, uint32_t vpn) {
         return true;
     }
 
+    // add a check for vpn(stackBoundary) + 1 to add to the vector
+
     size_t dynamicBoundary = DYNAMIC_START + ( dynamicPages.size() << 12 );
     if (pageBoundary < dynamicBoundary && pageBoundary >= DYNAMIC_START) {
         size_t index = (pageBoundary - DYNAMIC_START) >> 12;
@@ -86,6 +88,8 @@ bool kernel::SegmentedPageTable::mapPTE(const Entry& pte, uint32_t vpn) {
         dynamicPages[index] = pte;
         return true;
     }
+
+    if ( ((pageBoundary - DYNAMIC_START) >> 12) == dynamicPages.size() ) dynamicPages.push_back(pte);
 
     size_t staticBoundary = STATIC_START + ( staticPages.size() << 12 );
     if (pageBoundary < staticBoundary && pageBoundary >= STATIC_START) {

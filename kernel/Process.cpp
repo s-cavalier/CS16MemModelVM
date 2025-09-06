@@ -117,7 +117,7 @@ kernel::PCB::PCB(const char* binaryFile, ministl::unique_ptr<PageTable> pageSyst
 
     if (info.data_size) {
         file.seek(info.data_offset, 0);
-        char* dataDst = reinterpret_cast<char*>(0x10008000);
+        char* dataDst = reinterpret_cast<char*>(0x10000000);
         // Write in all of the pages pre-emptively since we're in the kernel
         // Need to change later for data sections >= 256 kb (TLB only holds 64 entries)
         for (uint32_t i = 0; i < ((info.text_size >> 12) + 1); ++i) addrSpace.translate( (uint32_t)(dataDst) + (i << 12)).writeRandom();

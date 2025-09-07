@@ -22,7 +22,7 @@ bool std::streq(const char* a, const char* b) {
     return *a == *b;
 }
 
-size_t std::strlen(const char* s) {
+std::size_t std::strlen(const char* s) {
     size_t len = 0;
     while ( s[len] != '\0' ) ++len;
     return len;
@@ -62,9 +62,9 @@ std::string& std::string::operator=(string&& str) {
     return *this;
 }
 
-size_t std::string::size() const { return _data.size() - 1; }
-size_t std::string::length() const { return size(); }
-size_t std::string::capacity() const { return _data.capacity() - 1; }
+std::size_t std::string::size() const { return _data.size() - 1; }
+std::size_t std::string::length() const { return size(); }
+std::size_t std::string::capacity() const { return _data.capacity() - 1; }
 void std::string::clear() { _data.clear(); _data.push_back('\0'); }
 bool std::string::empty() const { return _data.size() == 1; }
 
@@ -137,3 +137,59 @@ void std::string::pop_back() {
 
 const char* std::string::c_str() const { return _data.data(); }
 const char* std::string::data() const { return _data.data(); }
+
+std::string std::to_string(int value) {
+    if (value == 0) return "0";
+
+    std::string ret;
+    bool negative = value < 0;
+
+    while (value != 0) {
+        int digit = value % 10;
+        if (digit < 0) digit = -digit;
+        ret.push_back(char('0' + digit));
+        value /= 10;
+    }
+
+    if (negative) ret.push_back('-');
+
+    for (size_t i = 0, j = ret.size() - 1; i < j; ++i, --j) {
+        char tmp = ret[i];
+        ret[i] = ret[j];
+        ret[j] = tmp;
+    }
+
+    return ret;
+}
+
+std::string std::to_string(unsigned int value) {
+    if (value == 0) return "0";
+
+    std::string ret;
+
+    while (value != 0) {
+        int digit = value % 10;
+        ret.push_back(char('0' + digit));
+        value /= 10;
+    }
+
+    for (size_t i = 0, j = ret.size() - 1; i < j; ++i, --j) {
+        char tmp = ret[i];
+        ret[i] = ret[j];
+        ret[j] = tmp;
+    }
+
+    return ret;
+}
+
+static inline const char* newline = "\n";
+
+void std::println(const char* cstr) {
+    std::printString(cstr);
+    std::printString(newline);
+}
+
+void std::println(const std::string& str) {
+    std::printString( str.c_str() );
+    std::printString(newline);
+}

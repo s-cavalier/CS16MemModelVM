@@ -30,8 +30,8 @@ HL_MOVE_CNSTCTR_INIT(MoveToHi) { hiLo.hi = storage_register; }
 HL_MOVE_CNSTCTR_INIT(MoveToLo) { hiLo.lo = storage_register; }
 
 #define HL_OP_CNSTCTR_INIT(arg) arg::arg(HL_OP_INSTR_ARGS) : HLOpInstruction(rs, rt, hiLo) {} void arg::run()
-HL_OP_CNSTCTR_INIT(Multiply) { DoubleWord res = rs * rt; hiLo.lo = Word(res); res >>= 32; hiLo.hi = Word(res); }
-HL_OP_CNSTCTR_INIT(MultiplyUnsigned) { DoubleWord res = Word(rs) * Word(rt); hiLo.lo = Word(res); res >>= 32; hiLo.hi = Word(res); }
+HL_OP_CNSTCTR_INIT(Multiply) { DoubleWord res = (long long)(rs) * (long long)(rt); hiLo.lo = res; hiLo.hi = res >> 32; }
+HL_OP_CNSTCTR_INIT(MultiplyUnsigned) { DoubleWord res = DoubleWord(Word(rs)) * DoubleWord(Word(rt)); hiLo.lo = Word(res); hiLo.hi = Word(res >> 32); }
 HL_OP_CNSTCTR_INIT(Divide) { hiLo.hi = rs % rt; hiLo.lo = rs / rt; }
 HL_OP_CNSTCTR_INIT(DivideUnsigned) { hiLo.hi = Word(rs) % Word(rt); hiLo.lo = Word(rs) / Word(rt); }
 

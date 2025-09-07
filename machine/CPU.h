@@ -36,7 +36,7 @@ namespace Hardware {
     class CPU {
         Machine& machine;
         reg32_t registerFile[32];
-        HiLoRegisters hiLo;
+        HiLoRegisters hiLo{};
         Word programCounter;
         std::unordered_map<Word, std::unique_ptr<Instruction>> instructionCache;
     
@@ -46,6 +46,7 @@ namespace Hardware {
         inline reg32_t& accessRegister(const Byte& reg) { return registerFile[reg]; }
         inline const Word& readProgramCounter() const { return programCounter; }
         inline Word& accessProgramCounter() { return programCounter; }
+        inline HiLoRegisters readHiLo() const { return hiLo; }
 
         void cycle();
 

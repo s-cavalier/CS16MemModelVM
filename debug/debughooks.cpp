@@ -18,7 +18,7 @@ using dbgHook = void (*)(const Hardware::Machine& machine);
 // conditionals
 using condEval = bool(*)(const Hardware::Machine& machine);
 bool onKilled(const Hardware::Machine& machine) { return machine.killed; }
-bool ignoreKernel(const Hardware::Machine& machine) { return !(machine.readCoprocessor(0)->readRegister(12).ui & 0b10); }
+bool ignoreKernel(const Hardware::Machine& machine) { return machine.readCPU().readProgramCounter() < 0x80000000; }
 bool focusKernel(const Hardware::Machine& machine) { return (machine.readCoprocessor(0)->readRegister(12).ui & 0b10); }
 
 #define DBG_OUT *dbg_output_stream
@@ -48,6 +48,11 @@ HOOK_TEMPLATE(memoryAccess) {
     DBG_OUT << std::dec << DBG_END;
 }
 
+HOOK_TEMPLATE(printHILO) {
+    auto [hi, lo] = machine.readCPU().readHiLo();
+    DBG_OUT << "HI: " << hi << ", LO: " << lo << DBG_END;
+}
+
 HOOK_TEMPLATE(printInstr) {
     const Word& pc = machine.readCPU().readProgramCounter();
     DBG_OUT << std::hex << std::setw(8) << std::setfill('0') << machine.readMemory().getWord(pc) << " : " << std::setw(8) << std::setfill('0') << pc << std::dec << DBG_END;
@@ -66,6 +71,12 @@ HOOK_TEMPLATE(printStatus) {
 HOOK_TEMPLATE(printRegs) {
     DBG_OUT << "REGISTERS:\n";
     for (int i = 0; i < 32; ++i) DBG_OUT << '$' << Binary::regToString[i] << ":" << machine.readCPU().readRegister(i).ui << ' ';
+    DBG_OUT << DBG_END;
+}
+
+template <Word... Regs>
+HOOK_TEMPLATE(printReg) {
+    ((DBG_OUT << '$' << Binary::regToString[Regs] << ": " << machine.readCPU().readRegister(Regs).ui << ' '), ...);
     DBG_OUT << DBG_END;
 }
 

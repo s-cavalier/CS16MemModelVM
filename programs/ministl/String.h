@@ -49,10 +49,18 @@ namespace std {
 
         const char* c_str() const;
         const char* data() const;
+        
     };
 
     string to_string(int value);
     string to_string(unsigned int value);
+
+    void println(const char* cstr);
+    void println(const string& str);
+
+    
+    
+
 
 }
 

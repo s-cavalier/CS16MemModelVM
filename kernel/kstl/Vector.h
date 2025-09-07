@@ -29,7 +29,7 @@ namespace ministl {
         }
 
         // Default constructor
-        vector() : _size(0), _capacity(DEFAULT_CAP), _data(new T[_capacity]) {}
+        vector() : _size(0), _capacity(DEFAULT_CAP), _data((T*)::operator new[](sizeof(T) * _capacity)) {}
         
         // Default insert count items
         explicit vector(size_t count) {

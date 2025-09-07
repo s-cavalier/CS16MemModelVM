@@ -2,13 +2,9 @@
 #include "Process.h"
 // --- These should be the first includes, especially HeapManager so everything after is correctly linked with the new operator
 
-#include "kstl/File.h"
-#include "kstl/String.h"
-
-#include "PageTables.h"
 // -- Stack Init --
 
-#define K_STACK_SIZE 8192
+constexpr unsigned int K_STACK_SIZE = 16_kb;
 
 __attribute__((aligned(K_STACK_SIZE)))
 char kernel_stack[K_STACK_SIZE];
@@ -31,26 +27,20 @@ void call_global_constructors() {
     }
 }
 
-unsigned char exceptionDepth = 1; // asmglue.asm will handle this
+unsigned char exceptionDepth = 1; // asmglue.asm will handle this, except in the cppmain boot
 
-struct Foo {
-    Foo() { PrintString("hello from foo\n"); }
-    void bar() { PrintString("bar\n"); }
-    ~Foo() { PrintString("goodbye from foo\n"); }
-};
+// Recall that ProcessManager sets currentThread = &kernel::ProcessManager::instace().kernelProcess during call_global_constructors
 
 extern "C" void cppmain() {
-    // just eret assuming that EPC already has the right PC loaded
-    call_global_constructors();
-    currentThread = &kernel::PCB::kernelThread();
+    call_global_constructors(); // Should create ProcessManager
     PrintString("Kernel booted!\n");
-    
-    auto firstProc = new kernel::PCB(argv[0], ministl::make_unique<kernel::SegmentedPageTable>(16, 8) );
+    assert((argc > 0) && "bruh what program do i run");
 
-    currentThread = firstProc;
+    unsigned int firstPID = kernel::ProcessManager::instance.createProcess(argv[0]);
 
     exceptionDepth -= 1;
     
+    currentThread = kernel::ProcessManager::instance[firstPID];
 }   // Return here calls run_process(currentThread->regCtx)
 
 

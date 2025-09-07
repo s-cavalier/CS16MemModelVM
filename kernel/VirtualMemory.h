@@ -17,13 +17,14 @@ namespace kernel {
     class MemoryManager {
         ministl::bitset<NUM_PAGES> reservedPages;
         size_t kernelReservedBoundary;
-
         MemoryManager();
+
     public:
 
+        // Meyers instance to avoid SIOF, since ProcessManager will need to use this
         static MemoryManager& instance() {
-            static MemoryManager inst;
-            return inst;
+            static MemoryManager mm;
+            return mm;
         }
 
         size_t reserveFrame();
@@ -112,12 +113,11 @@ namespace kernel {
         ministl::array<PageTable::Entry, KHEAP_PAGES> pt;        
         KernelPageTable();
 
+        friend class ProcessManager;
+
+        // Should only be accessible through the ProcessManager
+
     public:
-        static KernelPageTable& instance() {
-            static KernelPageTable kpt;
-            return kpt;
-        }
-        
 
         ministl::optional<Entry> walkTable(uint32_t vaddr) const override;
         bool mapPTE(const Entry &pte, uint32_t vpn) override;
@@ -126,20 +126,36 @@ namespace kernel {
     static constexpr uint32_t BRK_DEFAULT = 0x10008000;
     static constexpr uint32_t HEAP_LIMIT = BRK_DEFAULT + (1 * 1024 * 1024);
 
+    // Used for kernel initialization constructor routines, namely AddrSpace(kinit, ...) and PCB(kinit, ...)
+    struct kernelInit_t {
+        explicit constexpr kernelInit_t() = default;
+    };
+
+    inline constexpr kernelInit_t kernelInitalizer{};
+
     class AddressSpace {
+
+        // the 256th bit is reserved for kernel_asid = 0xFF
+        static ministl::bitset<255> reservedASIDs; 
+
         ministl::unique_ptr<PageTable> _pageTable;
         size_t brk;
         unsigned char _asid;
-        
-        // Private constructor for the kernel
-        AddressSpace() : _pageTable( ministl::unique_ptr<PageTable>( &KernelPageTable::instance() )), brk(-1), _asid(0) {} 
+
+        AddressSpace(kernelInit_t, KernelPageTable& kpt);
+        AddressSpace(ministl::unique_ptr<PageTable> pageTable);
+
+        // AddressSpace initialization should go strictly through the ProcessManager/PCB
+        friend class ProcessManager;
         friend class PCB;
 
     public:
-        AddressSpace(ministl::unique_ptr<PageTable> pageTable, unsigned char asid);
+        static constexpr unsigned char KERNEL_ASID = 0xFF;
         
         TLBEntry translate(uint32_t vaddr);
         bool updateBrk(uint32_t vaddr);
+
+        ~AddressSpace();
     };
 
 }

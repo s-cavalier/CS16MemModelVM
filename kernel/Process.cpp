@@ -2,9 +2,31 @@
 #include "kstl/String.h"
 #include "kstl/File.h"
 #include "kstl/Elf.h"
+#include "PageTables.h"
 
+kernel::PCB::PCB() : regCtx{}, addrSpace( ministl::unique_ptr<PageTable>() ), state(READY), priority(0), PID(0) {}
 
-kernel::PCB::PCB() : PID(0), state(RUNNING) {}
+kernel::PCB::PCB(uint32_t pid, ProcessState state, ministl::unique_ptr<PageTable> pageSystem)
+    : regCtx{}, addrSpace( ministl::move(pageSystem) ), state(state), priority(0), PID(pid) {}
+
+kernel::PCB::PCB(kernelInit_t, KernelPageTable& kpt) 
+: regCtx{}, addrSpace(kernelInitalizer, kpt), state(RUNNING), priority(0), PID(ProcessManager::KERNEL_PID) {
+    
+    currentThread = this;
+}
+
+kernel::ProcessManager::ProcessManager() : kPageTable(), kernelProcess(kernelInitalizer, kPageTable), processes(), freePids() {}
+
+kernel::ProcessManager kernel::ProcessManager::instance;
+
+kernel::PCB* kernel::ProcessManager::operator[](size_t idx) {
+    if (idx >= processes.size()) return nullptr;
+    return processes[idx].get();
+}
+const kernel::PCB* kernel::ProcessManager::operator[](size_t idx) const {
+    if (idx >= processes.size()) return nullptr;
+    return processes[idx].get();
+}
 
 // ----- internal helpers
 static bool read_full(kernel::File& f, void* dst, size_t n) {
@@ -47,19 +69,17 @@ static bool read_cstr_from_shstr(kernel::File& f, uint32_t shstr_off, uint32_t n
     return true;
 }
 
-// ---- constructor (no dynamic allocation) 
-kernel::PCB::PCB(const char* binaryFile, ministl::unique_ptr<PageTable> pageSystem) : addrSpace(ministl::move(pageSystem), 0), PID(1), state(READY) {
-    // init non-zero regs
-    regCtx.accessRegister(kernel::SP) = 0x80000000;
-    regCtx.accessRegister(kernel::GP) = 0x10008000;
+uint32_t kernel::ProcessManager::createProcess(const char* executableFile) {
 
-    // --- ELF path (no heap allocations) ---
-    kernel::File file(binaryFile, O_RDONLY);
+    // ELF parsing avoids heap-allocation and instead uses buffers since heap-allocation could get really expensive memory-wise
+    // Worth more than the speed-tradeoff, which is still arguable from vector resizing
 
-    // 1) ELF header
+    kernel::File file(executableFile, O_RDONLY);
+
+    // ELF header
     Elf32_Ehdr ehdr{};
     if (!read_full(file, &ehdr, sizeof(ehdr))) {
-        state = ZOMBIE; return;
+        return NOPCBEXISTS;
     }
 
     // Gather core fields
@@ -75,23 +95,22 @@ kernel::PCB::PCB(const char* binaryFile, ministl::unique_ptr<PageTable> pageSyst
     } info{};
     info.entry = ehdr.e_entry;
 
-    // 2) Read the section-header for the shstrtab itself (single record)
+    //  Read the section-header for the shstrtab itself (single record)
     Elf32_Shdr shstr_sh{};
     file.seek(shoff + static_cast<uint32_t>(shstrndx) * shentsize, 0);
     if (!read_full(file, &shstr_sh, sizeof(shstr_sh))) {
-        state = ZOMBIE; return;
+        return NOPCBEXISTS;
     }
 
-    // 3) Scan all section headers one-by-one, resolve names on-demand
-    char namebuf[64]; // adjust if section names can exceed this
+    // Scan all section headers one-by-one, resolve names on-demand
+    char namebuf[128]; // adjust if section names can exceed this
     for (uint16_t i = 0; i < shnum; ++i) {
         Elf32_Shdr sh{};
         file.seek(shoff + static_cast<uint32_t>(i) * shentsize, 0);
-        if (!read_full(file, &sh, sizeof(sh))) { state = ZOMBIE; return; }
+        if (!read_full(file, &sh, sizeof(sh))) { return NOPCBEXISTS; }
 
-        if (!read_cstr_from_shstr(file, shstr_sh.sh_offset, sh.sh_name,
-                                  namebuf, sizeof(namebuf))) {
-            state = ZOMBIE; return;
+        if (!read_cstr_from_shstr(file, shstr_sh.sh_offset, sh.sh_name, namebuf, sizeof(namebuf))) {
+            return NOPCBEXISTS;
         }
 
         if (ministl::streq(namebuf, ".text")) {
@@ -103,27 +122,67 @@ kernel::PCB::PCB(const char* binaryFile, ministl::unique_ptr<PageTable> pageSyst
         }
     }
 
-    // 4) Stream sections directly into memory with a stack buffer
+    // Allocate PCB now that we know the file should be good and with stack/data awareness
+    assert(info.data_size < 8_kb && "Static section can only be 8kb in size according to mips calling card, consider changing since that's not a lot");
+
+    size_t newPID;
+    if ( !freePids.empty() ) {
+        newPID = freePids.back(); // Don't pop yet just in case there's a failure
+    } else {
+        newPID = processes.size();
+    }
+
+    // Need to round up on the pages alloced, for example if size is only 400 bytes, 400 >> 12 == 0.
+    // can't use make_unique since it's private to other classes, have to alloc in place
+    // TODO: Use a PageTable factory instead?
+    ministl::unique_ptr<PCB> newProcess( 
+        new PCB(
+            newPID, 
+            BLOCKED, 
+            ministl::make_unique<SegmentedPageTable>((info.text_size >> 12) + 1, (info.data_size >> 12) + 1, 4)
+        ) 
+    ); 
+
+    // Don't add to vector yet just in case of failure
+    
+    // Now we "establish" the process, registers and write in text/static
+    newProcess->regCtx.accessRegister(kernel::SP) = 0x80000000;
+    newProcess->regCtx.accessRegister(kernel::GP) = 0x10008000;
+
     if (info.text_size) {
         file.seek(info.text_offset, 0);
-        char* textDst = reinterpret_cast<char*>(0x00400000);
+        char* textDst = (char*)(0x00400000);
 
         // Write in all of the pages pre-emptively since we're in the kernel
         // Need to change later for text sections >= 256 kb (TLB only holds 64 entries)
-        for (uint32_t i = 0; i < ((info.text_size >> 12) + 1); ++i) addrSpace.translate( (uint32_t)(textDst) + (i << 12)).writeRandom();
+        // Will either have to write directly to phys using 0x80000000 + physAddr (direct mapping) or just loading more TLB entries
+        for (uint32_t i = 0; i < ((info.text_size >> 12) + 1); ++i) newProcess->addrSpace.translate( (uint32_t)(textDst) + (i << 12)).writeRandom();
 
-        if (!stream_copy_to(file, textDst, info.text_size)) { state = ZOMBIE; return; }
+        if (!stream_copy_to(file, textDst, info.text_size)) { return NOPCBEXISTS; }
     }
 
     if (info.data_size) {
         file.seek(info.data_offset, 0);
-        char* dataDst = reinterpret_cast<char*>(0x10000000);
-        // Write in all of the pages pre-emptively since we're in the kernel
-        // Need to change later for data sections >= 256 kb (TLB only holds 64 entries)
-        for (uint32_t i = 0; i < ((info.text_size >> 12) + 1); ++i) addrSpace.translate( (uint32_t)(dataDst) + (i << 12)).writeRandom();
+        char* dataDst = (char*)(0x10000000);
 
-        if (!stream_copy_to(file, dataDst, info.data_size)) { state = ZOMBIE; return; }
+        for (uint32_t i = 0; i < ((info.data_size >> 12) + 1); ++i) newProcess->addrSpace.translate( (uint32_t)(dataDst) + (i << 12)).writeRandom();
+
+        if (!stream_copy_to(file, dataDst, info.data_size)) { return NOPCBEXISTS; }
     }
 
-    regCtx.epc = info.entry - 4;
+    newProcess->regCtx.epc = info.entry - 4;
+
+    // Since everything has gone swimmingly, take resources
+
+    if ( !freePids.empty() && newPID == freePids.back() ) { // This is not gonna work when multi-threaded, but we'll get there when we get there
+        freePids.pop_back(); 
+        auto& procSlot = processes[newPID];
+        assert(!procSlot);
+        procSlot = ministl::move(newProcess);
+        return newPID;
+    }
+
+    processes.emplace_back( ministl::move(newProcess) );
+
+    return newPID;
 }

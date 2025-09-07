@@ -58,7 +58,7 @@ namespace ministl {
 
         void reset(T* p = nullptr) {
             if (p == ptr) return;
-            delete ptr;
+            if (ptr) delete ptr;
             ptr = p; 
         }
 
@@ -79,6 +79,8 @@ namespace ministl {
         inline T& operator*() const { return *ptr; }
 
         inline T* release() { T* ret = ptr; ptr = nullptr; return ret; }
+
+        inline operator bool() { return ptr; }
 
         unique_ptr(const unique_ptr&) = delete;
         unique_ptr& operator=(const unique_ptr&) = delete;

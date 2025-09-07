@@ -1,5 +1,6 @@
 #include "ASMInterface.h"
 #include "Process.h"
+#include "Scheduler.h"
 
 enum ExceptionType : unsigned char {
         INTERRUPT = 0,   // Interrupt (hardware)
@@ -27,6 +28,7 @@ enum ExceptionType : unsigned char {
         BRK = 45,
     };
 
+
 // Called from handle_trap in asmglue.asm. Calls run_process(currentThread->ctx) on exit.
 extern "C" void handleTrap() {
     assert(currentThread);
@@ -35,7 +37,7 @@ extern "C" void handleTrap() {
     // The register context of the trapping thread is saved to k0. We need to use this context on the stack in case of >1 nested exceptions.
 
     kernel::PCB* oldThread = currentThread;                                     // save oldThread
-    currentThread = &kernel::PCB::kernelThread();                                     // set currentThread to kernel PCB
+    currentThread = &kernel::ProcessManager::instance.kernelProcess;          // set currentThread to kernel PCB
 
     ExceptionType cause = ExceptionType(trapCtx->cause >> 2); // need to consider interrupt mask later
 
@@ -99,6 +101,17 @@ extern "C" void handleTrap() {
             break;
     }
 
-    currentThread = oldThread;
-    currentThread->regCtx = *trapCtx; // Save the registers to the current thread so asmglue can restore it later
+    
+
+    if (oldThread->getPID() == kernel::ProcessManager::KERNEL_PID) {
+        currentThread = oldThread;
+        currentThread->regCtx = *trapCtx;
+        return;
+    }
+
+    oldThread->regCtx = *trapCtx;
+    kernel::MultiLevelQueue::scheduler.enqueue(oldThread);
+    unsigned int newPid = kernel::MultiLevelQueue::scheduler.dequeue();
+    assert(newPid != kernel::NOPCBEXISTS);
+    currentThread = kernel::ProcessManager::instance[newPid];
 }

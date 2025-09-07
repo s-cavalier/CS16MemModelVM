@@ -130,15 +130,29 @@ bool kernel::KernelPageTable::mapPTE(const Entry &pte, uint32_t vpn) {
     return true;
 } 
 
-kernel::AddressSpace::AddressSpace(ministl::unique_ptr<PageTable> pageTable, unsigned char asid)
-: _pageTable(ministl::move(pageTable)), brk(0), _asid(asid)
-{}
+ministl::bitset<255> kernel::AddressSpace::reservedASIDs;
+
+kernel::AddressSpace::AddressSpace(kernelInit_t, KernelPageTable& kpt) : _pageTable( &kpt ), _asid(KERNEL_ASID) {}
+
+kernel::AddressSpace::AddressSpace(ministl::unique_ptr<PageTable> pageTable) : _pageTable( ministl::move(pageTable) ), _asid(0) {
+    for (size_t i = 0; i < reservedASIDs.size(); ++i) {
+        if (reservedASIDs[i]) continue;
+        reservedASIDs.set(i);
+        _asid = i;
+        return;
+    }
+
+    // Panic until more infra built
+    assert(false && "No ASIDs available");
+}
 
 kernel::TLBEntry kernel::AddressSpace::translate(uint32_t vaddr) {
     auto res = _pageTable->walkTable(vaddr);
 
-    if (res && res->present) return res->toTLBEntry(vaddr >> 12, _asid);    
+    if (res && res->present) return res->toTLBEntry(vaddr >> 12, _asid);
+
     assert(false && "not implemented yet");
+    return {};
 }
 
 bool kernel::AddressSpace::updateBrk(uint32_t vaddr) {
@@ -162,6 +176,11 @@ bool kernel::AddressSpace::updateBrk(uint32_t vaddr) {
     brk = pageBoundary;
 
     return true;
+}
+
+// Free asid
+kernel::AddressSpace::~AddressSpace() {
+    reservedASIDs.set(_asid, false);
 }
 
 

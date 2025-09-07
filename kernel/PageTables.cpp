@@ -1,7 +1,7 @@
 #include "PageTables.h"
 
 
-kernel::SegmentedPageTable::SegmentedPageTable(size_t initText, size_t initStack, size_t initStatic, size_t initDynamic) :
+kernel::SegmentedPageTable::SegmentedPageTable(size_t initText, size_t initStatic, size_t initStack, size_t initDynamic) :
 stackPages(initStack), dynamicPages(initDynamic), staticPages(initStatic), textPages(initText) {
 
     for (size_t i = 0; i < stackPages.size(); ++i) {

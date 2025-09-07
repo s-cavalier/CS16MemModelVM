@@ -17,7 +17,7 @@ namespace kernel {
         ministl::vector<PageTable::Entry> textPages;
 
     public:
-        SegmentedPageTable(size_t initText, size_t initStack = 2, size_t initStatic = 4, size_t initDynamic = 0);
+        SegmentedPageTable(size_t initText, size_t initStatic = 4, size_t initStack = 2, size_t initDynamic = 0);
 
         ministl::optional<Entry> walkTable(uint32_t vaddr) const override;
         bool mapPTE(const Entry &pte, uint32_t vpn) override;

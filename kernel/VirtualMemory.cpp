@@ -87,7 +87,7 @@ ministl::optional<kernel::TLBEntry> kernel::TLBEntry::fromProbe(uint32_t vpn, bo
 }
 
 kernel::PageTable::Entry::Entry(uint32_t pfn, unsigned char flags) 
-: pfn( pfn << 12 ), global(flags & GLOBAL), writable(flags & WRITABLE), user(flags & USER), present(flags & USER)
+: pfn( pfn ), global(flags & GLOBAL), writable(flags & WRITABLE), user(flags & USER), present(flags & USER)
 {}
 
 kernel::TLBEntry kernel::PageTable::Entry::toTLBEntry(uint32_t vpn, unsigned char asid) const {

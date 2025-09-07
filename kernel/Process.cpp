@@ -139,7 +139,7 @@ uint32_t kernel::ProcessManager::createProcess(const char* executableFile) {
         new PCB(
             newPID, 
             BLOCKED, 
-            ministl::make_unique<SegmentedPageTable>((info.text_size >> 12) + 1, (info.data_size >> 12) + 1, 4)
+            ministl::make_unique<HashPageTable>((info.text_size >> 12) + 1, (info.data_size >> 12) + 1, 4)
         ) 
     ); 
 

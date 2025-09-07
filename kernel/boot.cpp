@@ -2,6 +2,8 @@
 #include "Process.h"
 // --- These should be the first includes, especially HeapManager so everything after is correctly linked with the new operator
 
+#include "kstl/UnorderedMap.h"
+
 // -- Stack Init --
 
 constexpr unsigned int K_STACK_SIZE = 16_kb;
@@ -34,7 +36,7 @@ unsigned char exceptionDepth = 1; // asmglue.asm will handle this, except in the
 extern "C" void cppmain() {
     call_global_constructors(); // Should create ProcessManager
     PrintString("Kernel booted!\n");
-    assert((argc > 0) && "bruh what program do i run");
+    assert((argc > 0) && "Need a first process to run!");
 
     unsigned int firstPID = kernel::ProcessManager::instance.createProcess(argv[0]);
 

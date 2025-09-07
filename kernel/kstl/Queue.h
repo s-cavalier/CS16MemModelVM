@@ -3,15 +3,9 @@
 #include "Error.h"
 #include "UniquePtr.h"
 #include "InitializerList.h"
+#include "Iterator.h"
 
 namespace ministl {
-
-    using ptrdiff_t = long;
-    struct input_iterator_tag {};
-    struct output_iterator_tag {};
-    struct forward_iterator_tag       : input_iterator_tag {};
-    struct bidirectional_iterator_tag : forward_iterator_tag {};
-    struct random_access_iterator_tag : bidirectional_iterator_tag {};
 
     template <typename T>
     class list {
@@ -20,9 +14,9 @@ namespace ministl {
             Node* next;
             T value;
 
-            Node() : next(nullptr), prev(nullptr), value() {} 
-            Node(const T& value, Node* prev = nullptr, Node* next = nullptr) : prev(prev), next(next), value(value) {}
-            Node(T&& value, Node* prev = nullptr, Node* next = nullptr) : prev(prev), next(next), value( ministl::move(value) ) {}
+            template <typename... Args>
+            Node(Args&&... args) : prev(nullptr), next(nullptr), value(ministl::forward<Args>(args)...) {}
+
             ~Node() = default;
         };
 

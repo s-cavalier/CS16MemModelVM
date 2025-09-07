@@ -3,8 +3,13 @@
 #include "Error.h"
 #include "UniquePtr.h"
 #include "InitializerList.h"
+#include "Iterator.h"
 
-namespace ministl {    
+namespace ministl {
+
+    static constexpr size_t DEFAULT_CAP = 8;
+        static constexpr size_t GROWTH_FACTOR = 2;
+
     template <typename T>
     class vector {
 
@@ -13,9 +18,6 @@ namespace ministl {
         T* _data;
         
     public:
-
-        static constexpr size_t DEFAULT_CAP = 8;
-        static constexpr size_t GROWTH_FACTOR = 2;
 
         constexpr size_t roundToNearestPowOf2(size_t x) {
             if (x == 0) return 1;
@@ -247,6 +249,48 @@ namespace ministl {
             clear();
             if (_data) ::operator delete[](_data);
         }
+
+        class iterator {
+            T* ptr;
+
+        public:
+            using iterator_category = ministl::random_access_iterator_tag;
+            using value_type        = T;
+            using difference_type   = ministl::ptrdiff_t;
+            using pointer           = T*;
+            using reference         = T&;
+
+            iterator() : ptr(nullptr) {}
+            explicit iterator(pointer p) : ptr(p) {}
+
+            reference operator*()  const { return *ptr; }
+            pointer   operator->() const { return ptr; }
+
+            // increment/decrement
+            iterator& operator++()    { ++ptr; return *this; }
+            iterator  operator++(int) { iterator tmp(*this); ++(*this); return tmp; }
+            iterator& operator--()    { --ptr; return *this; }
+            iterator  operator--(int) { iterator tmp(*this); --(*this); return tmp; }
+
+            // random access
+            iterator& operator+=(difference_type n) { ptr += n; return *this; }
+            iterator& operator-=(difference_type n) { ptr -= n; return *this; }
+            iterator  operator+(difference_type n) const { return iterator(ptr + n); }
+            iterator  operator-(difference_type n) const { return iterator(ptr - n); }
+            difference_type operator-(const iterator& other) const { return ptr - other.ptr; }
+            reference operator[](difference_type n) const { return *(ptr + n); }
+
+            // comparisons
+            bool operator==(const iterator& other) const { return ptr == other.ptr; }
+            bool operator!=(const iterator& other) const { return ptr != other.ptr; }
+            bool operator< (const iterator& other) const { return ptr <  other.ptr; }
+            bool operator> (const iterator& other) const { return ptr >  other.ptr; }
+            bool operator<=(const iterator& other) const { return ptr <= other.ptr; }
+            bool operator>=(const iterator& other) const { return ptr >= other.ptr; }
+        };
+
+        iterator begin() { return iterator(_data); }
+        iterator end()   { return iterator(_data + _size); }
 
     };
 

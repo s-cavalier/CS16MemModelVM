@@ -116,3 +116,66 @@ kernel::SegmentedPageTable::~SegmentedPageTable() {
     for (size_t i = 0; i < staticPages.size(); ++i)     MemoryManager::instance().freeFrame( staticPages[i].pfn );
     for (size_t i = 0; i < textPages.size(); ++i)       MemoryManager::instance().freeFrame( textPages[i].pfn );
 }
+
+
+kernel::HashPageTable::HashPageTable(size_t initText, size_t initStatic, size_t initStack, size_t initDynamic) 
+: table( (initText + initStatic + initStack + initDynamic) * 2) {
+
+
+    for (size_t i = 0; i < initText; ++i) {
+        table.emplace(
+            TEXT_START_VPN + i, 
+            PageTable::Entry( MemoryManager::instance().reserveFrame() >> 12, PageTable::Entry::USER | PageTable::Entry::PRESENT ) 
+        );
+    }
+
+    for (size_t i = 0; i < initStatic; ++i) {
+        table.emplace(
+            STATIC_START_VPN + i, 
+            PageTable::Entry( MemoryManager::instance().reserveFrame() >> 12, PageTable::Entry::USER | PageTable::Entry::PRESENT | PageTable::Entry::WRITABLE ) 
+        );
+    }
+
+    for (size_t i = 1; i <= initStack; ++i) {
+        table.emplace(
+            STACK_LIMIT_VPN - i, 
+            PageTable::Entry( MemoryManager::instance().reserveFrame() >> 12, PageTable::Entry::USER | PageTable::Entry::PRESENT | PageTable::Entry::WRITABLE ) 
+        );
+    }
+
+    for (size_t i = 0; i < initDynamic; ++i) {
+        table.emplace(
+            DYNAMIC_START_VPN + i, 
+            PageTable::Entry( MemoryManager::instance().reserveFrame() >> 12, PageTable::Entry::USER | PageTable::Entry::PRESENT | PageTable::Entry::WRITABLE ) 
+        );
+    }
+
+}
+
+ministl::optional<kernel::PageTable::Entry> kernel::HashPageTable::walkTable(uint32_t vaddr) const {
+    uint32_t vpn = vaddr >> 12;
+    const Entry* res = table.find(vpn);
+
+    if (res) return *res;
+    return ministl::nullopt;
+}
+
+bool kernel::HashPageTable::mapPTE(const Entry &pte, uint32_t vpn) {
+    if (vpn < TEXT_START_VPN || vpn >= STACK_LIMIT_VPN) return false;
+
+    auto& tablepte = table[vpn];
+    if (tablepte.pfn != 0) return false;
+    
+    tablepte = pte;
+    return true;
+}
+
+kernel::HashPageTable::~HashPageTable() {
+
+    for (auto& kv : table) {
+        if (kv.second.pfn == 0) continue; // Need better iterator stuff for this to be unnecessary (i.e., use iterator/bool combo for mapPTE)
+        MemoryManager::instance().freeFrame( kv.second.pfn << 12 );
+    }
+
+
+}

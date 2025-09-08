@@ -32,6 +32,7 @@ void Hardware::Machine::raiseTrap(Byte exceptionCode, Word badVAddr) {
     sys_ctrl->setEPC( cpu.readProgramCounter() );
     sys_ctrl->setEXL( true );
     sys_ctrl->setBadVAddr(badVAddr);
+    sys_ctrl->accessRegister( Binary::STATUS ).ui &= ~Word(1); // Disable interrupts
 
     sys_ctrl->setCause(exceptionCode);
 
@@ -85,13 +86,20 @@ void Hardware::Machine::loadProgram(const std::vector<Word>& instructions, const
     // set memory bounds
 }
 
-void Hardware::Machine::step() {
-    cpu.cycle();
+
+// Runs a single cycle. Since the interrupt system is clock-based and not instr count based, interrupts are disabled
+// Use a Hardware::SendInterrupt object if you want to manually call an interrupt
+void Hardware::Machine::step( InterruptDevice* device ) {
+    cpu.cycle(device);
 }
 
-void Hardware::Machine::run(instrDebugHook hook) {
+
+// Runs with an Interrupt Device.
+void Hardware::Machine::run(instrDebugHook hook, InterruptDevice* device, std::chrono::milliseconds IDduration ) {
+    device->start(IDduration);
     while (!killed) {
-        step();
+        step(device);
         if (hook) hook(*this);
     }
+    device->stop();
 }

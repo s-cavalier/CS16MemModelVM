@@ -41,7 +41,6 @@ namespace kernel {
         RA = 31
     };
 
-
     struct RegisterContext {
         uint32_t regs[31]; // doesn't include $zero
         uint32_t hiRegister;
@@ -117,6 +116,7 @@ namespace kernel {
     int getK0Register();
     int getK1Register();
     uint32_t getBadVAddr();
+    void setInterrupts(bool enabled);
 
 }
 

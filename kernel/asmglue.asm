@@ -113,7 +113,7 @@ kernel_trap:
     lw $a0, 0($a0)
 
     # unwind stack (since currentThread->regCtx holds the registers, we can do this safely)
-    addiu $sp, $sp, 136
+    addiu $sp, $sp, 144
 
     # reduce exceptionDepth by one
     la $t0, exceptionDepth
@@ -202,8 +202,11 @@ run_process:
     bgtz $k0, .Lrun_process_nestedret
     nop
 
-    # not much else todo!    
-
+    # enable interrupts
+    mfc0 $k0, $12
+    ori $k0, $k0, 1
+    mtc0 $k0, $12
+    
     eret
     nop
 

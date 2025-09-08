@@ -76,3 +76,23 @@ kernel::uint32_t kernel::getBadVAddr() {
     );
     return value;
 }
+
+void kernel::setInterrupts(bool enabled) {
+    uint32_t curr_value;
+    __asm__ volatile (
+        "mfc0 %0, $12\n"
+        : "=r"(curr_value)
+        :
+        : "memory"
+    );
+
+    if (enabled) curr_value |= 1;
+    else curr_value &= ~uint32_t(1);
+
+    __asm__ volatile(
+        "mtc0 %0, $12\n"
+        :
+        : "r"(curr_value)
+        : "memory"
+    );
+}

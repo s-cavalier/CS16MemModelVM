@@ -42,6 +42,11 @@ extern "C" void handleTrap() {
     ExceptionType cause = ExceptionType(trapCtx->cause >> 2); // need to consider interrupt mask later
 
     switch (cause) {
+        case INTERRUPT:
+            PrintString("Recieved an interrupt! Returning control...\n");
+            trapCtx->epc -= 4; // Due to some weird VM logic this needs to be shifted by 4 otherwise an instruction is skipped
+            break;
+
         case TLB_L: {
             oldThread->addrSpace.translate(badVAddr).writeRandom();
             trapCtx->epc -= 4;
@@ -100,8 +105,6 @@ extern "C" void handleTrap() {
             PrintString("\n");
             break;
     }
-
-    
 
     if (oldThread->getPID() == kernel::ProcessManager::KERNEL_PID) {
         currentThread = oldThread;

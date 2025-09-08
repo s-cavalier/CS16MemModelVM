@@ -49,11 +49,11 @@ namespace Hardware {
         void loadKernel(const ExternalInfo::KernelBootInformation& kernelInfo, const std::vector<std::string>& kernelArguments);
         void loadProgram(const std::vector<Word>& instructions, const std::vector<Byte>& bytes, const Word& entry);
 
-        void step();
+        void step( InterruptDevice* device = nullptr );
 
         // Just calls a loop on runInstruction until kill flag is set
         using instrDebugHook = void (*)(const Machine&);
-        void run(instrDebugHook hook = nullptr);
+        void run(instrDebugHook hook = nullptr, InterruptDevice* device = nullptr, std::chrono::milliseconds IDduration = std::chrono::milliseconds(1) );
     };
 
     struct Instruction {

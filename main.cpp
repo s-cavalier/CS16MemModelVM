@@ -46,10 +46,9 @@ int main(int argc, char** argv) {
 
     // -- Setup and run machine --
     Hardware::Machine machine;
+    Hardware::WallClock interDev;
     machine.loadKernel( kernel.kernelInfo, kernelArgs );
-    machine.run(DBGHOOK((
-        makeConditionalCombinedHook<ignoreKernel, printHILO, printReg<Binary::V0, Binary::V1>, printInstr>()
-    )));
+    machine.run( DBGHOOK(( makeConditionalCombinedHook<ignoreKernel, printReg<Binary::FP, Binary::SP>, printInstr>() )) , &interDev);
 
     return 0;
 }

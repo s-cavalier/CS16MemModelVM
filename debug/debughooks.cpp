@@ -69,7 +69,6 @@ HOOK_TEMPLATE(printStatus) {
 }
 
 HOOK_TEMPLATE(printRegs) {
-    DBG_OUT << "REGISTERS:\n";
     for (int i = 0; i < 32; ++i) DBG_OUT << '$' << Binary::regToString[i] << ":" << machine.readCPU().readRegister(i).ui << ' ';
     DBG_OUT << DBG_END;
 }

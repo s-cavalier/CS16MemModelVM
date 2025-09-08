@@ -2,16 +2,98 @@
 #include "BinaryUtils.h"
 #include "instructions/Instruction.h"
 
+Hardware::WallClock::WallClock() {}
+Hardware::WallClock::~WallClock() {
+    stop();
+}
+
+void Hardware::WallClock::start(std::chrono::milliseconds quanta) {
+    stop();
+
+    duration = quanta;
+    polling.store(true, std::memory_order_release);
+
+    poller = std::thread([this] { run(); });
+}
+
+void Hardware::WallClock::stop() {
+    bool expected = true;
+    if (polling.compare_exchange_strong(expected, false, std::memory_order_acq_rel)) {
+        // wake the sleeper immediately
+        {
+            std::lock_guard<std::mutex> lk(mx);
+            // nothing else to change just notify
+        }
+        cv.notify_one();
+    }
+    if (poller.joinable()) poller.join();
+}
+
+void Hardware::WallClock::run() {
+    using clock = std::chrono::steady_clock;
+    auto next = clock::now() + duration;
+    std::unique_lock<std::mutex> lock(mx);
+
+    while (polling.load(std::memory_order_relaxed)) {
+        cv.wait_until(lock, next, [this] () { return !polling.load(std::memory_order_relaxed); } );
+        if (!polling.load(std::memory_order_relaxed)) break;
+
+        IDactive.store(true, std::memory_order_release);
+
+        next += duration;
+    }
+
+}
+
+bool Hardware::WallClock::poll() {
+    return IDactive.exchange(false, std::memory_order_acquire);
+}
+
+Hardware::TickClock::TickClock() : tickGoal(0), tickCount(0), ticking(false) {}
+
+void Hardware::TickClock::start(std::chrono::milliseconds quanta) {
+    tickGoal = quanta.count() * 1000;
+    tickCount = 0;
+    ticking = true;
+}
+
+void Hardware::TickClock::stop() {
+    ticking = false;
+}
+
+bool Hardware::TickClock::poll() {
+    if (tickCount++ > tickGoal) {
+        tickCount = 0;
+        return true;
+    }
+    return false;
+}
+
 Hardware::CPU::CPU(Machine& machine) : machine(machine), registerFile{0}, programCounter(0) {}
 
-void Hardware::CPU::cycle() {
+void Hardware::CPU::cycle( InterruptDevice* device ) {
     try {
+        const Word& statusReg = machine.accessCoprocessor(0)->accessRegister(Binary::STATUS).ui;
+        // We use a oldIE and newIE comparison to have a sort of atomic interrupt
+        // If an instruction flips the IE, it should not be possible for an interrupt to occur on the same instruction for (at least now) simplicity reasons
+        // This is mainly useful for the worst-case when an interrupt signal comes right during a syscall or some other exception
+        // It could be possible to work with less scaffolding for performance purposes, but for now this is ok
         
+        bool oldIE = statusReg & 1;
+
         auto& instr = instructionCache[programCounter];
         if (!instr) instr = decode( machine.readMemory().getWord(programCounter) );
 
         instr->run();
         programCounter += 4;
+
+        bool newIE = statusReg & 1;
+
+        if (device && device->poll() && oldIE && newIE) machine.raiseTrap( Trap::INTERRUPT, 0 ) ; // only run if the IE's are active and no action on the IE has been made
+
+        // For every other exception, they are thrown during the instr->run() dynamic dispatch call, which prevents PC from incrementing
+        // However, since we check the device (and therefore throw) after PC increment, the actual instruction at the new PC won't get run
+        // Unless the kernel re-decrements the EPC by 4
         
     } catch (const Hardware::Trap& trap) {
         machine.raiseTrap(trap.exceptionCode, trap.badAddr);

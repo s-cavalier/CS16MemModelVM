@@ -2,6 +2,11 @@
 #define __CPU_H__
 #include "Processors.h"
 #include <unordered_map>
+#include <atomic>
+#include <thread>
+#include <chrono>
+#include <condition_variable>
+#include <mutex>
 
 namespace Hardware {
 
@@ -31,6 +36,56 @@ namespace Hardware {
         explicit Trap(ExceptionCode exceptionCode, Word badAddr = 0) : exceptionCode(exceptionCode), badAddr(badAddr) {}
     };
 
+    // ABC Interrupt Device to try out different ID's
+    struct InterruptDevice {
+        virtual void start(std::chrono::milliseconds quanta) = 0;
+        virtual void stop() = 0;
+        virtual bool poll() = 0;
+        virtual ~InterruptDevice() = default;
+    };
+
+    // Could try to use a spin-system instead if we want microsecond interrupts
+    class WallClock final : public InterruptDevice {
+        std::chrono::milliseconds duration;
+        std::thread poller;
+        std::condition_variable cv; // CV / Mutex for interrupting the sleeping thread on destructor or stop()
+        std::mutex mx;
+        std::atomic_bool IDactive, polling; // IDactive is the producer/consumer atomic for sending an interrupt, polling is the producer/consumer atomic for killing the thread
+        
+        void run();
+
+    public:
+        WallClock();
+        ~WallClock();
+
+        void start(std::chrono::milliseconds quanta) override;
+        void stop() override;
+
+        bool poll() override;
+    };
+
+    class TickClock final : public InterruptDevice {
+        uint64_t tickGoal;
+        uint64_t tickCount;
+        bool ticking;
+
+    public:
+        TickClock();
+
+        void start(std::chrono::milliseconds quanta) override;
+        void stop() override;
+
+        bool poll() override;
+    };
+
+    // Can be used in Hardware::Machine::step()
+    class SendInterrupt final : public InterruptDevice {
+        void start(std::chrono::milliseconds) override {}
+        void stop() override {}
+        bool poll() override { return true; }
+    };
+
+
     struct HiLoRegisters { Word hi; Word lo; };
 
     class CPU {
@@ -48,7 +103,7 @@ namespace Hardware {
         inline Word& accessProgramCounter() { return programCounter; }
         inline HiLoRegisters readHiLo() const { return hiLo; }
 
-        void cycle();
+        void cycle( InterruptDevice* device );
 
         std::unique_ptr<Instruction> decode(const Word& bin_instr);
 

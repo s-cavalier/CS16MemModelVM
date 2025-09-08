@@ -159,6 +159,7 @@ kernel::TLBEntry kernel::AddressSpace::translate(uint32_t vaddr) {
 
     if (res && res->present) return res->toTLBEntry(vaddr >> 12, _asid);
 
+    PrintWrapped("Failed address: ", vaddr, "\n");
     assert(false && "not implemented yet");
     return {};
 }

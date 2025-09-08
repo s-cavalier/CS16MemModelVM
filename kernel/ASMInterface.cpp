@@ -1,12 +1,14 @@
 #include "ASMInterface.h"
 
-kernel::RegisterContext::RegisterContext() : regs{0}, epc(0), status(0), cause(0) {}
-kernel::RegisterContext::RegisterContext(const RegisterContext& other) : epc(other.epc), status(other.status), cause(other.cause) {
+kernel::RegisterContext::RegisterContext() : regs{0}, hiRegister(0), loRegister(0), epc(0), status(0), cause(0) {}
+kernel::RegisterContext::RegisterContext(const RegisterContext& other) : hiRegister(other.hiRegister), loRegister(other.loRegister), epc(other.epc), status(other.status), cause(other.cause) {
     for (unsigned char i = 0; i < 31; ++i) regs[i] = other.regs[i];
 }
 
 kernel::RegisterContext& kernel::RegisterContext::operator=(const RegisterContext& other) {
     if (this == &other) return *this;
+    hiRegister = other.hiRegister;
+    loRegister = other.loRegister;
     epc = other.epc;
     status = other.status;
     cause = other.cause;

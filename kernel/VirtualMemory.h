@@ -90,6 +90,8 @@ namespace kernel {
             // Just calls return PageTableEntry(paddr >> 12, flags). OR PTE::Flags together in flags field
             inline static Entry fromPAddress(uint32_t paddr, unsigned char flags) { return Entry(paddr >> 12, flags); }
 
+            // Copy memory contents of the physical frame to another physical frame
+            void copyMemoryTo(uint32_t pfn) const;
         };
 
 

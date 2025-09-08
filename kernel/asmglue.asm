@@ -29,7 +29,9 @@ kernel_trap:
     # If in a nested exception, we need to use the old $sp register value (so don't change anything) to not corrupt the stack after we return
     # Otherwise, we need to switch to the top_kstack variable.
 
-    la $k0, exceptionDepth # breaks $at i think, need to fix later ( not important right now )
+  
+
+    la $k0, exceptionDepth 
     lbu $k0, 0($k0)
 
     move $k1, $sp # save the stack pointer to k1, regardless
@@ -44,7 +46,7 @@ kernel_trap:
 
     # load registers. $k1 has the "old" $sp value, which maybe be == $k1 or != $k1 based on if we're in a nested exception or not
     
-    addiu $sp, $sp, -136 # 31 * 4 (registers) + 3 * 4 (epc/status/cause)
+    addiu $sp, $sp, -144 # 31 * 4 (registers) + 2 * 4 (hi/lo) + 3 * 4 (epc/status/cause)
     
     .set noat
     sw $at, 0($sp)
@@ -81,13 +83,19 @@ kernel_trap:
     sw $ra, 120($sp)
     .set at
 
+    mfhi $t0
+    mflo $t1
+
+    sw $t0, 124($sp) # hi
+    sw $t1, 128($sp) # lo
+
     mfc0 $t0, $14 #epc
     mfc0 $t1, $12 #status
     mfc0 $t2, $13 #cause
 
-    sw $t0, 124($sp)
-    sw $t1, 128($sp)
-    sw $t2, 132($sp)
+    sw $t0, 132($sp)
+    sw $t1, 136($sp)
+    sw $t2, 140($sp)
 
     # increment exceptionDepth
     la $t0, exceptionDepth
@@ -131,9 +139,9 @@ run_process:
 
     # do this before restoring the rest of the vars so temporary registers are available
 
-    lw $t0, 124($k0)
-    lw $t1, 128($k0)
-    lw $t2, 132($k0)
+    lw $t0, 132($k0)
+    lw $t1, 136($k0)
+    lw $t2, 140($k0)
 
     # lets be sure the EXL bit is enabled so we can maintain privilige. If we eret later, hardware will flip EXL for us
     ori $t1, $t1, 2
@@ -143,6 +151,13 @@ run_process:
     mtc0 $t2, $13 #cause
 
     move $k1, $t0 # save epc to $k1 in case of nested exception later
+
+    # hi/lo regs
+    lw $t0, 124($k0) # hi 
+    lw $t1, 128($k0) # lo
+
+    mthi $t0
+    mtlo $t1
 
     .set noat
     lw $at, 0($k0)
@@ -180,6 +195,7 @@ run_process:
     .set at
 
     # two paths:
+
     la $k0, exceptionDepth
     lbu $k0, 0($k0)
 

@@ -351,11 +351,43 @@ namespace ministl {
         iterator begin() { return iterator(head); }
         iterator end()   { return iterator(nullptr); }
 
+        // Non-standard; could add  reverse_iterator later, but this is good enough for now
+        iterator tail_it() { return iterator(tail); }
+        const_iterator tail_cit() const { return const_iterator(tail); }
+
         const_iterator begin() const { return const_iterator(head); }
         const_iterator end()   const { return const_iterator(nullptr); }
 
         const_iterator cbegin() const { return const_iterator(head); }
         const_iterator cend()   const { return const_iterator(nullptr); }
+
+        iterator erase( iterator pos ) {
+            if (pos == end()) return end();
+            
+            if (_size == 1) {
+                head = nullptr;
+                tail = nullptr;
+                _size = 0;
+                delete pos.ptr;
+                return end();
+            }
+
+            if ( pos.ptr == head ) {
+                pop_front();
+                return iterator(head);
+            }
+
+            if ( pos.ptr == tail ) {
+                pop_back();
+                return end();
+            }
+        
+            pos.ptr->prev->next = pos.ptr->next;
+            pos.ptr->next->prev = pos.ptr->prev;
+            iterator ret(pos.ptr->next);
+            delete pos.ptr;
+            return ret;
+        }
 
     };
     

@@ -127,6 +127,9 @@ namespace ministl {
         }
         ~unordered_map() = default;
 
+        size_t size() const { return _size; }
+        bool empty() const { return _size == 0; }
+
         class iterator {
             using outer_iter = typename BucketContainer::iterator;
             using inner_iter = typename bucket_type::iterator;
@@ -166,17 +169,87 @@ namespace ministl {
                     if (outer != outer_end) inner = outer->begin();
                 }
             }
+
+            friend class unordered_map;
         };
 
         iterator begin() {
-            return iterator(buckets.begin(), buckets.end(),
-                            buckets.empty() ? typename bucket_type::iterator{} 
-                                            : buckets.front().begin());
+            return iterator(buckets.begin(), buckets.end(), buckets.empty() ? typename bucket_type::iterator{} : buckets.front().begin());
         }
         iterator end() {
-            return iterator(buckets.end(), buckets.end(),
-                            typename bucket_type::iterator{});
+            return iterator(buckets.end(), buckets.end(), typename bucket_type::iterator{});
         }
+
+        class const_iterator {
+            using outer_iter = typename BucketContainer::const_iterator;
+            using inner_iter = typename bucket_type::const_iterator;
+
+            outer_iter outer;     
+            outer_iter outer_end; 
+            inner_iter inner;     
+
+        public:
+            using iterator_category = ministl::forward_iterator_tag;
+            using difference_type   = ministl::ptrdiff_t;
+            using pointer           = const value_type*;
+            using reference         = const value_type&;
+
+            const_iterator() = default;
+
+            const_iterator(outer_iter o, outer_iter o_end, inner_iter i)
+                : outer(o), outer_end(o_end), inner(i) {
+                skip_empty();
+            }
+
+            reference operator*()  const { return *inner; }
+            pointer   operator->() const { return &*inner; }
+
+            const_iterator& operator++() {
+                ++inner;
+                skip_empty();
+                return *this;
+            }
+
+            const_iterator operator++(int) {
+                const_iterator tmp = *this;
+                ++(*this);
+                return tmp;
+            }
+
+            bool operator==(const const_iterator& other) const {
+                return outer == other.outer &&
+                    (outer == outer_end || inner == other.inner);
+            }
+            bool operator!=(const const_iterator& other) const {
+                return !(*this == other);
+            }
+
+        private:
+            void skip_empty() {
+                while (outer != outer_end && inner == outer->end()) {
+                    ++outer;
+                    if (outer != outer_end) inner = outer->begin();
+                }
+            }
+
+            friend class unordered_map;
+        };
+
+        const_iterator begin() const {
+            return const_iterator(
+                buckets.begin(), buckets.end(),
+                buckets.empty() ? typename bucket_type::const_iterator{}
+                                : buckets.front().begin());
+        }
+        const_iterator end() const {
+            return const_iterator(
+                buckets.end(), buckets.end(),
+                typename bucket_type::const_iterator{});
+        }
+
+        const_iterator cbegin() const { return begin(); }
+        const_iterator cend()   const { return end(); }
+
 
         // Rehashes such that load_factor < 1
         // Thus the bucket count will be at least count
@@ -201,26 +274,27 @@ namespace ministl {
         }
 
         template <class... Args>
-        T& emplace(Args&&... args) {
+        pair<iterator, bool> emplace(Args&&... args) {
             if ( _size == buckets.size() ) rehash( buckets.size() * 2 );
 
             value_type tmp(ministl::forward<Args>(args)...);
             uint32_t loc = hasher(tmp.first) % buckets.size();
 
-            for (auto& kv_pair : buckets[loc] ) {
-                if ( keyEqual(tmp.first, kv_pair.first) ) return kv_pair.second;
+            for (auto it = buckets[loc].begin(); it != buckets[loc].end(); ++it) {
+                if ( keyEqual(tmp.first, it->first) ) return pair<iterator, bool>( iterator(buckets.begin() + loc, buckets.end(), it) , false);
             }
 
             ++_size;
-            return buckets[loc].emplace_back( ministl::move(tmp) ).second;
+            buckets[loc].emplace_back( ministl::move(tmp) ).second;
+            return pair<iterator, bool>( iterator( buckets.begin() + loc, buckets.end(), buckets[loc].tail_it() ), true );
         }
 
-        void insert(const value_type& value) {
-            emplace(value);
+        pair<iterator, bool> insert(const value_type& value) {
+            return emplace(value);
         }
 
-        void insert(value_type&& value) {
-            emplace(ministl::move(value));
+        pair<iterator, bool> insert(value_type&& value) {
+            return emplace(ministl::move(value));
         }
 
         unordered_map(std::initializer_list<value_type> il) : buckets( il.size() * 2 ) {
@@ -254,15 +328,53 @@ namespace ministl {
             return buckets[loc].emplace_back(ministl::move(rval), T()).second;
         }
 
-
-        // Replace with iterator later
-        const T* find(const Key& key) const {
+        iterator find(const Key& key) {
             uint32_t loc = hasher(key) % buckets.size();
-            for (const auto& kv_pair : buckets[loc]) {
-                if (keyEqual(key, kv_pair.first)) return &kv_pair.second;
+            for (auto it = buckets[loc].begin(); it != buckets[loc].end(); ++it) {
+                if (keyEqual(key, it->first)) return iterator(buckets.begin() + loc, buckets.end(), it);
             }
 
-            return nullptr;
+            return end();
+        }
+
+        const_iterator find(const Key& key) const {
+            uint32_t loc = hasher(key) % buckets.size();
+            for (auto it = buckets[loc].cbegin(); it != buckets[loc].cend(); ++it) {
+                if (keyEqual(key, it->first)) return const_iterator(buckets.begin() + loc, buckets.end(), it);
+            }
+
+            return end();
+        }
+
+        bool contains(const Key& key) const {
+            uint32_t loc = hasher(key) % buckets.size();
+            for (const auto& kv_pair : buckets[loc]) {
+                if ( keyEqual(key, kv_pair.first) ) return true;
+            }
+
+            return false;
+        }
+
+        iterator erase( iterator pos ) {
+            if (pos == end()) return end();
+
+            auto next = pos;
+            ++next;
+            pos.outer->erase( pos.inner );
+            return next;
+        }
+
+        bool erase( const Key& key ) {
+            uint32_t loc = hasher(key) % buckets.size();
+            
+            for (auto it = buckets[loc].begin(); it != buckets[loc].end(); ++it) {
+                if ( keyEqual(key, it->first) ) {
+                    buckets[loc].erase(it);
+                    return true;
+                }
+            }
+
+            return false;
         }
 
     };

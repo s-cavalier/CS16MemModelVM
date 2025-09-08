@@ -1,6 +1,5 @@
 #include "VirtualMemory.h"
 
-
 extern "C" char _end[];
 
 kernel::MemoryManager::MemoryManager() {
@@ -99,6 +98,15 @@ kernel::TLBEntry kernel::PageTable::Entry::toTLBEntry(uint32_t vpn, unsigned cha
         asid,
         TLBEntry::VALID | (uint32_t)(global)
     );
+}
+
+// Should probably have a specific place for this eventually
+extern "C" void* memcpy(void* dest, const void* src, size_t n);
+
+void kernel::PageTable::Entry::copyMemoryTo(uint32_t pfn) const {
+    void* dst = (void*)(0x80000000 + (pfn >> 12)); // Take advantage of direct-mapping; any address in [0x80000000, 0xC0000000) gets mapped by f(x) = x - 0x80000000, i.e., actual p addresses
+    const void* src = (const void*)(0x80000000 + (this->pfn >> 12));
+    memcpy(dst, src, PAGE_SIZE);
 }
 
 kernel::KernelPageTable::KernelPageTable() {

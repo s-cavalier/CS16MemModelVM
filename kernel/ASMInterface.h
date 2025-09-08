@@ -44,6 +44,8 @@ namespace kernel {
 
     struct RegisterContext {
         uint32_t regs[31]; // doesn't include $zero
+        uint32_t hiRegister;
+        uint32_t loRegister;
         uint32_t epc;
         uint32_t status;
         uint32_t cause;

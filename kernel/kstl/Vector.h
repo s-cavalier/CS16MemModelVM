@@ -292,6 +292,57 @@ namespace ministl {
         iterator begin() { return iterator(_data); }
         iterator end()   { return iterator(_data + _size); }
 
+        class const_iterator {
+            const T* ptr;
+
+        public:
+            using iterator_category = ministl::random_access_iterator_tag;
+            using value_type        = T;
+            using difference_type   = ministl::ptrdiff_t;
+            using pointer           = const T*;
+            using reference         = const T&;
+
+            const_iterator() : ptr(nullptr) {}
+            explicit const_iterator(pointer p) : ptr(p) {}
+
+            // optional: allow implicit conversion from non-const iterator
+            // const_iterator(const iterator& it) : ptr(it.operator->()) {}
+
+            reference operator*()  const { return *ptr; }
+            pointer   operator->() const { return ptr; }
+
+            // increment/decrement
+            const_iterator& operator++()    { ++ptr; return *this; }
+            const_iterator  operator++(int) { const_iterator tmp(*this); ++(*this); return tmp; }
+            const_iterator& operator--()    { --ptr; return *this; }
+            const_iterator  operator--(int) { const_iterator tmp(*this); --(*this); return tmp; }
+
+            // random access
+            const_iterator& operator+=(difference_type n) { ptr += n; return *this; }
+            const_iterator& operator-=(difference_type n) { ptr -= n; return *this; }
+            const_iterator  operator+(difference_type n) const { return const_iterator(ptr + n); }
+            const_iterator  operator-(difference_type n) const { return const_iterator(ptr - n); }
+            difference_type operator-(const const_iterator& other) const { return ptr - other.ptr; }
+            reference operator[](difference_type n) const { return *(ptr + n); }
+
+            // comparisons
+            bool operator==(const const_iterator& other) const { return ptr == other.ptr; }
+            bool operator!=(const const_iterator& other) const { return ptr != other.ptr; }
+            bool operator< (const const_iterator& other) const { return ptr <  other.ptr; }
+            bool operator> (const const_iterator& other) const { return ptr >  other.ptr; }
+            bool operator<=(const const_iterator& other) const { return ptr <= other.ptr; }
+            bool operator>=(const const_iterator& other) const { return ptr >= other.ptr; }
+        };
+
+        // const overloads
+        const_iterator begin() const { return const_iterator(_data); }
+        const_iterator end()   const { return const_iterator(_data + _size); }
+
+        // convenience
+        const_iterator cbegin() const { return begin(); }
+        const_iterator cend()   const { return end(); }
+
+
     };
 
 } 

@@ -154,26 +154,24 @@ kernel::HashPageTable::HashPageTable(size_t initText, size_t initStatic, size_t 
 
 ministl::optional<kernel::PageTable::Entry> kernel::HashPageTable::walkTable(uint32_t vaddr) const {
     uint32_t vpn = vaddr >> 12;
-    const Entry* res = table.find(vpn);
-
-    if (res) return *res;
+    auto res = table.find(vpn);
+    
+    if (res != table.end()) return res->second;
     return ministl::nullopt;
 }
 
 bool kernel::HashPageTable::mapPTE(const Entry &pte, uint32_t vpn) {
     if (vpn < TEXT_START_VPN || vpn >= STACK_LIMIT_VPN) return false;
 
-    auto& tablepte = table[vpn];
-    if (tablepte.pfn != 0) return false;
+    auto [it, success] = table.emplace(vpn, pte);
     
-    tablepte = pte;
-    return true;
+    
+    return success;
 }
 
 kernel::HashPageTable::~HashPageTable() {
 
     for (auto& kv : table) {
-        if (kv.second.pfn == 0) continue; // Need better iterator stuff for this to be unnecessary (i.e., use iterator/bool combo for mapPTE)
         MemoryManager::instance().freeFrame( kv.second.pfn << 12 );
     }
 

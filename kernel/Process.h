@@ -60,6 +60,8 @@ namespace kernel {
         // Returns a pid to a created process
         // Returns -1 (basically KERNEL_PID) on failure (i.e., bad filename)
         uint32_t createProcess(const char* executableFile);
+
+        uint32_t forkProcess(uint32_t pid);
         
         // Marks a process ZOMBIE
         bool killProcess();

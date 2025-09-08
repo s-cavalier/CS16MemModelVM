@@ -225,6 +225,7 @@ std::unique_ptr<Hardware::Instruction> Hardware::CPU::decode(const Word& binary_
         case J: return std::make_unique<Jump>(programCounter, address);
         case JAL: return std::make_unique<JumpAndLink>(programCounter, address, registerFile[RA].i);
         case LUI: return std::make_unique<LoadUpperImmediate>(registerFile[rt].i, immediate);
+        case CACHE: return std::make_unique<PerformCacheOp>(statusReg, instructionCache);
         default:
             throw Trap(Trap::RI);
     }

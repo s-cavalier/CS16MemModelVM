@@ -23,6 +23,8 @@ namespace Binary {
         BLEZ = 0x6,         //
         BGTZ = 0x7,         //
 
+        CACHE = 0b101111,
+
         SPECIAL2 = 0x1c,
         
         LB = 0x20,          //

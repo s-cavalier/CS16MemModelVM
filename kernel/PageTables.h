@@ -25,6 +25,7 @@ namespace kernel {
     public:
         SegmentedPageTable(size_t initText, size_t initStatic = 4, size_t initStack = 2, size_t initDynamic = 0);
 
+        ministl::unique_ptr<Iterator> getIterator() const override { return ministl::unique_ptr<Iterator>(nullptr); } // Temporary stub 
         ministl::optional<Entry> walkTable(uint32_t vaddr) const override;
         bool mapPTE(const Entry &pte, uint32_t vpn) override;
 
@@ -35,8 +36,26 @@ namespace kernel {
         ministl::unordered_map<uint32_t, Entry> table;
     
     public:
-        HashPageTable(size_t initText, size_t initStatic = 4, size_t initStack = 2, size_t initDynamic = 0);
 
+        class iterator : public Iterator {
+            ministl::unordered_map<uint32_t, Entry>::const_iterator it, end;
+            iterator() = default;
+
+        public:
+            void operator++() override;
+            ministl::optional<pagePair> operator*() override;
+            
+            ~iterator() = default;
+
+            friend class HashPageTable;
+        };
+
+        friend class iterator;
+
+        HashPageTable(size_t initText, size_t initStatic = 4, size_t initStack = 2, size_t initDynamic = 0);
+        HashPageTable(ministl::unique_ptr<Iterator> it);
+
+        ministl::unique_ptr<Iterator> getIterator() const override;
         ministl::optional<Entry> walkTable(uint32_t vaddr) const override;
         bool mapPTE(const Entry &pte, uint32_t vpn) override;
 

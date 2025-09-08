@@ -96,6 +96,14 @@ struct TLBWriteRandom : public TLBWriteIndexed {
     void run();
 };
 
+class PerformCacheOp : public KInstruction {
+    LRUCache<Word, std::unique_ptr<Instruction>, 32 * 1024>& cache;
+
+public:
+    PerformCacheOp(K_INSTR_ARGS, LRUCache<Word, std::unique_ptr<Instruction>, 32 * 1024 >& cache);
+    void run();
+};
+
 // ----------------------------------------------------------
 // Custom Instructions
 // Temporary interface until more is built

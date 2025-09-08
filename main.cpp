@@ -48,7 +48,7 @@ int main(int argc, char** argv) {
     Hardware::Machine machine;
     Hardware::WallClock interDev;
     machine.loadKernel( kernel.kernelInfo, kernelArgs );
-    machine.run( DBGHOOK(( makeConditionalCombinedHook<ignoreKernel, printReg<Binary::FP, Binary::SP>, printInstr>() )) , &interDev);
+    machine.run( DBGHOOK(( makeConditionalCombinedHook<ignoreKernel, printInstr>() )) , &interDev);
 
     return 0;
 }

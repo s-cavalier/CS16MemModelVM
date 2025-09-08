@@ -186,3 +186,31 @@ uint32_t kernel::ProcessManager::createProcess(const char* executableFile) {
 
     return newPID;
 }
+
+uint32_t kernel::ProcessManager::forkProcess(uint32_t pid) {
+    if ( pid >= processes.size() || !processes[pid] ) return NOPCBEXISTS;
+    auto& copyProcess = processes[pid];
+
+    ministl::unique_ptr<PCB> newProcess( new PCB(
+        0,
+        READY,
+        ministl::make_unique<HashPageTable>( copyProcess->addrSpace._pageTable->getIterator() ) // Implicitly copies the page's underlying memory as well
+    ));
+
+    newProcess->regCtx = copyProcess->regCtx;
+
+    uint32_t ret;
+    if ( freePids.empty() ) {
+        newProcess->PID = processes.size();
+        ret = newProcess->PID;
+        processes.emplace_back( ministl::move(newProcess) );        
+    } else {
+        newProcess->PID = freePids.back();
+        freePids.pop_back();
+        ret = newProcess->PID;
+        assert( !processes[newProcess->PID] );
+        processes[newProcess->PID] = ministl::move(newProcess);
+    }
+
+    return ret;
+}

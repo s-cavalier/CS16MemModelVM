@@ -117,6 +117,7 @@ namespace kernel {
     int getK1Register();
     uint32_t getBadVAddr();
     void setInterrupts(bool enabled);
+    void clearICache();
 
 }
 

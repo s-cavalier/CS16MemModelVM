@@ -43,7 +43,6 @@ extern "C" void handleTrap() {
 
     switch (cause) {
         case INTERRUPT:
-            PrintString("Recieved an interrupt! Returning control...\n");
             trapCtx->epc -= 4; // Due to some weird VM logic this needs to be shifted by 4 otherwise an instruction is skipped
             break;
 
@@ -106,15 +105,24 @@ extern "C" void handleTrap() {
             break;
     }
 
-    if (oldThread->getPID() == kernel::ProcessManager::KERNEL_PID) {
+    // Special case until we have ASID-based TLB entries and kernel shouldn't be scheduled
+    if (oldThread->getPID() == kernel::ProcessManager::KERNEL_PID || cause == TLB_L || cause == TLB_S ) {
         currentThread = oldThread;
         currentThread->regCtx = *trapCtx;
         return;
     }
 
     oldThread->regCtx = *trapCtx;
+
     kernel::MultiLevelQueue::scheduler.enqueue(oldThread);
     unsigned int newPid = kernel::MultiLevelQueue::scheduler.dequeue();
     assert(newPid != kernel::NOPCBEXISTS);
-    currentThread = kernel::ProcessManager::instance[newPid];
+
+    kernel::clearICache();
+    for (size_t i = 0; i < 64; ++i) kernel::TLBEntry::invalidate(i);
+    kernel::PCB* incomingProc = kernel::ProcessManager::instance[newPid];
+
+
+    currentThread = incomingProc;
+
 }

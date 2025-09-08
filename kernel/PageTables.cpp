@@ -117,10 +117,18 @@ kernel::SegmentedPageTable::~SegmentedPageTable() {
     for (size_t i = 0; i < textPages.size(); ++i)       MemoryManager::instance().freeFrame( textPages[i].pfn );
 }
 
+void kernel::HashPageTable::iterator::operator++() {
+    ++it;
+}
+
+ministl::optional<kernel::PageTable::Iterator::pagePair> kernel::HashPageTable::iterator::operator*() {
+    if (it == end) return ministl::nullopt;
+
+    return pagePair{ it->first, it->second };
+}
 
 kernel::HashPageTable::HashPageTable(size_t initText, size_t initStatic, size_t initStack, size_t initDynamic) 
 : table( (initText + initStatic + initStack + initDynamic) * 2) {
-
 
     for (size_t i = 0; i < initText; ++i) {
         table.emplace(
@@ -149,7 +157,36 @@ kernel::HashPageTable::HashPageTable(size_t initText, size_t initStatic, size_t 
             PageTable::Entry( MemoryManager::instance().reserveFrame() >> 12, PageTable::Entry::USER | PageTable::Entry::PRESENT | PageTable::Entry::WRITABLE ) 
         );
     }
+}
 
+kernel::HashPageTable::HashPageTable( ministl::unique_ptr<Iterator> it ) {
+    
+    for (; auto curr = **it; ++*it ) {
+        
+        auto& placed = table[curr->vpn];
+        placed.pfn = MemoryManager::instance().reserveFrame() >> 12;
+        placed.user = curr->pte.user;
+        placed.present = curr->pte.present;
+        placed.global = curr->pte.global;
+
+        char* src = (char*)(0x80000000 + ( curr->pte.pfn << 12 ) );
+        char* dst = (char*)(0x80000000 + ( placed.pfn << 12 ) );
+
+        for (size_t i = 0; i < 4096; ++i) {
+            dst[i] = src[i];
+        }
+        
+        placed.writable = curr->pte.writable;
+
+    }
+
+}
+
+ministl::unique_ptr<kernel::PageTable::Iterator> kernel::HashPageTable::getIterator() const {
+    ministl::unique_ptr<iterator> it( new iterator() );
+    it->it = table.cbegin();
+    it->end = table.cend();
+    return it;
 }
 
 ministl::optional<kernel::PageTable::Entry> kernel::HashPageTable::walkTable(uint32_t vaddr) const {

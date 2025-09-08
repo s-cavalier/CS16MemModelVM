@@ -96,3 +96,10 @@ void kernel::setInterrupts(bool enabled) {
         : "memory"
     );
 }
+
+void kernel::clearICache() {
+    __asm__ volatile (
+        "cache 0, 0($0)\n"
+        :::
+    );
+}

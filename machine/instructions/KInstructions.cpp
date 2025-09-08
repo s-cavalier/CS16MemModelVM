@@ -74,6 +74,12 @@ void TLBWriteRandom::run() {
     indexRegister %= TLB_ENTRIES;
 }
 
+PerformCacheOp::PerformCacheOp(K_INSTR_ARGS, LRUCache<Word, std::unique_ptr<Instruction>, 32 * 1024 >& cache) : KInstruction(statusRegister), cache(cache) {}
+void PerformCacheOp::run() {
+    EXL_CHECK;
+    cache.clear();   
+}
+
 // custom
 VMTunnel::VMTunnel(K_INSTR_ARGS, Hardware::Machine& machine) : KInstruction(statusRegister), machine(machine) {}
 void VMTunnel::run() {

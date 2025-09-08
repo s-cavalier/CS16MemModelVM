@@ -7,6 +7,7 @@
 #include <chrono>
 #include <condition_variable>
 #include <mutex>
+#include "LRUCache.h"
 
 namespace Hardware {
 
@@ -93,7 +94,7 @@ namespace Hardware {
         reg32_t registerFile[32];
         HiLoRegisters hiLo{};
         Word programCounter;
-        std::unordered_map<Word, std::unique_ptr<Instruction>> instructionCache;
+        LRUCache<Word, std::unique_ptr<Instruction>, 32 * 1024> instructionCache;
     
     public:
         CPU(Machine& machine);       // maybe cache later down the road

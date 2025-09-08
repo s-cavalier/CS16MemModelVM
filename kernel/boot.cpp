@@ -2,7 +2,7 @@
 #include "Process.h"
 // --- These should be the first includes, especially HeapManager so everything after is correctly linked with the new operator
 
-
+#include "Scheduler.h"
 // -- Stack Init --
 
 constexpr unsigned int K_STACK_SIZE = 16_kb;
@@ -38,6 +38,9 @@ extern "C" void cppmain() {
     assert((argc > 0) && "Need a first process to run!");
 
     unsigned int firstPID = kernel::ProcessManager::instance.createProcess(argv[0]);
+    unsigned int secondPID = kernel::ProcessManager::instance.forkProcess(firstPID);
+
+    kernel::MultiLevelQueue::scheduler.enqueue( kernel::ProcessManager::instance[secondPID] );
 
     exceptionDepth -= 1;
     

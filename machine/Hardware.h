@@ -6,7 +6,7 @@
 #include <unordered_map>
 #include <array>
 #include <string>
-
+#include "LRUCache.h"
 
 // TODO: Implement memory access guards
 

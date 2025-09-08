@@ -50,6 +50,7 @@ namespace kernel {
         void writeRandom() const;
         void writeIndexed(unsigned char idx) const;
         static TLBEntry fromRead(unsigned char idx);
+        static void invalidate(unsigned char idx);
         static ministl::optional<TLBEntry> fromProbe(uint32_t vpn, bool global, unsigned char asid);
 
         // Generate from Addresses ( just calls return TLBEntry(vaddr >> 12, paddr >> 12, asid, flags) )
@@ -94,9 +95,18 @@ namespace kernel {
             void copyMemoryTo(uint32_t pfn) const;
         };
 
+        // Abstract Iterator interface so that each PageTable can implement a constuctor with unique_ptr<Iterator> as the abstraction over the iteration
+        struct Iterator {
+            virtual ~Iterator() = default;
+            virtual void operator++() = 0;
+
+            struct pagePair { uint32_t vpn; Entry pte; };
+            virtual ministl::optional<pagePair> operator*() = 0;
+        };
 
         virtual ~PageTable() = default;
 
+        virtual ministl::unique_ptr<Iterator> getIterator() const = 0;
         virtual ministl::optional<Entry> walkTable(uint32_t vaddr) const = 0;
         virtual bool mapPTE(const Entry& pte, uint32_t vpn) = 0;
 
@@ -120,7 +130,7 @@ namespace kernel {
         // Should only be accessible through the ProcessManager
 
     public:
-
+        ministl::unique_ptr<Iterator> getIterator() const override { return ministl::unique_ptr<Iterator>(nullptr);  } // This shouldn't be accessed 
         ministl::optional<Entry> walkTable(uint32_t vaddr) const override;
         bool mapPTE(const Entry &pte, uint32_t vpn) override;
     };
@@ -153,6 +163,11 @@ namespace kernel {
 
     public:
         static constexpr unsigned char KERNEL_ASID = 0xFF;
+
+        AddressSpace(const AddressSpace& other) = delete;
+        AddressSpace(AddressSpace&& other) = delete;
+        AddressSpace& operator=(const AddressSpace& other) = delete;
+        AddressSpace& operator=(AddressSpace&& other) = delete; // Maybe make these later
         
         TLBEntry translate(uint32_t vaddr);
         bool updateBrk(uint32_t vaddr);

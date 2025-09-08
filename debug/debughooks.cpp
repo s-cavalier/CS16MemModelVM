@@ -54,8 +54,10 @@ HOOK_TEMPLATE(printHILO) {
 }
 
 HOOK_TEMPLATE(printInstr) {
-    const Word& pc = machine.readCPU().readProgramCounter();
-    DBG_OUT << std::hex << std::setw(8) << std::setfill('0') << machine.readMemory().getWord(pc) << " : " << std::setw(8) << std::setfill('0') << pc << std::dec << DBG_END;
+    try {    
+        const Word& pc = machine.readCPU().readProgramCounter();
+        DBG_OUT << std::hex << std::setw(8) << std::setfill('0') << machine.readMemory().getWord(pc) << " : " << std::setw(8) << std::setfill('0') << pc << std::dec << DBG_END;
+    } catch (const Hardware::Trap &trap) {}
 }
 
 HOOK_TEMPLATE(printEXL) {

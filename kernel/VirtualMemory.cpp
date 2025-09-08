@@ -67,6 +67,12 @@ kernel::TLBEntry kernel::TLBEntry::fromRead(unsigned char idx) {
     return tlbe;
 }
 
+void kernel::TLBEntry::invalidate(unsigned char idx) {
+    auto res = TLBEntry::fromRead(idx);
+    res.lo &= ~uint32_t(2); // Invalidate valid (bit 1 in the lo entry)
+    res.writeIndexed(idx);
+}
+
 ministl::optional<kernel::TLBEntry> kernel::TLBEntry::fromProbe(uint32_t vpn, bool global, unsigned char asid) {
     size_t indexReg = 0;
     uint32_t entryHi = (vpn << 12) | ( uint32_t(global) << 11 ) | asid;
@@ -103,9 +109,9 @@ kernel::TLBEntry kernel::PageTable::Entry::toTLBEntry(uint32_t vpn, unsigned cha
 // Should probably have a specific place for this eventually
 extern "C" void* memcpy(void* dest, const void* src, size_t n);
 
-void kernel::PageTable::Entry::copyMemoryTo(uint32_t pfn) const {
-    void* dst = (void*)(0x80000000 + (pfn >> 12)); // Take advantage of direct-mapping; any address in [0x80000000, 0xC0000000) gets mapped by f(x) = x - 0x80000000, i.e., actual p addresses
-    const void* src = (const void*)(0x80000000 + (this->pfn >> 12));
+void kernel::PageTable::Entry::copyMemoryTo(uint32_t _pfn) const {
+    void* dst = (void*)(0x80000000 + (_pfn >> 12)); // Take advantage of direct-mapping; any address in [0x80000000, 0xC0000000) gets mapped by f(x) = x - 0x80000000, i.e., actual p addresses
+    const void* src = (const void*)(0x80000000 + (pfn >> 12));
     memcpy(dst, src, PAGE_SIZE);
 }
 
@@ -119,8 +125,11 @@ kernel::KernelPageTable::KernelPageTable() {
 }
 
 ministl::optional<kernel::PageTable::Entry> kernel::KernelPageTable::walkTable(uint32_t vaddr) const {
-    assert(vaddr >= KHEAP_BOUNDARY);
-    
+    if(vaddr < KHEAP_BOUNDARY) {
+        PrintWrapped("Bad vaddr: ", vaddr, "\n");
+        assert(false);
+    }
+
     size_t vpn = (vaddr - KHEAP_BOUNDARY) >> 12;
     assert(vpn < KHEAP_PAGES);
 

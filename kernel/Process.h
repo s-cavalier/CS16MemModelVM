@@ -97,7 +97,7 @@ namespace kernel {
         // Returns -1 (basically KERNEL_PID) on failure (i.e., bad filename)
         uint32_t createProcess(const char* executableFile);
 
-        uint32_t forkProcess(uint32_t pid);
+        uint32_t forkProcess(uint32_t pid, RegisterContext* newProcessRegCtx);
 
     private:
         ministl::vector< ministl::unique_ptr<PCB> > processes;

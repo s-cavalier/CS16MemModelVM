@@ -38,9 +38,6 @@ extern "C" void cppmain() {
     assert((argc > 0) && "Need a first process to run!");
 
     unsigned int firstPID = kernel::ProcessManager::instance.createProcess(argv[0]);
-    unsigned int secondPID = kernel::ProcessManager::instance.forkProcess(firstPID);
-
-    kernel::MultiLevelQueue::scheduler.enqueue( kernel::ProcessManager::instance[secondPID] );
 
     exceptionDepth -= 1;
     

@@ -91,6 +91,16 @@ extern "C" void handleTrap() {
                     oldThread.reset();
                     break;
                 }
+                case FORK: {
+                    unsigned int newPID = kernel::ProcessManager::instance.forkProcess( oldThread->getPID(), trapCtx );
+                    kernel::PCB::Guard newProc = kernel::ProcessManager::instance[newPID];
+                    
+                    newProc->regCtx.accessRegister( kernel::V0 ) = 0;
+                    trapCtx->accessRegister( kernel::V0 ) = newPID;
+
+                    kernel::MultiLevelQueue::scheduler.enqueue( kernel::ProcessManager::instance[newPID] );
+                    break;
+                }
                 default:
                     PrintString("[KERNEL] Unrecognized syscall code. Returning without doing anything.\n");
                     break;

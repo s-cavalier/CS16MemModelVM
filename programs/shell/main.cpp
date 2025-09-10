@@ -1,21 +1,17 @@
 #include "../ministl/asmio.h"
-#include "../ministl/Vector.h"
-
-struct Foo {
-    virtual void foo() { std::printString("Foo::foo()\n"); }
-    virtual ~Foo() = default;
-};
-
-struct Bar : public Foo {
-    virtual void foo() { std::printString("Bar::foo()\n"); }
-};
 
 int main() {
 
-    std::vector< std::unique_ptr<Foo> > dynamicDispatchArr(5);
+    unsigned int pid = std::fork();
 
-    for (size_t i = 0; i < dynamicDispatchArr.size(); ++i) dynamicDispatchArr[i] = std::make_unique<Bar>();
-    for (size_t i = 0; i < dynamicDispatchArr.size(); ++i) dynamicDispatchArr[i]->foo();
+    if (pid) {
+        std::printString("Hello from the parent! My kid's pid is: ");
+        std::printString("\n");
+        std::printInteger(pid);
+        std::printString("Anyways, I'm done.\n");
+    } else {
+        std::printString("Hello, I'm the child! Gonna die now.\n");
+    }
 
     std::exit();
     return 0;

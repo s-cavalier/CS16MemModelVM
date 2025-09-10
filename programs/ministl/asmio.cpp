@@ -57,5 +57,6 @@ unsigned int std::fork() {
         :
         : "memory"
     );
+
     return value;
 }

@@ -13,7 +13,6 @@ void kernel::PCB::Guard::reset() {
     if (!pcb || pcb->PID == ProcessManager::KERNEL_PID ) return;
     --pcb->refcount;
     if ( pcb->state == ZOMBIE && pcb->refcount == 0 ) {
-        PrintWrapped("Killing process: ", pcb->getPID(), "\n");
         kernel::ProcessManager::instance.freeProcess( pcb->getPID() );
     }
 }
@@ -228,7 +227,7 @@ uint32_t kernel::ProcessManager::createProcess(const char* executableFile) {
     return newPID;
 }
 
-uint32_t kernel::ProcessManager::forkProcess(uint32_t pid) {
+uint32_t kernel::ProcessManager::forkProcess(uint32_t pid, RegisterContext* newProcRegContext ) {
     if ( pid >= processes.size() || !processes[pid] ) return NOPCBEXISTS;
     auto& copyProcess = processes[pid];
 
@@ -238,7 +237,7 @@ uint32_t kernel::ProcessManager::forkProcess(uint32_t pid) {
         ministl::make_unique<HashPageTable>( copyProcess->addrSpace._pageTable->getIterator() ) // Implicitly copies the page's underlying memory as well
     ));
 
-    newProcess->regCtx = copyProcess->regCtx;
+    if (newProcRegContext) newProcess->regCtx = *newProcRegContext;
 
     uint32_t ret;
     if ( freePids.empty() ) {

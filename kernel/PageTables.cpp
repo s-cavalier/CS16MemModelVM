@@ -169,10 +169,10 @@ kernel::HashPageTable::HashPageTable( ministl::unique_ptr<Iterator> it ) {
         placed.present = curr->pte.present;
         placed.global = curr->pte.global;
 
-        char* src = (char*)(0x80000000 + ( curr->pte.pfn << 12 ) );
-        char* dst = (char*)(0x80000000 + ( placed.pfn << 12 ) );
+        int* src = (int*)(0x80000000 + ( curr->pte.pfn << 12 ) );
+        int* dst = (int*)(0x80000000 + ( placed.pfn << 12 ) );
 
-        for (size_t i = 0; i < 4096; ++i) {
+        for (size_t i = 0; i < 4096; ++i ) {
             dst[i] = src[i];
         }
         

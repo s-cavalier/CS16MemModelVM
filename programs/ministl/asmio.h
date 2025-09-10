@@ -7,6 +7,8 @@ namespace std {
     void printInteger(const int& i);
     int readInteger();
     void printString(const char* str);
+    
+    unsigned int fork();
 
 };
 

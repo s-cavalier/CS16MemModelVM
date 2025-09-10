@@ -21,8 +21,41 @@ namespace kernel {
         unsigned char priority;
 
         uint32_t getPID() const { return PID; }
+        unsigned short getRefCount() const { return refcount; }
+        void markForDeath();
+
+        class Guard {
+            PCB* ref;
+            friend class PCB;
+
+            Guard(PCB& pcb); // used for PCB::borrow()
+        
+        public:
+            Guard();
+            void reset();
+
+            Guard(const Guard& other) = delete;
+            Guard(Guard&& other);
+            Guard& operator=(const Guard& other) = delete;
+            Guard& operator=(Guard&& other);
+            ~Guard();
+
+            PCB* get() { return ref; }
+            const PCB* get() const { return ref; }
+
+            bool valid() const { return ref; }
+            PCB* operator->() { return ref; }
+            PCB& operator*() { return *ref; }
+            const PCB* operator->() const { return ref; }
+            const PCB& operator*() const { return *ref; }
+
+            void setAsCurrentThread();
+        };
+
+        Guard borrow();
 
     private:
+        unsigned short refcount;
         uint32_t PID;
         PCB();
         PCB(uint32_t pid, ProcessState state, ministl::unique_ptr<PageTable> pageSystem);
@@ -33,7 +66,7 @@ namespace kernel {
 
         // PCB creation should go strictly through the ProcessManager
         friend class ProcessManager;
-    
+        friend class Guard;
     };
 
 
@@ -48,27 +81,28 @@ namespace kernel {
         KernelPageTable kPageTable; // Needs to be defined before kernelProcess
         ProcessManager();
 
+        void freeProcess( uint32_t pid );
+        friend class PCB::Guard; // Only PM, PCB, Guard should use freeProcess
+        friend class PCB;
+
     public:
         static constexpr uint32_t KERNEL_PID = 0xFFFFFFFF;
         static ProcessManager instance;
         PCB kernelProcess;
 
         // Results should be checked for nullptr if the process doesn't exist
-        PCB* operator[](size_t idx);
-        const PCB* operator[](size_t idx) const;
+        PCB::Guard operator[](size_t idx);
         
         // Returns a pid to a created process
         // Returns -1 (basically KERNEL_PID) on failure (i.e., bad filename)
         uint32_t createProcess(const char* executableFile);
 
         uint32_t forkProcess(uint32_t pid);
-        
-        // Marks a process ZOMBIE
-        bool killProcess();
 
     private:
         ministl::vector< ministl::unique_ptr<PCB> > processes;
         ministl::vector< uint32_t > freePids;
+
     };
 
     static constexpr uint32_t NOPCBEXISTS = 0xFFFFFFFF;

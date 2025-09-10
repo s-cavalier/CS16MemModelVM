@@ -4,13 +4,57 @@
 #include "kstl/Elf.h"
 #include "PageTables.h"
 
-kernel::PCB::PCB() : regCtx{}, addrSpace( ministl::unique_ptr<PageTable>() ), state(READY), priority(0), PID(0) {}
+kernel::PCB::Guard::Guard() : ref(nullptr) {}
+kernel::PCB::Guard::Guard(PCB& pcb) : ref(&pcb) {}
+
+void kernel::PCB::Guard::reset() {
+    PCB* pcb = ref;
+    ref = nullptr;
+    if (!pcb || pcb->PID == ProcessManager::KERNEL_PID ) return;
+    --pcb->refcount;
+    if ( pcb->state == ZOMBIE && pcb->refcount == 0 ) {
+        PrintWrapped("Killing process: ", pcb->getPID(), "\n");
+        kernel::ProcessManager::instance.freeProcess( pcb->getPID() );
+    }
+}
+
+kernel::PCB::Guard::Guard(Guard&& other) {
+    ref = other.ref;
+    other.ref = nullptr;
+}
+kernel::PCB::Guard& kernel::PCB::Guard::operator=(Guard&& other) {
+    if (this == &other) return *this;
+    ref = other.ref;
+    other.ref = nullptr;
+    return *this;
+}
+kernel::PCB::Guard::~Guard() {
+    reset();
+}
+
+kernel::PCB::Guard kernel::PCB::borrow() {
+
+    ++refcount;
+    return Guard( *this );
+}
+
+void kernel::PCB::Guard::setAsCurrentThread() {
+    assert(ref);
+    currentThread = ref;
+}
+
+void kernel::PCB::markForDeath() {
+    assert( PID != ProcessManager::KERNEL_PID && "The kernel process should never be marked for death" );
+    state = ZOMBIE;
+}
+
+kernel::PCB::PCB() : regCtx{}, addrSpace( ministl::unique_ptr<PageTable>() ), state(READY), priority(0), refcount(0), PID(0) {}
 
 kernel::PCB::PCB(uint32_t pid, ProcessState state, ministl::unique_ptr<PageTable> pageSystem)
-    : regCtx{}, addrSpace( ministl::move(pageSystem) ), state(state), priority(0), PID(pid) {}
+    : regCtx{}, addrSpace( ministl::move(pageSystem) ), state(state), priority(0), refcount(0), PID(pid) {}
 
 kernel::PCB::PCB(kernelInit_t, KernelPageTable& kpt) 
-: regCtx{}, addrSpace(kernelInitalizer, kpt), state(RUNNING), priority(0), PID(ProcessManager::KERNEL_PID) {
+: regCtx{}, addrSpace(kernelInitalizer, kpt), state(RUNNING), priority(0), refcount(0), PID(ProcessManager::KERNEL_PID) {
     
     currentThread = this;
 }
@@ -19,14 +63,11 @@ kernel::ProcessManager::ProcessManager() : kPageTable(), kernelProcess(kernelIni
 
 kernel::ProcessManager kernel::ProcessManager::instance;
 
-kernel::PCB* kernel::ProcessManager::operator[](size_t idx) {
-    if (idx >= processes.size()) return nullptr;
-    return processes[idx].get();
+kernel::PCB::Guard kernel::ProcessManager::operator[](size_t idx) {
+    if (idx >= processes.size() || !processes[idx] ) return PCB::Guard();
+    return processes[idx]->borrow();
 }
-const kernel::PCB* kernel::ProcessManager::operator[](size_t idx) const {
-    if (idx >= processes.size()) return nullptr;
-    return processes[idx].get();
-}
+
 
 // ----- internal helpers
 static bool read_full(kernel::File& f, void* dst, size_t n) {
@@ -213,4 +254,20 @@ uint32_t kernel::ProcessManager::forkProcess(uint32_t pid) {
     }
 
     return ret;
+}
+
+void kernel::ProcessManager::freeProcess( uint32_t pid ) {
+    assert( pid < processes.size() );
+    auto& procContainer = processes[pid];
+    assert( procContainer && procContainer->refcount == 0 && procContainer->state == ZOMBIE ); 
+    // All the conditions for a valid free - the PCB exists, there are no remaining references, and it is zombie
+
+    if ( pid == processes.size() - 1 ) {
+        processes.pop_back();
+        return;
+    }
+
+    procContainer.reset();
+    freePids.push_back(pid);
+
 }

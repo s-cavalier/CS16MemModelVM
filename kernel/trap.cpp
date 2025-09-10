@@ -26,6 +26,7 @@ enum ExceptionType : unsigned char {
         READ_INTEGER = 5,
         EXIT = 10,
         BRK = 45,
+        FORK = 57
     };
 
 
@@ -36,7 +37,7 @@ extern "C" void handleTrap() {
     size_t badVAddr = kernel::getBadVAddr();
     // The register context of the trapping thread is saved to k0. We need to use this context on the stack in case of >1 nested exceptions.
 
-    kernel::PCB* oldThread = currentThread;                                     // save oldThread
+    kernel::PCB::Guard oldThread = currentThread->borrow();                                     // save oldThread
     currentThread = &kernel::ProcessManager::instance.kernelProcess;          // set currentThread to kernel PCB
 
     ExceptionType cause = ExceptionType(trapCtx->cause >> 2); // need to consider interrupt mask later
@@ -64,22 +65,30 @@ extern "C" void handleTrap() {
                 case PRINT_INTEGER:
                     PrintInteger( trapCtx->accessRegister(kernel::A0) );
                     break;  //shoudn't hit here
-                case PRINT_STRING:
-                    PrintString( trapCtx->accessRegister(kernel::A0) );
+                case PRINT_STRING:{ // For some reason, the VMTUNNEL instr struggles with loading user-space addresses, so for now we'll grab it from physical memory
+                    // That's fine for now, since we'll have to switch to just open/read/write/close later on
+                    size_t physAddr = oldThread->addrSpace.translate( trapCtx->accessRegister(kernel::A0) ).lo >> 6;
+                    physAddr <<= 12;
+                    physAddr |= ( trapCtx->accessRegister(kernel::A0) & 0xFFF );
+
+                    PrintString( 0x80000000 + physAddr ); // Temporary solution ; when FileSystem is implemented this will be nicer
                     break;
+                }
                 case READ_INTEGER:
                     trapCtx->accessRegister(kernel::V0) = ReadInteger.res;
                     break;
     
                 case EXIT: {
-                    Halt;
+                    oldThread->markForDeath();
+                    oldThread.reset();
                     break;
                 }
                 case BRK: {
                     bool validBrkRequest = oldThread->addrSpace.updateBrk( trapCtx->accessRegister(kernel::A0) );
                     if (validBrkRequest) break;
                     PrintString("[KERNEL] Bad BRK request. Killing process...\n");
-                    Halt;
+                    oldThread->markForDeath();
+                    oldThread.reset();
                     break;
                 }
                 default:
@@ -106,23 +115,30 @@ extern "C" void handleTrap() {
     }
 
     // Special case until we have ASID-based TLB entries and kernel shouldn't be scheduled
-    if (oldThread->getPID() == kernel::ProcessManager::KERNEL_PID || cause == TLB_L || cause == TLB_S ) {
-        currentThread = oldThread;
-        currentThread->regCtx = *trapCtx;
-        return;
+
+    if ( oldThread.valid() ) {
+        if (oldThread->getPID() == kernel::ProcessManager::KERNEL_PID || cause == TLB_L || cause == TLB_S ) {
+            oldThread.setAsCurrentThread();
+            currentThread->regCtx = *trapCtx;
+            return;
+        }
+
+        oldThread->regCtx = *trapCtx;
+
+        kernel::MultiLevelQueue::scheduler.enqueue( oldThread->borrow() );
     }
 
-    oldThread->regCtx = *trapCtx;
-
-    kernel::MultiLevelQueue::scheduler.enqueue(oldThread);
-    unsigned int newPid = kernel::MultiLevelQueue::scheduler.dequeue();
-    assert(newPid != kernel::NOPCBEXISTS);
+    if ( kernel::MultiLevelQueue::scheduler.empty() ) {
+        currentThread = &kernel::ProcessManager::instance.kernelProcess;
+        PrintString("No more processes exist! Killing system...\n");
+        Halt;
+    }
 
     kernel::clearICache();
-    for (size_t i = 0; i < 64; ++i) kernel::TLBEntry::invalidate(i);
-    kernel::PCB* incomingProc = kernel::ProcessManager::instance[newPid];
+    for (size_t i = 0; i < 64; ++i) kernel::TLBEntry::invalidate(i); // TODO: Optimize with ASIDS
 
+    kernel::PCB::Guard incomingProc = kernel::MultiLevelQueue::scheduler.dequeue();
 
-    currentThread = incomingProc;
+    incomingProc.setAsCurrentThread();
 
 }

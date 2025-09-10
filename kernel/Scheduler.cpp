@@ -2,24 +2,25 @@
 
 kernel::MultiLevelQueue::MultiLevelQueue() : levels(), _size(0) {}
 
-void kernel::MultiLevelQueue::enqueue(PCB* proc) {
+void kernel::MultiLevelQueue::enqueue(PCB::Guard proc) {
     assert(proc->priority < NUM_LEVELS);
-    if (proc) {
+    if (proc.valid()) {
         levels[proc->priority].push_back(proc->getPID());
         ++_size;
     }
 }
 
-kernel::uint32_t kernel::MultiLevelQueue::dequeue() {
+kernel::PCB::Guard kernel::MultiLevelQueue::dequeue() {
+    uint32_t pid = -1;
     for (size_t i = 0; i < NUM_LEVELS; ++i) {
         if (levels[i].empty()) continue;
-        uint32_t pid = levels[i].front();
+        pid = levels[i].front();
         levels[i].pop_front();
         --_size;
-        return pid;
+        break;
     }
 
-    return NOPCBEXISTS;
+    return ProcessManager::instance[pid];
 }
 
 void kernel::MultiLevelQueue::boost() {

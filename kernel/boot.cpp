@@ -44,7 +44,7 @@ extern "C" void cppmain() {
 
     exceptionDepth -= 1;
     
-    currentThread = kernel::ProcessManager::instance[firstPID];
+    kernel::ProcessManager::instance[firstPID].setAsCurrentThread();
 }   // Return here calls run_process(currentThread->regCtx)
 
 

@@ -46,3 +46,16 @@ void std::printString(const char* str) {
         : "$a0", "$v0", "memory"
     );
 };
+
+unsigned int std::fork() {
+    unsigned int value;
+    __asm__ volatile (
+        "li $v0, 57\n"
+        "syscall\n"
+        "move %0, $v0\n"
+        : "=r"(value)
+        :
+        : "memory"
+    );
+    return value;
+}

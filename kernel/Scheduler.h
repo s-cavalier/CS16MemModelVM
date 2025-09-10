@@ -18,8 +18,8 @@ namespace kernel {
 
         static MultiLevelQueue scheduler;
 
-        void enqueue(PCB* proc);
-        uint32_t dequeue();
+        void enqueue(PCB::Guard proc);
+        PCB::Guard dequeue();
         void boost();
         
         size_t size() const;

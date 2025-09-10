@@ -101,6 +101,8 @@ static bool read_full(kernel::File& f, void* dst, size_t n) {
     return true;
 }
 
+#define MIN(x, y) (x < y) ? x : y
+
 static bool stream_copy_to(kernel::File& f, void* dst, size_t n) {
     char* out = static_cast<char*>(dst);
     char buf[512]; // stack buffer for I/O
@@ -206,28 +208,40 @@ uint32_t kernel::ProcessManager::createProcess(const char* executableFile) {
     // Don't add to vector yet just in case of failure
     
     // Now we "establish" the process, registers and write in text/static
-    newProcess->regCtx.accessRegister(kernel::SP) = 0x80000000;
-    newProcess->regCtx.accessRegister(kernel::GP) = 0x10008000;
+    newProcess->regCtx.accessRegister(kernel::SP) = kernel::STACK_LIMIT;
+    newProcess->regCtx.accessRegister(kernel::GP) = kernel::DYNAMIC_START;
 
     if (info.text_size) {
         file.seek(info.text_offset, 0);
-        char* textDst = (char*)(0x00400000);
 
-        // Write in all of the pages pre-emptively since we're in the kernel
-        // Need to change later for text sections >= 256 kb (TLB only holds 64 entries)
-        // Will either have to write directly to phys using 0x80000000 + physAddr (direct mapping) or just loading more TLB entries
-        for (uint32_t i = 0; i < ((info.text_size >> 12) + 1); ++i) newProcess->addrSpace.translate( (uint32_t)(textDst) + (i << 12)).writeIndexed(i);
+        // Write directly to the corresponding physical pages using the PFN in the PTEs stored in the AddrSpace of the proc
+        // We can avoid the tblwriting overhead
 
-        if (!stream_copy_to(file, textDst, info.text_size)) { return NOPCBEXISTS; }
+        size_t bytesLeft = info.text_size;
+        char* dst = (char*)(kernel::TEXT_START);
+
+        do {
+            char* physAddr = (char*)(kernel::STACK_LIMIT) + ( (newProcess->addrSpace.translate( (uint32_t)dst ).lo & ~uint32_t(0b111111)) << 6 );
+            size_t readAmt = MIN( bytesLeft, kernel::PAGE_SIZE );
+            if (!stream_copy_to(file, (void*)physAddr, readAmt )) { return NOPCBEXISTS; }
+            bytesLeft -= readAmt;
+            dst += readAmt;
+        } while ( bytesLeft > 0 );
     }
 
     if (info.data_size) {
         file.seek(info.data_offset, 0);
-        char* dataDst = (char*)(0x10000000);
+        
+        size_t bytesLeft = info.data_size;
+        char* dst = (char*)(kernel::STATIC_START);
 
-        for (uint32_t i = 0; i < ((info.data_size >> 12) + 1); ++i) newProcess->addrSpace.translate( (uint32_t)(dataDst) + (i << 12)).writeIndexed(i);
-
-        if (!stream_copy_to(file, dataDst, info.data_size)) { return NOPCBEXISTS; }
+        do {
+            char* physAddr = (char*)(kernel::STACK_LIMIT) + ( (newProcess->addrSpace.translate( (uint32_t)dst ).lo & ~uint32_t(0b111111)) << 6 );
+            size_t readAmt = MIN( bytesLeft, kernel::PAGE_SIZE );
+            if (!stream_copy_to(file, (void*)physAddr, readAmt )) { return NOPCBEXISTS; }
+            bytesLeft -= readAmt;
+            dst += readAmt;
+        } while ( bytesLeft > 0 );
     }
 
     newProcess->regCtx.epc = info.entry - 4;

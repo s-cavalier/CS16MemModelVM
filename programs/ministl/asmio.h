@@ -9,6 +9,7 @@ namespace std {
     void printString(const char* str);
     
     unsigned int fork();
+    void exec(const char* file);
 
 };
 

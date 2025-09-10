@@ -37,6 +37,7 @@ int main(int argc, char** argv) {
         dbg_output_stream = &out;
     #endif
 
+
     // -- Load Kernel --
     FileLoader::KernelLoader kernel("kernel/kernel.elf");
     if (kernel.bad()) {
@@ -48,7 +49,7 @@ int main(int argc, char** argv) {
     Hardware::Machine machine;
     Hardware::WallClock interDev;
     machine.loadKernel( kernel.kernelInfo, kernelArgs );
-    machine.run( nullptr , &interDev);
+    machine.run( DBGHOOK(( makeConditionalCombinedHook<ignoreKernel, printInstr>() )) , &interDev);
 
     return 0;
 }

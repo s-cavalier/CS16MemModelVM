@@ -25,6 +25,7 @@ enum ExceptionType : unsigned char {
         PRINT_STRING = 4,
         READ_INTEGER = 5,
         EXIT = 10,
+        EXEC = 11,
         BRK = 45,
         FORK = 57
     };
@@ -81,6 +82,13 @@ extern "C" void handleTrap() {
                 case EXIT: {
                     oldThread->markForDeath();
                     oldThread.reset();
+                    break;
+                }
+                case EXEC: {
+                    size_t physAddr = oldThread->addrSpace.translate( trapCtx->accessRegister(kernel::A0) ).lo >> 6;
+                    physAddr <<= 12;
+                    physAddr |= ( trapCtx->accessRegister(kernel::A0) & 0xFFF );
+                    oldThread->exec( (const char*)(0x80000000 + physAddr), trapCtx );
                     break;
                 }
                 case BRK: {

@@ -55,8 +55,19 @@ unsigned int std::fork() {
         "move %0, $v0\n"
         : "=r"(value)
         :
-        : "memory"
+        : "$v0", "memory"
     );
 
     return value;
+}
+
+void std::exec(const char* file) {
+    __asm__ volatile (
+        "move $a0, %0\n"
+        "li $v0, 11\n"
+        "syscall\n"
+        : 
+        : "r"(file)
+        : "$a0", "$v0", "memory"
+    );
 }

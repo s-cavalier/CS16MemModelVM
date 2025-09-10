@@ -23,6 +23,7 @@ kernel::PCB::Guard::Guard(Guard&& other) {
 }
 kernel::PCB::Guard& kernel::PCB::Guard::operator=(Guard&& other) {
     if (this == &other) return *this;
+    reset();
     ref = other.ref;
     other.ref = nullptr;
     return *this;
@@ -46,6 +47,25 @@ void kernel::PCB::markForDeath() {
     assert( PID != ProcessManager::KERNEL_PID && "The kernel process should never be marked for death" );
     state = ZOMBIE;
 }
+
+bool kernel::PCB::exec(const char* executableFile, RegisterContext* trapCtx ) {
+    assert( PID != ProcessManager::KERNEL_PID );
+
+    // For simplicity/Code reuse sake, we'll just make a new process and take it's page table, since that's the only expensive resource
+    // Maybe later make some functions that are dedicated to make page tables?
+
+    uint32_t newPID = ProcessManager::instance.createProcess( executableFile );
+    if (newPID == NOPCBEXISTS) return false;
+
+    PCB::Guard newProc = ProcessManager::instance[newPID];
+    addrSpace._pageTable = ministl::move( newProc->addrSpace._pageTable );
+    if (trapCtx) *trapCtx = newProc->regCtx;
+    else regCtx = newProc->regCtx;
+    newProc->markForDeath();
+
+    return true;
+}
+
 
 kernel::PCB::PCB() : regCtx{}, addrSpace( ministl::unique_ptr<PageTable>() ), state(READY), priority(0), refcount(0), PID(0) {}
 
@@ -196,7 +216,7 @@ uint32_t kernel::ProcessManager::createProcess(const char* executableFile) {
         // Write in all of the pages pre-emptively since we're in the kernel
         // Need to change later for text sections >= 256 kb (TLB only holds 64 entries)
         // Will either have to write directly to phys using 0x80000000 + physAddr (direct mapping) or just loading more TLB entries
-        for (uint32_t i = 0; i < ((info.text_size >> 12) + 1); ++i) newProcess->addrSpace.translate( (uint32_t)(textDst) + (i << 12)).writeRandom();
+        for (uint32_t i = 0; i < ((info.text_size >> 12) + 1); ++i) newProcess->addrSpace.translate( (uint32_t)(textDst) + (i << 12)).writeIndexed(i);
 
         if (!stream_copy_to(file, textDst, info.text_size)) { return NOPCBEXISTS; }
     }
@@ -205,7 +225,7 @@ uint32_t kernel::ProcessManager::createProcess(const char* executableFile) {
         file.seek(info.data_offset, 0);
         char* dataDst = (char*)(0x10000000);
 
-        for (uint32_t i = 0; i < ((info.data_size >> 12) + 1); ++i) newProcess->addrSpace.translate( (uint32_t)(dataDst) + (i << 12)).writeRandom();
+        for (uint32_t i = 0; i < ((info.data_size >> 12) + 1); ++i) newProcess->addrSpace.translate( (uint32_t)(dataDst) + (i << 12)).writeIndexed(i);
 
         if (!stream_copy_to(file, dataDst, info.data_size)) { return NOPCBEXISTS; }
     }

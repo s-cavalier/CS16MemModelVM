@@ -11,3 +11,9 @@ make debug
     make clean;
     make;
 )
+
+(
+    cd programs/calculator;
+    make clean;
+    make;
+)

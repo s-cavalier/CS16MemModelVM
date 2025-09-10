@@ -23,6 +23,7 @@ namespace kernel {
         uint32_t getPID() const { return PID; }
         unsigned short getRefCount() const { return refcount; }
         void markForDeath();
+        bool exec(const char* executableFile, RegisterContext* trapCtx );
 
         class Guard {
             PCB* ref;
@@ -96,7 +97,6 @@ namespace kernel {
         // Returns a pid to a created process
         // Returns -1 (basically KERNEL_PID) on failure (i.e., bad filename)
         uint32_t createProcess(const char* executableFile);
-
         uint32_t forkProcess(uint32_t pid, RegisterContext* newProcessRegCtx);
 
     private:

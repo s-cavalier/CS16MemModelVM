@@ -2,6 +2,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <assert.h>
+#include <iostream>
 
 // to better error handling here
 
@@ -10,7 +11,7 @@ Hardware::OpenFile::OpenFile(const std::string& filePath, Word flags) {
     offset = 0;
     
     err = 0;
-    if (fd == Word(-1)) err = errno;
+    if (fd == Word(-1)) assert(false);
 }
 
 std::vector<Byte> Hardware::OpenFile::read(Word count) {
@@ -54,7 +55,7 @@ Word Hardware::FileSystem::open(const std::string& filePath, Word flags) {
     auto& file = files[vfd];
     assert(!file && "Reusing occupied VFD");               // should only be able to access "empty" file slots
 
-    file = std::make_optional<OpenFile>(filePath, flags);
+    file.emplace(filePath, flags);
 
     if (file->error()) return file->error();
 
@@ -66,6 +67,7 @@ int Hardware::FileSystem::close(Word vfd) {
     if (vfd >= files.size()) return -1;
     auto& file = files[vfd];
     if (!file) return -2;
+    
     file.reset();
     freeVFDs.push_back(vfd);
     return 0;

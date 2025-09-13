@@ -16,11 +16,11 @@ MoveFromCoprocessor0::MoveFromCoprocessor0(K_INSTR_ARGS, int& rt, const int& rd)
 
 void MoveFromCoprocessor0::run() { EXL_CHECK; rt = rd; }
 
-ExceptionReturn::ExceptionReturn(Hardware::Machine& machine) : KInstruction(machine.accessCoprocessor(0)->accessRegister(Binary::STATUS).ui ), machine(machine) {}
+ExceptionReturn::ExceptionReturn(Hardware::Machine& machine) : KInstruction(machine.scu.registerFile[Binary::STATUS].ui ), machine(machine) {}
 
 void ExceptionReturn::run() { 
     EXL_CHECK; 
-    machine.accessCPU().accessProgramCounter() = machine.accessCoprocessor(0)->readRegister(Binary::EPC).ui;
+    machine.cpu.programCounter = machine.scu.registerFile[Binary::EPC].ui;
 
 }
 
@@ -85,16 +85,16 @@ VMTunnel::VMTunnel(K_INSTR_ARGS, Hardware::Machine& machine) : KInstruction(stat
 void VMTunnel::run() {
     EXL_CHECK;
     
-    auto& cpu = machine.accessCPU();
+    auto& cpu = machine.cpu;
 
-    Word reqAddr = cpu.readRegister(Binary::A0).ui;
-    Word resAddr = cpu.readRegister(Binary::V0).ui;
+    Word reqAddr = cpu.registerFile[Binary::A0].ui;
+    Word resAddr = cpu.registerFile[Binary::V0].ui;
 
     // this can be optimized pretty heavily once we switch to virtual memory
-    Word req  = machine.readMemory().getWord( reqAddr );
-    Word arg0 = machine.readMemory().getWord( reqAddr + 4 );
-    Word arg1 = machine.readMemory().getWord( reqAddr + 8 );
-    Word arg2 = machine.readMemory().getWord( reqAddr + 12 );
+    Word req  = machine.memory.getWord( reqAddr );
+    Word arg0 = machine.memory.getWord( reqAddr + 4 );
+    Word arg1 = machine.memory.getWord( reqAddr + 8 );
+    Word arg2 = machine.memory.getWord( reqAddr + 12 );
 
     Word res = 0;
     Word err = 0;
@@ -108,7 +108,7 @@ void VMTunnel::run() {
             break;
 
         case 2: // printString(const char*)
-            for (Word i = arg0; machine.readMemory().getByte(i) != '\0'; ++i) std::cout << machine.readMemory().getByte(i);
+            for (Word i = arg0; machine.memory.getByte(i) != '\0'; ++i) std::cout << machine.memory.getByte(i);
 
             break;
 
@@ -124,14 +124,14 @@ void VMTunnel::run() {
 
         case 5: { // fopen(const char* pathname, uint flags) -- need to consider error handling
             std::string filePath;
-            for (Word i = arg0; machine.readMemory().getByte(i) != '\0'; ++i) filePath.push_back( machine.readMemory().getByte(i) ); 
-            res = machine.accessFileSystem().open(filePath, arg1);
+            for (Word i = arg0; machine.memory.getByte(i) != '\0'; ++i) filePath.push_back( machine.memory.getByte(i) ); 
+            res = machine.fileSystem.open(filePath, arg1);
 
             break;
         }
         case 6: { // fread(int fd, char* buf, int nbytes)
-            auto bytes = machine.accessFileSystem()[arg0]->read(arg2);
-            for (Word i = 0; i < bytes.size(); ++i) machine.accessMemory().setByte(arg1 + i, bytes[i]);
+            auto bytes = machine.fileSystem[arg0]->read(arg2);
+            for (Word i = 0; i < bytes.size(); ++i) machine.memory.setByte(arg1 + i, bytes[i]);
             res = bytes.size();
 
             break;
@@ -139,13 +139,13 @@ void VMTunnel::run() {
         case 7: // fwrite
 
         case 8: {// fseek(int fd, uint offset, int whence)
-            auto& file = machine.accessFileSystem()[arg0];
+            auto& file = machine.fileSystem[arg0];
             res = file->seek(arg1, arg2);
             err = file->error();
             break;
         }
         case 9: // fclose(int fd)
-            machine.accessFileSystem().close(arg0);
+            machine.fileSystem.close(arg0);
 
             break;
         default:
@@ -154,7 +154,7 @@ void VMTunnel::run() {
 
     // load back into res, err
     
-    machine.accessMemory().setWord( resAddr, res     );
-    machine.accessMemory().setWord( resAddr + 4, err );
+    machine.memory.setWord( resAddr, res     );
+    machine.memory.setWord( resAddr + 4, err );
 
 }

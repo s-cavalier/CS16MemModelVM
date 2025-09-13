@@ -18,8 +18,7 @@ using dbgHook = void (*)(const Hardware::Machine& machine);
 // conditionals
 using condEval = bool(*)(const Hardware::Machine& machine);
 bool onKilled(const Hardware::Machine& machine) { return machine.killed; }
-bool ignoreKernel(const Hardware::Machine& machine) { return machine.readCPU().readProgramCounter() < 0x80000000; }
-bool focusKernel(const Hardware::Machine& machine) { return (machine.readCoprocessor(0)->readRegister(12).ui & 0b10); }
+bool ignoreKernel(const Hardware::Machine& machine) { return machine.cpu.programCounter < 0x80000000; }
 
 #define DBG_OUT *dbg_output_stream
 
@@ -30,62 +29,62 @@ bool focusKernel(const Hardware::Machine& machine) { return (machine.readCoproce
 
 // only read memory within [lower, upper]
 
-HOOK_TEMPLATE(printEPC) {
-    DBG_OUT << std::hex << machine.readCoprocessor(0)->readRegister(Binary::EPC).ui << std::dec << DBG_END;
-}
+// HOOK_TEMPLATE(printEPC) {
+//     DBG_OUT << std::hex << machine.readCoprocessor(0)->readRegister(Binary::EPC).ui << std::dec << DBG_END;
+// }
 
-HOOK_TEMPLATE(memoryAccess) {
-    Word instr = machine.readMemory().getWord( machine.readCPU().readProgramCounter() );
-    Binary::Opcode opcode = Binary::Opcode((instr >> 26) & 0b111111);
-    if (opcode != Binary::LW && opcode != Binary::SW) return;
-    Binary::Register rs = Binary::Register((instr >> 21) & 0b11111);
-    short offset = (instr & 0xFF);
-    Word address = machine.readCPU().readRegister(rs).ui + Word(offset);
-    DBG_OUT << "Access memory location " << std::hex << std::setw(8) << std::setfill('0') << address << ":\n" << std::dec;
-    for (int i = -8; i < 12; ++i) DBG_OUT << std::setw(2) << std::setfill('0') << i << ' ';
-    DBG_OUT << std::hex << '\n';
-    for (Word i = address - 8; i < address + 12; ++i) DBG_OUT << std::setw(2) << std::setfill('0') << (unsigned short)(machine.readMemory().getByte(i)) << ' ';
-    DBG_OUT << std::dec << DBG_END;
-}
+// HOOK_TEMPLATE(memoryAccess) {
+//     Word instr = machine.readMemory().getWord( machine.readCPU().readProgramCounter() );
+//     Binary::Opcode opcode = Binary::Opcode((instr >> 26) & 0b111111);
+//     if (opcode != Binary::LW && opcode != Binary::SW) return;
+//     Binary::Register rs = Binary::Register((instr >> 21) & 0b11111);
+//     short offset = (instr & 0xFF);
+//     Word address = machine.readCPU().readRegister(rs).ui + Word(offset);
+//     DBG_OUT << "Access memory location " << std::hex << std::setw(8) << std::setfill('0') << address << ":\n" << std::dec;
+//     for (int i = -8; i < 12; ++i) DBG_OUT << std::setw(2) << std::setfill('0') << i << ' ';
+//     DBG_OUT << std::hex << '\n';
+//     for (Word i = address - 8; i < address + 12; ++i) DBG_OUT << std::setw(2) << std::setfill('0') << (unsigned short)(machine.readMemory().getByte(i)) << ' ';
+//     DBG_OUT << std::dec << DBG_END;
+// }
 
-HOOK_TEMPLATE(printHILO) {
-    auto [hi, lo] = machine.readCPU().readHiLo();
-    DBG_OUT << "HI: " << hi << ", LO: " << lo << DBG_END;
-}
+// HOOK_TEMPLATE(printHILO) {
+//     auto [hi, lo] = machine.readCPU().readHiLo();
+//     DBG_OUT << "HI: " << hi << ", LO: " << lo << DBG_END;
+// }
 
-HOOK_TEMPLATE(printInstr) {
-    try {    
-        const Word& pc = machine.readCPU().readProgramCounter();
-        DBG_OUT << std::hex << std::setw(8) << std::setfill('0') << machine.readMemory().getWord(pc) << " : " << std::setw(8) << std::setfill('0') << pc << std::dec << DBG_END;
-    } catch (const Hardware::Trap &trap) {}
-}
+// HOOK_TEMPLATE(printInstr) {
+//     try {    
+//         const Word& pc = machine.readCPU().readProgramCounter();
+//         DBG_OUT << std::hex << std::setw(8) << std::setfill('0') << machine.readMemory().getWord(pc) << " : " << std::setw(8) << std::setfill('0') << pc << std::dec << DBG_END;
+//     } catch (const Hardware::Trap &trap) {}
+// }
 
-HOOK_TEMPLATE(printEXL) {
-    const Word& statusReg = machine.readCoprocessor(0)->readRegister(Binary::STATUS).ui;
-    DBG_OUT << "EXL_STATUS: " << std::boolalpha << bool(statusReg & 0b10) << DBG_END;
-}
+// HOOK_TEMPLATE(printEXL) {
+//     const Word& statusReg = machine.readCoprocessor(0)->readRegister(Binary::STATUS).ui;
+//     DBG_OUT << "EXL_STATUS: " << std::boolalpha << bool(statusReg & 0b10) << DBG_END;
+// }
 
-HOOK_TEMPLATE(printStatus) {
-    const Word& statusReg = machine.readCoprocessor(0)->readRegister(Binary::STATUS).ui;
-    DBG_OUT << "STATUS: " << std::hex << std::setw(8) << std::setfill('0') << statusReg << std::dec << DBG_END;
-}
+// HOOK_TEMPLATE(printStatus) {
+//     const Word& statusReg = machine.readCoprocessor(0)->readRegister(Binary::STATUS).ui;
+//     DBG_OUT << "STATUS: " << std::hex << std::setw(8) << std::setfill('0') << statusReg << std::dec << DBG_END;
+// }
 
-HOOK_TEMPLATE(printRegs) {
-    for (int i = 0; i < 32; ++i) DBG_OUT << '$' << Binary::regToString[i] << ":" << machine.readCPU().readRegister(i).ui << ' ';
-    DBG_OUT << DBG_END;
-}
+// HOOK_TEMPLATE(printRegs) {
+//     for (int i = 0; i < 32; ++i) DBG_OUT << '$' << Binary::regToString[i] << ":" << machine.readCPU().readRegister(i).ui << ' ';
+//     DBG_OUT << DBG_END;
+// }
 
-template <Word... Regs>
-HOOK_TEMPLATE(printReg) {
-    ((DBG_OUT << '$' << Binary::regToString[Regs] << ": " << machine.readCPU().readRegister(Regs).ui << ' '), ...);
-    DBG_OUT << DBG_END;
-}
+// template <Word... Regs>
+// HOOK_TEMPLATE(printReg) {
+//     ((DBG_OUT << '$' << Binary::regToString[Regs] << ": " << machine.readCPU().readRegister(Regs).ui << ' '), ...);
+//     DBG_OUT << DBG_END;
+// }
 
-HOOK_TEMPLATE(printFPRegs) {
-    DBG_OUT << "FP REGISTERS:\n";
-    for (int i = 0; i < 32; ++i) DBG_OUT << "$f" << i << ":" << machine.readCoprocessor(1)->readRegister(i).f << ' ';
-    DBG_OUT << DBG_END;
-}
+// HOOK_TEMPLATE(printFPRegs) {
+//     DBG_OUT << "FP REGISTERS:\n";
+//     for (int i = 0; i < 32; ++i) DBG_OUT << "$f" << i << ":" << machine.readCoprocessor(1)->readRegister(i).f << ' ';
+//     DBG_OUT << DBG_END;
+// }
 
 template <condEval condition, dbgHook Hook>
 HOOK_TEMPLATE(conditionalHook) {

@@ -16,11 +16,11 @@ MoveFromCoprocessor0::MoveFromCoprocessor0(K_INSTR_ARGS, int& rt, const int& rd)
 
 void MoveFromCoprocessor0::run() { EXL_CHECK; rt = rd; }
 
-ExceptionReturn::ExceptionReturn(Hardware::Machine& machine) : KInstruction(machine.scu.registerFile[Binary::STATUS].ui ), machine(machine) {}
+ExceptionReturn::ExceptionReturn(Hardware::Machine& machine) : KInstruction(machine.cpu.scu.registerFile[Binary::STATUS].ui ), machine(machine) {}
 
 void ExceptionReturn::run() { 
     EXL_CHECK; 
-    machine.cpu.programCounter = machine.scu.registerFile[Binary::EPC].ui;
+    machine.cpu.programCounter = machine.cpu.scu.registerFile[Binary::EPC].ui;
 
 }
 
@@ -85,7 +85,7 @@ VMTunnel::VMTunnel(K_INSTR_ARGS, Hardware::Machine& machine) : KInstruction(stat
 void VMTunnel::run() {
     EXL_CHECK;
     
-    auto& cpu = machine.cpu;
+    auto& cpu = machine.cpu.iu;
 
     Word reqAddr = cpu.registerFile[Binary::A0].ui;
     Word resAddr = cpu.registerFile[Binary::V0].ui;

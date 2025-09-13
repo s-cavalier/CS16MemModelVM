@@ -17,10 +17,12 @@
 // Hardware Emulation
 // -------------------------------------------------------------
 
-Hardware::Machine::Machine() : cpu(*this), fpu(*this), scu(*this), killed(false) {}
+Hardware::Machine::Machine() : cpu(*this), killed(false) {}
  
 void Hardware::Machine::raiseTrap(Byte exceptionCode, Word badVAddr) {
     using namespace Binary;
+
+    auto& scu = cpu.scu;
     
     scu.setEPC( cpu.programCounter );
     scu.setEXL( true );
@@ -55,23 +57,24 @@ void Hardware::Machine::loadKernel(const ExternalInfo::KernelBootInformation& ke
     }
 
     cpu.programCounter = kernelInfo.bootEntry;
-    scu.registerFile[Binary::STATUS].ui = 0b10;  // enable exl at boot <- has to be done by hardware
+    cpu.scu.registerFile[Binary::STATUS].ui = 0b10;  // enable exl at boot <- has to be done by hardware
 
 }
 
 // Runs a single cycle. Since the interrupt system is clock-based and not instr count based, interrupts are disabled
 // Use a Hardware::SendInterrupt object if you want to manually call an interrupt
-void Hardware::Machine::step( InterruptDevice* device ) {
-    cpu.cycle(device);
+void Hardware::Machine::step() {
+    cpu.cycle();
 }
 
 
 // Runs with an Interrupt Device.
-void Hardware::Machine::run(instrDebugHook hook, InterruptDevice* device, std::chrono::milliseconds IDduration ) {
-    device->start(IDduration);
+void Hardware::Machine::run(instrDebugHook hook, std::chrono::milliseconds IDduration ) {
+    assert(cpu.interDev);
+    cpu.interDev->start(IDduration);
     while (!killed) {
-        step(device);
+        step();
         if (hook) hook(*this);
     }
-    device->stop();
+    cpu.interDev->stop();
 }

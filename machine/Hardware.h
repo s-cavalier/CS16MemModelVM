@@ -19,9 +19,7 @@ namespace Hardware {
     struct Instruction;
 
     struct Machine {
-        CPU cpu;
-        FloatingPointUnit fpu;
-        SystemControlUnit scu;
+        Core cpu;
         Memory memory;
         FileSystem fileSystem;
         Word trapEntry;
@@ -33,11 +31,11 @@ namespace Hardware {
 
         void loadKernel(const ExternalInfo::KernelBootInformation& kernelInfo, const std::vector<std::string>& kernelArguments);
 
-        void step( InterruptDevice* device = nullptr );
+        void step();
 
         // Just calls a loop on runInstruction until kill flag is set
         using instrDebugHook = void (*)(const Machine&);
-        void run(instrDebugHook hook = nullptr, InterruptDevice* device = nullptr, std::chrono::milliseconds IDduration = std::chrono::milliseconds(1) );
+        void run(instrDebugHook hook = nullptr, std::chrono::milliseconds IDduration = std::chrono::milliseconds(1) );
     };
 
     struct Instruction {

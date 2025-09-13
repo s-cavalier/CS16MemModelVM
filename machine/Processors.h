@@ -70,7 +70,7 @@ namespace Hardware {
     };
 
     struct Instruction;
-    class Machine;
+    struct Core;
 
     union reg32_t {
         Word ui;
@@ -80,13 +80,13 @@ namespace Hardware {
 
     class Processor {
     protected:
-        Machine& machine;             // could switch to a bus model later on
+        Core& core;             
         
     
     public:
         alignas(8) reg32_t registerFile[32];    // aligned for FPU to be able to reinterpret_cast pairs of registers into double, switch to alignas(16) if implementing quad-prec
 
-        Processor(Machine& machine);
+        Processor(Core& core);
 
 
         virtual std::unique_ptr<Instruction> decode(Word bin_instr) = 0;
@@ -98,7 +98,7 @@ namespace Hardware {
         bool FPcond;
 
     public:
-        FloatingPointUnit(Machine& machine);
+        FloatingPointUnit(Core& core);
         std::unique_ptr<Instruction> decode(Word bin_instr) override;
 
         inline const Double& getDouble(Byte reg) const { 
@@ -114,10 +114,8 @@ namespace Hardware {
         }
     };
 
-    class SystemControlUnit : public Processor {
-    
-    public:
-        SystemControlUnit(Machine& machine);
+    struct SystemControlUnit : public Processor {
+        SystemControlUnit(Core& core);
 
         inline void setEPC(Word pc) { registerFile[14].ui = pc; }
         inline void setCause(Byte exceptionCode) { registerFile[13].ui = Word(exceptionCode) << 2; }
@@ -130,16 +128,10 @@ namespace Hardware {
 
     struct HiLoRegisters { Word hi; Word lo; };
 
-    class CPU : public Processor {
-        LRUCache<Word, std::unique_ptr<Instruction>, 32 * 1024> instructionCache;
-    
-    public:
+    struct IntegerUnit : public Processor {
         HiLoRegisters hiLo{};
-        Word programCounter;
 
-        CPU(Machine& machine);       // maybe cache later down the road
-
-        void cycle( InterruptDevice* device );
+        IntegerUnit(Core& core);       // maybe cache later down the road
 
         std::unique_ptr<Instruction> decode(Word bin_instr) override;
     };
@@ -168,6 +160,22 @@ namespace Hardware {
         ExceptionCode exceptionCode;
         Word badAddr;
         explicit Trap(ExceptionCode exceptionCode, Word badAddr = 0) : exceptionCode(exceptionCode), badAddr(badAddr) {}
+    };
+    
+    struct Machine;
+
+    struct Core {
+        Machine& machine;
+        Word programCounter;
+        IntegerUnit iu;
+        FloatingPointUnit fpu;
+        SystemControlUnit scu;
+        std::unique_ptr<InterruptDevice> interDev;
+        LRUCache<Word, std::unique_ptr<Instruction>, 32 * 1024> instructionCache;
+
+        Core( Machine& machine );
+
+        void cycle();
     };
 
 };

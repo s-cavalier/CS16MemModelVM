@@ -48,8 +48,9 @@ int main(int argc, char** argv) {
     // -- Setup and run machine --
     Hardware::Machine machine;
     Hardware::WallClock interDev;
+    machine.cpu.interDev = std::make_unique<Hardware::WallClock>();
     machine.loadKernel( kernel.kernelInfo, kernelArgs );
-    machine.run( nullptr , &interDev);
+    machine.run();
 
     return 0;
 }

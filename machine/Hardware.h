@@ -3,8 +3,6 @@
 #include "Processors.h"
 #include "FileSystem.h"
 #include "../ExternalInfo.h"
-#include <unordered_map>
-#include <array>
 #include <string>
 #include "LRUCache.h"
 
@@ -16,8 +14,7 @@ using HalfWord = unsigned short;
 using Byte = unsigned char;
 
 namespace Hardware {
-    struct Instruction;
-
+    
     struct Machine {
         Core cpu;
         Memory memory;

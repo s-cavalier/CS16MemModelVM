@@ -3,14 +3,14 @@
 
 struct Foo {
 
-    Foo() { std::printString("Penisfart\n"); }
-    virtual void bar() { std::printString("poopbut\n"); }
+    Foo() { std::printString("fooconstr\n"); }
+    virtual void bar() { std::printString("foo::bar\n"); }
 
 };
 
 struct Bar : public Foo {
 
-    Bar() { std::printString("Barbut\n"); }
+    Bar() { std::printString("Barconstrt\n"); }
     virtual void bar() { std::printString("lgob\n"); }
 
 };

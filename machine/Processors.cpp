@@ -165,7 +165,7 @@ void Hardware::Core::cycle() {
         instr->run();
         programCounter += 4;
 
-        if (interDev && interDev->poll() && oldIE && (statusReg & 1) ) raiseTrap( Trap(Trap::INTERRUPT, 0) ) ; // only run if the IE's are active and no action on the IE has been made
+        if (interDev && interDev->poll() && oldIE && (statusReg & 1) ) raiseTrap( Trap(Trap::INTERRUPT) ) ; // only run if the IE's are active and no action on the IE has been made
 
         // For every other exception, they are thrown during the instr->run() dynamic dispatch call, which prevents PC from incrementing
         // However, since we check the device (and therefore throw) after PC increment, the actual instruction at the new PC won't get run

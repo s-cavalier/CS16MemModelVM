@@ -18,21 +18,6 @@
 // -------------------------------------------------------------
 
 Hardware::Machine::Machine() : cpu(*this), killed(false) {}
- 
-void Hardware::Machine::raiseTrap(Byte exceptionCode, Word badVAddr) {
-    using namespace Binary;
-
-    auto& scu = cpu.scu;
-    
-    scu.setEPC( cpu.programCounter );
-    scu.setEXL( true );
-    scu.setBadVAddr(badVAddr);
-    scu.setCause(exceptionCode);
-    scu.registerFile[Binary::STATUS].ui &= ~Word(1); // Disable interrupts
-
-    cpu.programCounter = trapEntry;
-
-}
 
 void Hardware::Machine::loadKernel(const ExternalInfo::KernelBootInformation& kernelInfo, const std::vector<std::string>& kernelArgs) {
     trapEntry = kernelInfo.trapEntry;

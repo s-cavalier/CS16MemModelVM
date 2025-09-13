@@ -181,6 +181,8 @@ namespace Hardware {
         Machine& machine() { return *_machine; }
         const Machine& machine() const { return *_machine; }
 
+        void raiseTrap(const Trap& trap);
+
         void cycle();
     };
 

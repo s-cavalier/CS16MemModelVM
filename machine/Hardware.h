@@ -26,7 +26,6 @@ namespace Hardware {
 
         Machine();
 
-        void raiseTrap(Byte exceptionCode, Word badAddr);
         bool killed;
 
         void loadKernel(const ExternalInfo::KernelBootInformation& kernelInfo, const std::vector<std::string>& kernelArguments);

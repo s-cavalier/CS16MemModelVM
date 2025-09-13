@@ -148,14 +148,16 @@ Hardware::IntegerUnit::IntegerUnit(Core& core) : Processor(core) {}
 Hardware::Core::Core(Machine& machine) : _machine(&machine), iu(*this), fpu(*this), scu(*this) {}
 
 void Hardware::Core::cycle() {
+    const Word& statusReg = scu.registerFile[Binary::STATUS].ui;
+    volatile bool oldIE = statusReg & 1;
+
     try {
-        const Word& statusReg = scu.registerFile[Binary::STATUS].ui;
+        
         // We use a oldIE and newIE comparison to have a sort of atomic interrupt
         // If an instruction flips the IE, it should not be possible for an interrupt to occur on the same instruction for (at least now) simplicity reasons
         // This is mainly useful for the worst-case when an interrupt signal comes right during a syscall or some other exception
         // It could be possible to work with less scaffolding for performance purposes, but for now this is ok
         
-        bool oldIE = statusReg & 1;
 
         auto& instr = instructionCache[programCounter];
         if (!instr) instr = iu.decode( machine().memory.getWord(programCounter) );
@@ -163,17 +165,27 @@ void Hardware::Core::cycle() {
         instr->run();
         programCounter += 4;
 
-        bool newIE = statusReg & 1;
-
-        if (interDev && interDev->poll() && oldIE && newIE) machine().raiseTrap( Trap::INTERRUPT, 0 ) ; // only run if the IE's are active and no action on the IE has been made
+        if (interDev && interDev->poll() && oldIE && (statusReg & 1) ) raiseTrap( Trap(Trap::INTERRUPT, 0) ) ; // only run if the IE's are active and no action on the IE has been made
 
         // For every other exception, they are thrown during the instr->run() dynamic dispatch call, which prevents PC from incrementing
         // However, since we check the device (and therefore throw) after PC increment, the actual instruction at the new PC won't get run
         // Unless the kernel re-decrements the EPC by 4
         
     } catch (const Hardware::Trap& trap) {
-        machine().raiseTrap(trap.exceptionCode, trap.badAddr);
+        raiseTrap(trap);
     }
+}
+
+void Hardware::Core::raiseTrap(const Trap& trap) {
+    using namespace Binary;
+    
+    scu.setEPC( programCounter );
+    scu.setEXL( true );
+    scu.setBadVAddr(trap.badAddr);
+    scu.setCause(trap.exceptionCode);
+    scu.registerFile[Binary::STATUS].ui &= ~Word(1); // Disable interrupts
+
+    programCounter = machine().trapEntry;
 }
 
 std::unique_ptr<Hardware::Instruction> Hardware::IntegerUnit::decode(Word binary_instruction) {

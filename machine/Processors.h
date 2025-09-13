@@ -79,11 +79,13 @@ namespace Hardware {
     };
 
     class Processor {
-    protected:
-        Core& core;             
+        Core* _core;  // back reference
         
     
     public:
+        Core& core() { return *_core; }
+        const Core& core() const { return *_core; }
+
         alignas(8) reg32_t registerFile[32];    // aligned for FPU to be able to reinterpret_cast pairs of registers into double, switch to alignas(16) if implementing quad-prec
 
         Processor(Core& core);
@@ -164,8 +166,10 @@ namespace Hardware {
     
     struct Machine;
 
-    struct Core {
-        Machine& machine;
+    class Core {
+        Machine* _machine; // back reference
+
+    public:
         Word programCounter;
         IntegerUnit iu;
         FloatingPointUnit fpu;
@@ -174,6 +178,8 @@ namespace Hardware {
         LRUCache<Word, std::unique_ptr<Instruction>, 32 * 1024> instructionCache;
 
         Core( Machine& machine );
+        Machine& machine() { return *_machine; }
+        const Machine& machine() const { return *_machine; }
 
         void cycle();
     };

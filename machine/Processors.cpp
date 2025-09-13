@@ -71,14 +71,14 @@ bool Hardware::TickClock::poll() {
 }
 
 
-Hardware::Processor::Processor(Core& core) : core(core), registerFile{0} {}
+Hardware::Processor::Processor(Core& core) : _core(&core), registerFile{0} {}
 
 Hardware::FloatingPointUnit::FloatingPointUnit(Core& core) : Processor(core), FPcond(false) {}
 
 std::unique_ptr<Hardware::Instruction> Hardware::FloatingPointUnit::decode(Word binary_instruction) {
     using namespace Binary;
 
-    Word& programCounter = core.programCounter;
+    Word& programCounter = core().programCounter;
 
     // opcode is always the same
     FMT fmt = FMT((binary_instruction >> 21) & 0b11111);
@@ -127,17 +127,17 @@ std::unique_ptr<Hardware::Instruction> Hardware::SystemControlUnit::decode(Word 
 
     if (rs == 0x10) {
         switch (cp0funct) {
-            case ERET: return std::make_unique<ExceptionReturn>(core.machine);
-            case TLBR: return std::make_unique<TLBReadIndexed>(statusReg, core.machine.memory.accessTLB(), registerFile[INDEX].ui, registerFile[ENTRYHI].ui, registerFile[ENTRYLO0].ui );
-            case TLBWI: return std::make_unique<TLBWriteIndexed>(statusReg, core.machine.memory.accessTLB(), registerFile[INDEX].ui, registerFile[ENTRYHI].ui, registerFile[ENTRYLO0].ui );
-            case TLBWR: return std::make_unique<TLBWriteRandom>(statusReg, core.machine.memory.accessTLB(), registerFile[RANDOM].ui, registerFile[ENTRYHI].ui, registerFile[ENTRYLO0].ui );
-            case TLBP: return std::make_unique<TLBProbe>(statusReg, core.machine.memory.accessTLB(), registerFile[INDEX].ui, registerFile[ENTRYHI].ui);
+            case ERET: return std::make_unique<ExceptionReturn>(core().machine());
+            case TLBR: return std::make_unique<TLBReadIndexed>(statusReg, core().machine().memory.accessTLB(), registerFile[INDEX].ui, registerFile[ENTRYHI].ui, registerFile[ENTRYLO0].ui );
+            case TLBWI: return std::make_unique<TLBWriteIndexed>(statusReg, core().machine().memory.accessTLB(), registerFile[INDEX].ui, registerFile[ENTRYHI].ui, registerFile[ENTRYLO0].ui );
+            case TLBWR: return std::make_unique<TLBWriteRandom>(statusReg, core().machine().memory.accessTLB(), registerFile[RANDOM].ui, registerFile[ENTRYHI].ui, registerFile[ENTRYLO0].ui );
+            case TLBP: return std::make_unique<TLBProbe>(statusReg, core().machine().memory.accessTLB(), registerFile[INDEX].ui, registerFile[ENTRYHI].ui);
             default: break;
         }
     }
 
-    if (rs == 0) return std::make_unique<MoveFromCoprocessor0>(statusReg, core.iu.registerFile[rt].i, registerFile[rd].i );
-    if (rs == 4) return std::make_unique<MoveToCoprocessor0>(statusReg, core.iu.registerFile[rt].i, registerFile[rd].i );
+    if (rs == 0) return std::make_unique<MoveFromCoprocessor0>(statusReg, core().iu.registerFile[rt].i, registerFile[rd].i );
+    if (rs == 4) return std::make_unique<MoveToCoprocessor0>(statusReg, core().iu.registerFile[rt].i, registerFile[rd].i );
 
     throw Trap(Trap::ExceptionCode::RI);
 }
@@ -145,7 +145,7 @@ std::unique_ptr<Hardware::Instruction> Hardware::SystemControlUnit::decode(Word 
 
 Hardware::IntegerUnit::IntegerUnit(Core& core) : Processor(core) {}
 
-Hardware::Core::Core(Machine& machine) : machine(machine), iu(*this), fpu(*this), scu(*this) {}
+Hardware::Core::Core(Machine& machine) : _machine(&machine), iu(*this), fpu(*this), scu(*this) {}
 
 void Hardware::Core::cycle() {
     try {
@@ -158,21 +158,21 @@ void Hardware::Core::cycle() {
         bool oldIE = statusReg & 1;
 
         auto& instr = instructionCache[programCounter];
-        if (!instr) instr = iu.decode( machine.memory.getWord(programCounter) );
+        if (!instr) instr = iu.decode( machine().memory.getWord(programCounter) );
 
         instr->run();
         programCounter += 4;
 
         bool newIE = statusReg & 1;
 
-        if (interDev && interDev->poll() && oldIE && newIE) machine.raiseTrap( Trap::INTERRUPT, 0 ) ; // only run if the IE's are active and no action on the IE has been made
+        if (interDev && interDev->poll() && oldIE && newIE) machine().raiseTrap( Trap::INTERRUPT, 0 ) ; // only run if the IE's are active and no action on the IE has been made
 
         // For every other exception, they are thrown during the instr->run() dynamic dispatch call, which prevents PC from incrementing
         // However, since we check the device (and therefore throw) after PC increment, the actual instruction at the new PC won't get run
         // Unless the kernel re-decrements the EPC by 4
         
     } catch (const Hardware::Trap& trap) {
-        machine.raiseTrap(trap.exceptionCode, trap.badAddr);
+        machine().raiseTrap(trap.exceptionCode, trap.badAddr);
     }
 }
 
@@ -184,16 +184,17 @@ std::unique_ptr<Hardware::Instruction> Hardware::IntegerUnit::decode(Word binary
 
     using namespace Binary;
 
-    auto& scu = core.scu;
-    auto& fpu = core.fpu;
+    auto& cor = core();
+    auto& scu = cor.scu;
+    auto& fpu = cor.fpu;
+    auto& machine = cor.machine();
     
     Opcode opcode = Opcode((binary_instruction >> 26) & 0b111111);  // For All
 
     if (opcode == FP_TYPE) return fpu.decode(binary_instruction);
-
     if (opcode == K_TYPE) return scu.decode(binary_instruction);
 
-    auto& RAM = core.machine.memory;
+    auto& RAM = machine.memory;
     auto& statusReg = scu.registerFile[STATUS].ui;
 
     Word address = binary_instruction & 0x1FFFFFF;                  // For Jump
@@ -209,7 +210,7 @@ std::unique_ptr<Hardware::Instruction> Hardware::IntegerUnit::decode(Word binary
 
     // Return instruction
 
-    #define I_BRANCH_ZERO_INIT(oc, instr) case oc: return std::make_unique<instr>(immediate, core.programCounter, registerFile[rs].i)
+    #define I_BRANCH_ZERO_INIT(oc, instr) case oc: return std::make_unique<instr>(immediate, cor.programCounter, registerFile[rs].i)
     if (opcode == REGIMM) {
         switch (rt) {
             I_BRANCH_ZERO_INIT(1, BranchOnGreaterThanOrEqualZero);
@@ -262,9 +263,9 @@ std::unique_ptr<Hardware::Instruction> Hardware::IntegerUnit::decode(Word binary
             case SYSCALL: return std::make_unique<Syscall>();
             case SYNC: return std::make_unique<Sync>();
             case TEQ: return std::make_unique<TrapIfEqual>(registerFile[rs].i, registerFile[rt].i);
-            case VMTUNNEL: return std::make_unique<VMTunnel>(statusReg, core.machine);
-            case JR: return std::make_unique<JumpRegister>(core.programCounter, registerFile[rs].i);
-            case JALR: return std::make_unique<JumpAndLinkRegister>(core.programCounter, registerFile[rd].i, registerFile[rs].i);
+            case VMTUNNEL: return std::make_unique<VMTunnel>(statusReg, machine);
+            case JR: return std::make_unique<JumpRegister>(cor.programCounter, registerFile[rs].i);
+            case JALR: return std::make_unique<JumpAndLinkRegister>(cor.programCounter, registerFile[rd].i, registerFile[rs].i);
             default:
                 throw Trap(Trap::RI);
         }
@@ -272,7 +273,7 @@ std::unique_ptr<Hardware::Instruction> Hardware::IntegerUnit::decode(Word binary
 
     #define I_GEN_INIT(oc, instr) case oc: return std::make_unique<instr>(registerFile[rt].i, registerFile[rs].i, immediate)        // optimize instructions to use ui/i?
     #define I_MEM_INIT(oc, instr) case oc: return std::make_unique<instr>(registerFile[rt].i, registerFile[rs].i, immediate, RAM)
-    #define I_BRANCH_INIT(oc, instr) case oc: return std::make_unique<instr>(registerFile[rt].i, registerFile[rs].i, immediate, core.programCounter)
+    #define I_BRANCH_INIT(oc, instr) case oc: return std::make_unique<instr>(registerFile[rt].i, registerFile[rs].i, immediate, cor.programCounter)
     #define FPMEM_INIT(oc, instr) case oc: return std::make_unique<instr>(fpu.registerFile[rt].f, registerFile[rs].i, immediate, RAM)
     switch (opcode) {
         I_GEN_INIT(ADDIU, AddImmediateUnsigned);
@@ -296,10 +297,10 @@ std::unique_ptr<Hardware::Instruction> Hardware::IntegerUnit::decode(Word binary
         I_BRANCH_ZERO_INIT(BGTZ, BranchOnGreaterThanZero);
         I_BRANCH_ZERO_INIT(BLEZ, BranchOnLessThanOrEqualZero);
         case ADDI: return std::make_unique<AddImmediate>(registerFile[rt].i, registerFile[rs].i, immediate);
-        case J: return std::make_unique<Jump>(core.programCounter, address);
-        case JAL: return std::make_unique<JumpAndLink>(core.programCounter, address, registerFile[RA].i);
+        case J: return std::make_unique<Jump>(cor.programCounter, address);
+        case JAL: return std::make_unique<JumpAndLink>(cor.programCounter, address, registerFile[RA].i);
         case LUI: return std::make_unique<LoadUpperImmediate>(registerFile[rt].i, immediate);
-        case CACHE: return std::make_unique<PerformCacheOp>(statusReg, core.instructionCache);
+        case CACHE: return std::make_unique<PerformCacheOp>(statusReg, cor.instructionCache);
         default:
             throw Trap(Trap::RI);
     }

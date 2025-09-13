@@ -154,6 +154,7 @@ uint32_t kernel::ProcessManager::createProcess(const char* executableFile) {
         uint32_t entry;
         uint32_t text_offset, text_size;
         uint32_t data_offset, data_size;
+        uint32_t bss_addr, bss_size;
     } info{};
     info.entry = ehdr.e_entry;
 
@@ -181,6 +182,9 @@ uint32_t kernel::ProcessManager::createProcess(const char* executableFile) {
         } else if (ministl::streq(namebuf, ".data")) {
             info.data_offset = sh.sh_offset;
             info.data_size   = sh.sh_size;
+        } else if (ministl::streq(namebuf, ".bss")) {
+            info.bss_addr = sh.sh_addr;
+            info.bss_size = sh.sh_size;
         }
     }
 
@@ -201,7 +205,7 @@ uint32_t kernel::ProcessManager::createProcess(const char* executableFile) {
         new PCB(
             newPID, 
             BLOCKED, 
-            ministl::make_unique<HashPageTable>((info.text_size >> 12) + 1, (info.data_size >> 12) + 1, 4)
+            ministl::make_unique<HashPageTable>((info.text_size >> 12) + 1, ( (info.data_size + info.bss_size) >> 12) + 1, 4)
         ) 
     ); 
 
@@ -243,6 +247,8 @@ uint32_t kernel::ProcessManager::createProcess(const char* executableFile) {
             dst += readAmt;
         } while ( bytesLeft > 0 );
     }
+
+    // Right now, the startup function zeroes the bss. We'll have the OS do this later
 
     newProcess->regCtx.epc = info.entry - 4;
 

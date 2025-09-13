@@ -32,7 +32,7 @@ SECTIONS
 
     . = ALIGN(4);
 
-    .bss (NOLOAD) :
+    .bss :
     {
         _bss_start = .;
         *(.bss*)

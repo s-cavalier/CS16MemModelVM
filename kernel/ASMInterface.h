@@ -118,6 +118,7 @@ namespace kernel {
     uint32_t getBadVAddr();
     void setInterrupts(bool enabled);
     void clearICache();
+    void replaceASID(unsigned char asid);
 
 }
 

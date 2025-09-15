@@ -53,11 +53,12 @@ I_GEN_INSTR(SetLessThanImmediateUnsigned);
 // mem holds reference to specific memory address
 // ----------------------------------------------
 
-#define I_MEM_INSTR_ARGS I_GEN_INSTR_ARGS, Hardware::Memory& mem, Hardware::TLB& tlb
+#define I_MEM_INSTR_ARGS I_GEN_INSTR_ARGS, Hardware::Memory& mem, Hardware::TLB& tlb, Word& asidReg
 class IMemoryInstruction : public IGenericInstruction {
 protected:
     Hardware::Memory& mem;
     Hardware::TLB& tlb;
+    Word& asidReg;
 
 public:
     IMemoryInstruction(I_MEM_INSTR_ARGS);

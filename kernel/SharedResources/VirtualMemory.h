@@ -164,6 +164,8 @@ namespace kernel {
         AddressSpace(AddressSpace&& other) = delete;
         AddressSpace& operator=(const AddressSpace& other) = delete;
         AddressSpace& operator=(AddressSpace&& other) = delete; // Maybe make these later
+
+        unsigned char getASID() const { return _asid; }
         
         TLBEntry translate(uint32_t vaddr);
         bool updateBrk(uint32_t vaddr);

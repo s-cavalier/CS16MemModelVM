@@ -39,8 +39,13 @@ extern "C" void cppmain() {
     unsigned int firstPID = kernel::sharedResources.processes.createProcess(argv[0]);
 
     exceptionDepth -= 1;
+
+    kernel::PCB::Guard firstProc = kernel::sharedResources.processes[firstPID];
     
-    kernel::sharedResources.processes[firstPID].setAsCurrentThread();
+    kernel::replaceASID( firstProc->addrSpace.getASID() );
+
+
+    firstProc.setAsCurrentThread();
 }   // Return here calls run_process(currentThread->regCtx)
 
 

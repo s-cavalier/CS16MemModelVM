@@ -110,9 +110,9 @@ public:
 // ----------------------------------------------------------
 
 class VMTunnel : public KInstruction {
-    Hardware::Machine& machine;
+    Hardware::Core& core;
 
 public:
-    VMTunnel(K_INSTR_ARGS, Hardware::Machine& machine);
+    VMTunnel(K_INSTR_ARGS, Hardware::Core& core);
     void run();
 };

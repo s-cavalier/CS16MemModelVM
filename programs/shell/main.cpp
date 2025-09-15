@@ -21,5 +21,16 @@ int main() {
 
     for (int i = 0; i < 4; ++i) x[i]->bar();
 
+    std::printString("now forking...\n");
+
+    unsigned int pid = std::fork();
+
+    if (pid) {
+        std::printString("i am parent\n");
+    } else {
+        std::printString("i am child\n");
+    }
+
+
     return 0;
 }

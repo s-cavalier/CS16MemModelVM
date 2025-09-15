@@ -29,13 +29,16 @@ std::pair<Word, Word> Hardware::TLBEntry::hiLoPair() const {
     };
 }
 
-Hardware::TLBEntry Hardware::TLB::lookup(Word vaddr, LookupType type) const {
+Hardware::TLBEntry Hardware::TLB::lookup(Word vaddr, LookupType type, Byte asid) const {
     Word vpn = vaddr >> 12;
 
     for (Byte i = 0; i < TLB_ENTRIES; ++i) {
         const auto& entry = tlbEntries[i];
         
-        if (vpn != entry.vpn || !entry.valid) continue;
+        // Ideal: if ( vpn == entry.vpn && entry.valid && (entry.asid == asid || entry.global) )
+        // Becomes: if ( vpn != entry.vpn || !entry.valid || !(entry.asid == asid || entry.global ) )
+        // Finally: if ( vpn != entry.vpn || !entry.valid || ( entry.asid != asid && !entry.global ) )
+        if (vpn != entry.vpn || !entry.valid || ( entry.asid != asid && !entry.global ) ) continue;
         return entry;
 
     }
@@ -43,25 +46,25 @@ Hardware::TLBEntry Hardware::TLB::lookup(Word vaddr, LookupType type) const {
     throw Trap(type == LOAD ? Trap::TLB_L : Trap::TLB_S, vaddr);
 }
 
-Word Hardware::TLB::translate( Word vaddr, LookupType type ) const {
+Word Hardware::TLB::translate( Word vaddr, LookupType type, Byte asid) const {
     if ( vaddr >= 0x80000000 && vaddr < 0xC0000000 ) return vaddr - 0x80000000;
 
     Word offset = vaddr & 0xFFF;
-    TLBEntry tlbe = lookup( vaddr, type );
+    TLBEntry tlbe = lookup( vaddr, type, asid );
 
     return (tlbe.pfn << 12) | offset;
 }
 
 Hardware::Memory::Memory() : physMem(new Byte[PHYS_MEM_SIZE]) {}
 
-Byte Hardware::Memory::getByte(Word addr, const TLB& tlb) const {
-    Word paddr = tlb.translate(addr, TLB::LOAD);
+Byte Hardware::Memory::getByte(Word addr, const TLB& tlb, Byte asid) const {
+    Word paddr = tlb.translate(addr, TLB::LOAD, asid);
     
     return physMem[paddr];
 }
 
-HalfWord Hardware::Memory::getHalfWord(Word addr, const TLB& tlb) const {
-    Word paddr = tlb.translate(addr, TLB::LOAD);
+HalfWord Hardware::Memory::getHalfWord(Word addr, const TLB& tlb, Byte asid) const {
+    Word paddr = tlb.translate(addr, TLB::LOAD, asid);
 
     assert( (paddr % 2 == 0) && "Invalid load 2 -> switch to a trap later" );
     Byte* loc = physMem.get() + paddr;
@@ -69,8 +72,8 @@ HalfWord Hardware::Memory::getHalfWord(Word addr, const TLB& tlb) const {
     return HalfWord(loc[0] << 8) | HalfWord(loc[1]);
 }
 
-Word Hardware::Memory::getWord(Word addr, const TLB& tlb) const {
-    Word paddr = tlb.translate(addr, TLB::LOAD);
+Word Hardware::Memory::getWord(Word addr, const TLB& tlb, Byte asid) const {
+    Word paddr = tlb.translate(addr, TLB::LOAD, asid);
 
     assert( (paddr % 4 == 0) && "Invalid load 4 -> switch to a trap later" );
     Byte* loc = physMem.get() + paddr;
@@ -78,14 +81,14 @@ Word Hardware::Memory::getWord(Word addr, const TLB& tlb) const {
     return Binary::loadBigEndian( loc );
 }
 
-void Hardware::Memory::setByte(Word addr, Byte byte, const TLB& tlb) {
-    Word paddr = tlb.translate(addr, TLB::STORE);
+void Hardware::Memory::setByte(Word addr, Byte byte, const TLB& tlb, Byte asid) {
+    Word paddr = tlb.translate(addr, TLB::STORE, asid);
     
     physMem[paddr] = byte;
 }
 
-void Hardware::Memory::setHalfWord(Word addr, HalfWord halfword, const TLB& tlb) {
-    Word paddr = tlb.translate(addr, TLB::STORE);
+void Hardware::Memory::setHalfWord(Word addr, HalfWord halfword, const TLB& tlb, Byte asid) {
+    Word paddr = tlb.translate(addr, TLB::STORE, asid);
 
     assert( (paddr % 2 == 0) && "Invalid store 2 -> switch to a trap later" );
     Byte* loc = physMem.get() + paddr;
@@ -94,8 +97,8 @@ void Hardware::Memory::setHalfWord(Word addr, HalfWord halfword, const TLB& tlb)
     loc[1] = (halfword & 0xFF);
 }
 
-void Hardware::Memory::setWord(Word addr, Word word, const TLB& tlb) {
-    Word paddr = tlb.translate(addr, TLB::STORE);
+void Hardware::Memory::setWord(Word addr, Word word, const TLB& tlb, Byte asid) {
+    Word paddr = tlb.translate(addr, TLB::STORE, asid);
 
     assert( (paddr % 4 == 0) && "Invalid store 4 -> switch to a trap later" );
     Byte* loc = physMem.get() + paddr;
@@ -106,15 +109,15 @@ void Hardware::Memory::setWord(Word addr, Word word, const TLB& tlb) {
     loc[3] = word & 0xFF;
 }
 
-float Hardware::Memory::getSingle(Word addr, const TLB& tlb) const {
-    Word tmpw = getWord(addr, tlb);
+float Hardware::Memory::getSingle(Word addr, const TLB& tlb, Byte asid) const {
+    Word tmpw = getWord(addr, tlb, asid);
     float tmpf = 0;
     memcpy(&tmpf, &tmpw, 4);
     return tmpf;
 }
 
-void Hardware::Memory::setSingle(Word addr, float single, const TLB& tlb) {
+void Hardware::Memory::setSingle(Word addr, float single, const TLB& tlb, Byte asid) {
     Word tmpw = 0;
     memcpy(&tmpw, &single, 4);
-    setWord(addr, tmpw, tlb);
+    setWord(addr, tmpw, tlb, asid);
 }

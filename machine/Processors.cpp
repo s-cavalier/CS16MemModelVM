@@ -149,6 +149,7 @@ Hardware::Core::Core(Machine& machine) : _machine(&machine), iu(*this), fpu(*thi
 
 void Hardware::Core::cycle() {
     const Word& statusReg = scu.registerFile[Binary::STATUS].ui;
+    const Word& asidReg = scu.registerFile[Binary::ENTRYHI].ui;
     volatile bool oldIE = statusReg & 1;
 
     try {
@@ -160,7 +161,7 @@ void Hardware::Core::cycle() {
         
 
         auto& instr = instructionCache[programCounter];
-        if (!instr) instr = iu.decode( machine().memory.getWord(programCounter, tlb) );
+        if (!instr) instr = iu.decode( machine().memory.getWord(programCounter, tlb, asidReg & 0xFF) );
 
         instr->run();
         programCounter += 4;
@@ -208,6 +209,7 @@ std::unique_ptr<Hardware::Instruction> Hardware::IntegerUnit::decode(Word binary
 
     auto& RAM = machine.memory;
     auto& statusReg = scu.registerFile[STATUS].ui;
+    auto& asidReg = scu.registerFile[ENTRYHI].ui;
 
     Word address = binary_instruction & 0x1FFFFFF;                  // For Jump
 
@@ -275,7 +277,7 @@ std::unique_ptr<Hardware::Instruction> Hardware::IntegerUnit::decode(Word binary
             case SYSCALL: return std::make_unique<Syscall>();
             case SYNC: return std::make_unique<Sync>();
             case TEQ: return std::make_unique<TrapIfEqual>(registerFile[rs].i, registerFile[rt].i);
-            case VMTUNNEL: return std::make_unique<VMTunnel>(statusReg, machine);
+            case VMTUNNEL: return std::make_unique<VMTunnel>(statusReg, cor);
             case JR: return std::make_unique<JumpRegister>(cor.programCounter, registerFile[rs].i);
             case JALR: return std::make_unique<JumpAndLinkRegister>(cor.programCounter, registerFile[rd].i, registerFile[rs].i);
             default:
@@ -284,9 +286,9 @@ std::unique_ptr<Hardware::Instruction> Hardware::IntegerUnit::decode(Word binary
     }
 
     #define I_GEN_INIT(oc, instr) case oc: return std::make_unique<instr>(registerFile[rt].i, registerFile[rs].i, immediate)        // optimize instructions to use ui/i?
-    #define I_MEM_INIT(oc, instr) case oc: return std::make_unique<instr>(registerFile[rt].i, registerFile[rs].i, immediate, RAM, core().tlb)
+    #define I_MEM_INIT(oc, instr) case oc: return std::make_unique<instr>(registerFile[rt].i, registerFile[rs].i, immediate, RAM, core().tlb, asidReg)
     #define I_BRANCH_INIT(oc, instr) case oc: return std::make_unique<instr>(registerFile[rt].i, registerFile[rs].i, immediate, cor.programCounter)
-    #define FPMEM_INIT(oc, instr) case oc: return std::make_unique<instr>(fpu.registerFile[rt].f, registerFile[rs].i, immediate, RAM, core().tlb)
+    #define FPMEM_INIT(oc, instr) case oc: return std::make_unique<instr>(fpu.registerFile[rt].f, registerFile[rs].i, immediate, RAM, core().tlb, asidReg)
     switch (opcode) {
         I_GEN_INIT(ADDIU, AddImmediateUnsigned);
         I_GEN_INIT(ANDI, AndImmediate);

@@ -103,3 +103,24 @@ void kernel::clearICache() {
         :::
     );
 }
+
+void kernel::replaceASID(unsigned char asid) {
+    uint32_t curr;
+    __asm__ volatile (
+        "mfc0 %0, $10\n"
+        : "=r"(curr)
+        :
+        : "memory"
+    );
+
+    curr &= 0xFFFFFF00; // leave ASID alone
+    curr |= uint32_t(asid); // 0-extend asid and put it in there
+
+    __asm__ volatile (
+        "mtc0 %0, $10\n"
+        : 
+        : "r"(curr)
+        : "memory"
+    );
+
+}

@@ -81,20 +81,22 @@ void PerformCacheOp::run() {
 }
 
 // custom
-VMTunnel::VMTunnel(K_INSTR_ARGS, Hardware::Machine& machine) : KInstruction(statusRegister), machine(machine) {}
+VMTunnel::VMTunnel(K_INSTR_ARGS, Hardware::Core& core) : KInstruction(statusRegister), core(core) {}
 void VMTunnel::run() {
     EXL_CHECK;
     
-    auto& cpu = machine.cpu.iu;
+    auto& iu = core.iu;
+    auto& machine = core.machine();
+    auto& asidReg = core.scu.registerFile[Binary::ENTRYHI].ui;
 
-    Word reqAddr = cpu.registerFile[Binary::A0].ui;
-    Word resAddr = cpu.registerFile[Binary::V0].ui;
+    Word reqAddr = iu.registerFile[Binary::A0].ui;
+    Word resAddr = iu.registerFile[Binary::V0].ui;
 
     // this can be optimized pretty heavily once we switch to virtual memory
-    Word req  = machine.memory.getWord( reqAddr, machine.cpu.tlb );
-    Word arg0 = machine.memory.getWord( reqAddr + 4, machine.cpu.tlb );
-    Word arg1 = machine.memory.getWord( reqAddr + 8, machine.cpu.tlb );
-    Word arg2 = machine.memory.getWord( reqAddr + 12, machine.cpu.tlb );
+    Word req  = machine.memory.getWord( reqAddr, core.tlb, asidReg & 0xFF );
+    Word arg0 = machine.memory.getWord( reqAddr + 4, core.tlb, asidReg & 0xFF );
+    Word arg1 = machine.memory.getWord( reqAddr + 8, core.tlb, asidReg & 0xFF );
+    Word arg2 = machine.memory.getWord( reqAddr + 12, core.tlb, asidReg & 0xFF );
 
     Word res = 0;
     Word err = 0;
@@ -108,7 +110,7 @@ void VMTunnel::run() {
             break;
 
         case 2: // printString(const char*)
-            for (Word i = arg0; machine.memory.getByte(i, machine.cpu.tlb) != '\0'; ++i) std::cout << machine.memory.getByte(i, machine.cpu.tlb);
+            for (Word i = arg0; machine.memory.getByte(i, core.tlb, asidReg & 0xFF) != '\0'; ++i) std::cout << machine.memory.getByte(i, core.tlb, asidReg & 0xFF);
 
             break;
 
@@ -124,14 +126,14 @@ void VMTunnel::run() {
 
         case 5: { // fopen(const char* pathname, uint flags) -- need to consider error handling
             std::string filePath;
-            for (Word i = arg0; machine.memory.getByte(i, machine.cpu.tlb) != '\0'; ++i) filePath.push_back( machine.memory.getByte(i, machine.cpu.tlb) ); 
+            for (Word i = arg0; machine.memory.getByte(i, core.tlb, asidReg & 0xFF) != '\0'; ++i) filePath.push_back( machine.memory.getByte(i, core.tlb, asidReg & 0xFF) ); 
             res = machine.fileSystem.open(filePath, arg1);
 
             break;
         }
         case 6: { // fread(int fd, char* buf, int nbytes)
             auto bytes = machine.fileSystem[arg0]->read(arg2);
-            for (Word i = 0; i < bytes.size(); ++i) machine.memory.setByte(arg1 + i, bytes[i], machine.cpu.tlb);
+            for (Word i = 0; i < bytes.size(); ++i) machine.memory.setByte(arg1 + i, bytes[i], core.tlb, asidReg & 0xFF);
             res = bytes.size();
 
             break;
@@ -154,7 +156,7 @@ void VMTunnel::run() {
 
     // load back into res, err
     
-    machine.memory.setWord( resAddr, res     , machine.cpu.tlb);
-    machine.memory.setWord( resAddr + 4, err , machine.cpu.tlb);
+    machine.memory.setWord( resAddr, res     , core.tlb, asidReg & 0xFF);
+    machine.memory.setWord( resAddr + 4, err , core.tlb, asidReg & 0xFF);
 
 }

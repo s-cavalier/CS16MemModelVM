@@ -153,9 +153,10 @@ extern "C" void handleTrap() {
     }
 
     kernel::clearICache();
-    for (size_t i = 0; i < 64; ++i) kernel::TLBEntry::invalidate(i); // TODO: Optimize with ASIDS
 
     kernel::PCB::Guard incomingProc = kernel::MultiLevelQueue::scheduler.dequeue();
+
+    kernel::replaceASID( incomingProc->addrSpace.getASID() );
 
     incomingProc.setAsCurrentThread();
 

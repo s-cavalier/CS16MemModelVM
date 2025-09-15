@@ -171,6 +171,7 @@ namespace Hardware {
 
     public:
         Word programCounter;
+        TLB tlb;
         IntegerUnit iu;
         FloatingPointUnit fpu;
         SystemControlUnit scu;

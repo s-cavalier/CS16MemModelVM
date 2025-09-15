@@ -24,21 +24,21 @@ void Hardware::Machine::loadKernel(const ExternalInfo::KernelBootInformation& ke
     Word at = kernelInfo.textStart;
 
     for (const auto& instr : kernelInfo.text) {
-        memory.setWord(at, instr);
+        memory.setWord(at, instr, cpu.tlb);
         at += 4;
     }
 
     at = kernelInfo.dataStart;
     for (const auto& byte : kernelInfo.data) {
-        memory.setByte(at, byte);
+        memory.setByte(at, byte, cpu.tlb);
         ++at;
     }
 
-    memory.setWord(kernelInfo.argc, kernelArgs.size());
+    memory.setWord(kernelInfo.argc, kernelArgs.size(), cpu.tlb);
 
     for (Word i = 0; i < kernelArgs.size(); ++i) {
         Word indirectPtr = kernelInfo.argv + 64 * i;    // argv[i] = *(argv + i)
-        for (Word j = 0; j < kernelArgs[i].size(); ++j) memory.setByte(indirectPtr + j, kernelArgs[i][j]); // argv[i][j]
+        for (Word j = 0; j < kernelArgs[i].size(); ++j) memory.setByte(indirectPtr + j, kernelArgs[i][j], cpu.tlb ); // argv[i][j]
     }
 
     cpu.programCounter = kernelInfo.bootEntry;

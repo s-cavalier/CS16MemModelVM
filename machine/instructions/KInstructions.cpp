@@ -91,10 +91,10 @@ void VMTunnel::run() {
     Word resAddr = cpu.registerFile[Binary::V0].ui;
 
     // this can be optimized pretty heavily once we switch to virtual memory
-    Word req  = machine.memory.getWord( reqAddr );
-    Word arg0 = machine.memory.getWord( reqAddr + 4 );
-    Word arg1 = machine.memory.getWord( reqAddr + 8 );
-    Word arg2 = machine.memory.getWord( reqAddr + 12 );
+    Word req  = machine.memory.getWord( reqAddr, machine.cpu.tlb );
+    Word arg0 = machine.memory.getWord( reqAddr + 4, machine.cpu.tlb );
+    Word arg1 = machine.memory.getWord( reqAddr + 8, machine.cpu.tlb );
+    Word arg2 = machine.memory.getWord( reqAddr + 12, machine.cpu.tlb );
 
     Word res = 0;
     Word err = 0;
@@ -108,7 +108,7 @@ void VMTunnel::run() {
             break;
 
         case 2: // printString(const char*)
-            for (Word i = arg0; machine.memory.getByte(i) != '\0'; ++i) std::cout << machine.memory.getByte(i);
+            for (Word i = arg0; machine.memory.getByte(i, machine.cpu.tlb) != '\0'; ++i) std::cout << machine.memory.getByte(i, machine.cpu.tlb);
 
             break;
 
@@ -124,14 +124,14 @@ void VMTunnel::run() {
 
         case 5: { // fopen(const char* pathname, uint flags) -- need to consider error handling
             std::string filePath;
-            for (Word i = arg0; machine.memory.getByte(i) != '\0'; ++i) filePath.push_back( machine.memory.getByte(i) ); 
+            for (Word i = arg0; machine.memory.getByte(i, machine.cpu.tlb) != '\0'; ++i) filePath.push_back( machine.memory.getByte(i, machine.cpu.tlb) ); 
             res = machine.fileSystem.open(filePath, arg1);
 
             break;
         }
         case 6: { // fread(int fd, char* buf, int nbytes)
             auto bytes = machine.fileSystem[arg0]->read(arg2);
-            for (Word i = 0; i < bytes.size(); ++i) machine.memory.setByte(arg1 + i, bytes[i]);
+            for (Word i = 0; i < bytes.size(); ++i) machine.memory.setByte(arg1 + i, bytes[i], machine.cpu.tlb);
             res = bytes.size();
 
             break;
@@ -154,7 +154,7 @@ void VMTunnel::run() {
 
     // load back into res, err
     
-    machine.memory.setWord( resAddr, res     );
-    machine.memory.setWord( resAddr + 4, err );
+    machine.memory.setWord( resAddr, res     , machine.cpu.tlb);
+    machine.memory.setWord( resAddr + 4, err , machine.cpu.tlb);
 
 }

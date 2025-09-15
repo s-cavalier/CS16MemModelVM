@@ -44,32 +44,31 @@ namespace Hardware {
 
         inline TLBEntry& operator[](size_t idx) { return tlbEntries.at(idx); }
         inline const TLBEntry& operator[](size_t idx) const { return tlbEntries.at(idx); }
+
+        Word translate( Word vaddr, LookupType type ) const;
     };
 
     class Memory {
         std::unique_ptr<Byte[]> physMem;
-        TLB tlb;
 
-
-        Word runTLB( Word vaddr, TLB::LookupType type ) const;
     public:
         Memory();
-        TLB& accessTLB() { return tlb; }
-        const TLB& readTLB() const { return tlb; }
 
-        Word getWord(Word addr) const;
-        HalfWord getHalfWord(Word addr) const;
-        Byte getByte(Word addr) const;
+        
 
-        void setWord(Word addr, Word word);
-        void setHalfWord(Word addr, HalfWord halfword);
-        void setByte(Word addr, Byte byte);
+        Word getWord(Word addr, const TLB& tlb) const;
+        HalfWord getHalfWord(Word addr, const TLB& tlb) const;
+        Byte getByte(Word addr, const TLB& tlb) const;
 
-        float getSingle(Word addr) const;
-        double getDouble(Word addr) const;
+        void setWord(Word addr, Word word, const TLB& tlb);
+        void setHalfWord(Word addr, HalfWord halfword, const TLB& tlb);
+        void setByte(Word addr, Byte byte, const TLB& tlb);
 
-        void setSingle(Word addr, float single);
-        void setDouble(Word addr, double dble);
+        float getSingle(Word addr, const TLB& tlb) const;
+        double getDouble(Word addr, const TLB& tlb) const;
+
+        void setSingle(Word addr, float single, const TLB& tlb);
+        void setDouble(Word addr, double dble, const TLB& tlb);
     };
 
     class VirtualMemory {

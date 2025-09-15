@@ -128,10 +128,10 @@ std::unique_ptr<Hardware::Instruction> Hardware::SystemControlUnit::decode(Word 
     if (rs == 0x10) {
         switch (cp0funct) {
             case ERET: return std::make_unique<ExceptionReturn>(core().machine());
-            case TLBR: return std::make_unique<TLBReadIndexed>(statusReg, core().machine().memory.accessTLB(), registerFile[INDEX].ui, registerFile[ENTRYHI].ui, registerFile[ENTRYLO0].ui );
-            case TLBWI: return std::make_unique<TLBWriteIndexed>(statusReg, core().machine().memory.accessTLB(), registerFile[INDEX].ui, registerFile[ENTRYHI].ui, registerFile[ENTRYLO0].ui );
-            case TLBWR: return std::make_unique<TLBWriteRandom>(statusReg, core().machine().memory.accessTLB(), registerFile[RANDOM].ui, registerFile[ENTRYHI].ui, registerFile[ENTRYLO0].ui );
-            case TLBP: return std::make_unique<TLBProbe>(statusReg, core().machine().memory.accessTLB(), registerFile[INDEX].ui, registerFile[ENTRYHI].ui);
+            case TLBR: return std::make_unique<TLBReadIndexed>(statusReg, core().tlb, registerFile[INDEX].ui, registerFile[ENTRYHI].ui, registerFile[ENTRYLO0].ui );
+            case TLBWI: return std::make_unique<TLBWriteIndexed>(statusReg, core().tlb, registerFile[INDEX].ui, registerFile[ENTRYHI].ui, registerFile[ENTRYLO0].ui );
+            case TLBWR: return std::make_unique<TLBWriteRandom>(statusReg, core().tlb, registerFile[RANDOM].ui, registerFile[ENTRYHI].ui, registerFile[ENTRYLO0].ui );
+            case TLBP: return std::make_unique<TLBProbe>(statusReg, core().tlb, registerFile[INDEX].ui, registerFile[ENTRYHI].ui);
             default: break;
         }
     }
@@ -160,7 +160,7 @@ void Hardware::Core::cycle() {
         
 
         auto& instr = instructionCache[programCounter];
-        if (!instr) instr = iu.decode( machine().memory.getWord(programCounter) );
+        if (!instr) instr = iu.decode( machine().memory.getWord(programCounter, tlb) );
 
         instr->run();
         programCounter += 4;
@@ -284,9 +284,9 @@ std::unique_ptr<Hardware::Instruction> Hardware::IntegerUnit::decode(Word binary
     }
 
     #define I_GEN_INIT(oc, instr) case oc: return std::make_unique<instr>(registerFile[rt].i, registerFile[rs].i, immediate)        // optimize instructions to use ui/i?
-    #define I_MEM_INIT(oc, instr) case oc: return std::make_unique<instr>(registerFile[rt].i, registerFile[rs].i, immediate, RAM)
+    #define I_MEM_INIT(oc, instr) case oc: return std::make_unique<instr>(registerFile[rt].i, registerFile[rs].i, immediate, RAM, core().tlb)
     #define I_BRANCH_INIT(oc, instr) case oc: return std::make_unique<instr>(registerFile[rt].i, registerFile[rs].i, immediate, cor.programCounter)
-    #define FPMEM_INIT(oc, instr) case oc: return std::make_unique<instr>(fpu.registerFile[rt].f, registerFile[rs].i, immediate, RAM)
+    #define FPMEM_INIT(oc, instr) case oc: return std::make_unique<instr>(fpu.registerFile[rt].f, registerFile[rs].i, immediate, RAM, core().tlb)
     switch (opcode) {
         I_GEN_INIT(ADDIU, AddImmediateUnsigned);
         I_GEN_INIT(ANDI, AndImmediate);

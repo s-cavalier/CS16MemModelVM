@@ -48,12 +48,13 @@ FR_INSTR(FPMultiply);
 FR_INSTR(FPSubtract);
 
 // only r-types, plus it won't be more than 4 instr with single double load/stores
-#define FPS_MEM_INSTR_ARGS float& rt, int& rs, const short& imm, Hardware::Memory& mem
+#define FPS_MEM_INSTR_ARGS float& rt, int& rs, const short& imm, Hardware::Memory& mem, Hardware::TLB& tlb
 class FPSingleMemoryInstruction : public IInstruction {
 protected:
     float& rt;
     int& rs;
     Hardware::Memory& mem;
+    Hardware::TLB& tlb;
 public:
     FPSingleMemoryInstruction(FPS_MEM_INSTR_ARGS);
     virtual void run() = 0;

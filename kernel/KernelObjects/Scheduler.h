@@ -1,7 +1,7 @@
 #ifndef __SCHEDULER_H__
 #define __SCHEDULER_H__
-#include "kstl/Queue.h"
-#include "Process.h"
+#include "../kstl/Queue.h"
+#include "../SharedResources/Manager.h"
 
 namespace kernel {
 

@@ -1,5 +1,4 @@
-#include "HeapManager.h"
-#include "Process.h"
+#include "SharedResources/Manager.h"
 // --- These should be the first includes, especially HeapManager so everything after is correctly linked with the new operator
 
 // -- Stack Init --
@@ -37,11 +36,11 @@ extern "C" void cppmain() {
     assert((argc > 0) && "Need a first process to run!");
 
 
-    unsigned int firstPID = kernel::ProcessManager::instance.createProcess(argv[0]);
+    unsigned int firstPID = kernel::sharedResources.processes.createProcess(argv[0]);
 
     exceptionDepth -= 1;
     
-    kernel::ProcessManager::instance[firstPID].setAsCurrentThread();
+    kernel::sharedResources.processes[firstPID].setAsCurrentThread();
 }   // Return here calls run_process(currentThread->regCtx)
 
 

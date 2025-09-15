@@ -1,8 +1,8 @@
 #ifndef __PAGE_TABLES_H__
 #define __PAGE_TABLES_H__
-#include "VirtualMemory.h"
-#include "kstl/Vector.h"
-#include "kstl/UnorderedMap.h"
+#include "../SharedResources/VirtualMemory.h"
+#include "../kstl/Vector.h"
+#include "../kstl/UnorderedMap.h"
 
 namespace kernel {
 

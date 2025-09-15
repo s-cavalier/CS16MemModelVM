@@ -10,7 +10,7 @@ CFLAGS := $(ARCH_FLAGS) $(COMMON_FLAGS)
 
 ASFLAGS := -march=mips32
 
-SRCS := $(wildcard *.cpp) $(wildcard kstl/*.cpp)
+SRCS := $(wildcard *.cpp) $(wildcard */*.cpp)
 ASM_SRCS := asmglue.asm
 
 OBJS := $(SRCS:.cpp=.o) $(ASM_SRCS:.asm=.o)

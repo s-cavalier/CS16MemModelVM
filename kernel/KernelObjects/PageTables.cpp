@@ -1,11 +1,11 @@
 #include "PageTables.h"
-
+#include "../SharedResources/Manager.h"
 
 kernel::SegmentedPageTable::SegmentedPageTable(size_t initText, size_t initStatic, size_t initStack, size_t initDynamic) :
 stackPages(initStack), dynamicPages(initDynamic), staticPages(initStatic), textPages(initText) {
 
     for (size_t i = 0; i < stackPages.size(); ++i) {
-        stackPages[i].pfn = MemoryManager::instance().reserveFrame() >> 12;
+        stackPages[i].pfn = sharedResources.memory.reserveFrame() >> 12;
         stackPages[i].global = false;
         stackPages[i].present = true;
         stackPages[i].user = true;
@@ -13,7 +13,7 @@ stackPages(initStack), dynamicPages(initDynamic), staticPages(initStatic), textP
     }
 
     for (size_t i = 0; i < dynamicPages.size(); ++i) {
-        dynamicPages[i].pfn = MemoryManager::instance().reserveFrame() >> 12;
+        dynamicPages[i].pfn = sharedResources.memory.reserveFrame() >> 12;
         dynamicPages[i].global = false;
         dynamicPages[i].present = true;
         dynamicPages[i].user = true;
@@ -21,7 +21,7 @@ stackPages(initStack), dynamicPages(initDynamic), staticPages(initStatic), textP
     }
 
     for (size_t i = 0; i < staticPages.size(); ++i) {
-        staticPages[i].pfn = MemoryManager::instance().reserveFrame() >> 12;
+        staticPages[i].pfn = sharedResources.memory.reserveFrame() >> 12;
         staticPages[i].global = false;
         staticPages[i].present = true;
         staticPages[i].user = true;
@@ -29,7 +29,7 @@ stackPages(initStack), dynamicPages(initDynamic), staticPages(initStatic), textP
     }
 
     for (size_t i = 0; i < textPages.size(); ++i) {
-        textPages[i].pfn = MemoryManager::instance().reserveFrame() >> 12;
+        textPages[i].pfn = sharedResources.memory.reserveFrame() >> 12;
         textPages[i].global = false;
         textPages[i].present = true;
         textPages[i].user = true;
@@ -74,7 +74,7 @@ bool kernel::SegmentedPageTable::mapPTE(const Entry& pte, uint32_t vpn) {
     if (pageBoundary < STACK_LIMIT && pageBoundary >= stackBoundary) {
         // since the stack grows down, the calculation for index into the vector is (0x80000000 - (vaddr & 0xFFF) ) >> 12 == 0x80000 - (vaddr >> 12)
         size_t index = 0x80000 - vpn;
-        MemoryManager::instance().freeFrame( stackPages[vpn].pfn << 12 );
+        sharedResources.memory.freeFrame( stackPages[vpn].pfn << 12 );
         stackPages[index] = pte;
         return true;
     }
@@ -84,7 +84,7 @@ bool kernel::SegmentedPageTable::mapPTE(const Entry& pte, uint32_t vpn) {
     size_t dynamicBoundary = DYNAMIC_START + ( dynamicPages.size() << 12 );
     if (pageBoundary < dynamicBoundary && pageBoundary >= DYNAMIC_START) {
         size_t index = (pageBoundary - DYNAMIC_START) >> 12;
-        MemoryManager::instance().freeFrame( dynamicPages[vpn].pfn << 12 );
+        sharedResources.memory.freeFrame( dynamicPages[vpn].pfn << 12 );
         dynamicPages[index] = pte;
         return true;
     }
@@ -94,7 +94,7 @@ bool kernel::SegmentedPageTable::mapPTE(const Entry& pte, uint32_t vpn) {
     size_t staticBoundary = STATIC_START + ( staticPages.size() << 12 );
     if (pageBoundary < staticBoundary && pageBoundary >= STATIC_START) {
         size_t index = (pageBoundary - STATIC_START) >> 12;
-        MemoryManager::instance().freeFrame( staticPages[vpn].pfn << 12 );
+        sharedResources.memory.freeFrame( staticPages[vpn].pfn << 12 );
         staticPages[index] = pte;
         return true;
     }
@@ -102,7 +102,7 @@ bool kernel::SegmentedPageTable::mapPTE(const Entry& pte, uint32_t vpn) {
     size_t textBoundary = TEXT_START + ( textPages.size() << 12 );
     if (pageBoundary < textBoundary && pageBoundary >= TEXT_START) {
         size_t index = (pageBoundary - TEXT_START) >> 12;
-        MemoryManager::instance().freeFrame( textPages[vpn].pfn << 12 );
+        sharedResources.memory.freeFrame( textPages[vpn].pfn << 12 );
         textPages[index] = pte;
         return true;
     }
@@ -111,10 +111,10 @@ bool kernel::SegmentedPageTable::mapPTE(const Entry& pte, uint32_t vpn) {
 }
 
 kernel::SegmentedPageTable::~SegmentedPageTable() {
-    for (size_t i = 0; i < stackPages.size(); ++i)      MemoryManager::instance().freeFrame( stackPages[i].pfn );
-    for (size_t i = 0; i < dynamicPages.size(); ++i)    MemoryManager::instance().freeFrame( dynamicPages[i].pfn );
-    for (size_t i = 0; i < staticPages.size(); ++i)     MemoryManager::instance().freeFrame( staticPages[i].pfn );
-    for (size_t i = 0; i < textPages.size(); ++i)       MemoryManager::instance().freeFrame( textPages[i].pfn );
+    for (size_t i = 0; i < stackPages.size(); ++i)      sharedResources.memory.freeFrame( stackPages[i].pfn );
+    for (size_t i = 0; i < dynamicPages.size(); ++i)    sharedResources.memory.freeFrame( dynamicPages[i].pfn );
+    for (size_t i = 0; i < staticPages.size(); ++i)     sharedResources.memory.freeFrame( staticPages[i].pfn );
+    for (size_t i = 0; i < textPages.size(); ++i)       sharedResources.memory.freeFrame( textPages[i].pfn );
 }
 
 void kernel::HashPageTable::iterator::operator++() {
@@ -133,28 +133,28 @@ kernel::HashPageTable::HashPageTable(size_t initText, size_t initStatic, size_t 
     for (size_t i = 0; i < initText; ++i) {
         table.emplace(
             TEXT_START_VPN + i, 
-            PageTable::Entry( MemoryManager::instance().reserveFrame() >> 12, PageTable::Entry::USER | PageTable::Entry::PRESENT ) 
+            PageTable::Entry( sharedResources.memory.reserveFrame() >> 12, PageTable::Entry::USER | PageTable::Entry::PRESENT ) 
         );
     }
 
     for (size_t i = 0; i < initStatic; ++i) {
         table.emplace(
             STATIC_START_VPN + i, 
-            PageTable::Entry( MemoryManager::instance().reserveFrame() >> 12, PageTable::Entry::USER | PageTable::Entry::PRESENT | PageTable::Entry::WRITABLE ) 
+            PageTable::Entry( sharedResources.memory.reserveFrame() >> 12, PageTable::Entry::USER | PageTable::Entry::PRESENT | PageTable::Entry::WRITABLE ) 
         );
     }
 
     for (size_t i = 1; i <= initStack; ++i) {
         table.emplace(
             STACK_LIMIT_VPN - i, 
-            PageTable::Entry( MemoryManager::instance().reserveFrame() >> 12, PageTable::Entry::USER | PageTable::Entry::PRESENT | PageTable::Entry::WRITABLE ) 
+            PageTable::Entry( sharedResources.memory.reserveFrame() >> 12, PageTable::Entry::USER | PageTable::Entry::PRESENT | PageTable::Entry::WRITABLE ) 
         );
     }
 
     for (size_t i = 0; i < initDynamic; ++i) {
         table.emplace(
             DYNAMIC_START_VPN + i, 
-            PageTable::Entry( MemoryManager::instance().reserveFrame() >> 12, PageTable::Entry::USER | PageTable::Entry::PRESENT | PageTable::Entry::WRITABLE ) 
+            PageTable::Entry( sharedResources.memory.reserveFrame() >> 12, PageTable::Entry::USER | PageTable::Entry::PRESENT | PageTable::Entry::WRITABLE ) 
         );
     }
 }
@@ -164,7 +164,7 @@ kernel::HashPageTable::HashPageTable( ministl::unique_ptr<Iterator> it ) {
     for (; auto curr = **it; ++*it ) {
         
         auto& placed = table[curr->vpn];
-        placed.pfn = MemoryManager::instance().reserveFrame() >> 12;
+        placed.pfn = sharedResources.memory.reserveFrame() >> 12;
         placed.user = curr->pte.user;
         placed.present = curr->pte.present;
         placed.global = curr->pte.global;
@@ -209,7 +209,7 @@ bool kernel::HashPageTable::mapPTE(const Entry &pte, uint32_t vpn) {
 kernel::HashPageTable::~HashPageTable() {
 
     for (auto& kv : table) {
-        MemoryManager::instance().freeFrame( kv.second.pfn << 12 );
+        sharedResources.memory.freeFrame( kv.second.pfn << 12 );
     }
 
 

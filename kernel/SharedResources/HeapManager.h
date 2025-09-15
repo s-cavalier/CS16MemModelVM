@@ -11,7 +11,7 @@ void brk(void* addr);
 
 typedef decltype(sizeof(0)) size_t;
 
-namespace Heap {
+namespace kernel {
 
     struct BlockHeader {
         size_t size;
@@ -39,8 +39,12 @@ namespace Heap {
         bool validAddr(void* p);
         BlockHeader* fusion(BlockHeader* block);
 
-    public:
         FreeList() : block_count(0), total_size(0), head(nullptr), last_visited(nullptr) { }
+
+        friend class SharedResources;
+
+    public:
+        
 
         inline const size_t& totalBytes() const { return total_size; }
         inline const size_t& totalBlocks() const { return block_count; }
@@ -49,8 +53,6 @@ namespace Heap {
         void* calloc(size_t number, size_t size);
         void free(void* ptr);
     };
-
-    static FreeList freeList;
 
 }
 

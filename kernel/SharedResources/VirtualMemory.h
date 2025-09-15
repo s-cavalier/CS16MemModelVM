@@ -1,9 +1,9 @@
 #ifndef __VIRTUAL_MEMORY_H__
 #define __VIRTUAL_MEMORY_H__
-#include "kstl/Bitset.h"
-#include "kstl/Optional.h"
-#include "kstl/Array.h"
-#include "kstl/UniquePtr.h"
+#include "../kstl/Bitset.h"
+#include "../kstl/Optional.h"
+#include "../kstl/Array.h"
+#include "../kstl/UniquePtr.h"
 
 namespace kernel {
 
@@ -17,15 +17,11 @@ namespace kernel {
     class MemoryManager {
         ministl::bitset<NUM_PAGES> reservedPages;
         size_t kernelReservedBoundary;
+
+        friend class SharedResources;
         MemoryManager();
 
     public:
-
-        // Meyers instance to avoid SIOF, since ProcessManager will need to use this
-        static MemoryManager& instance() {
-            static MemoryManager mm;
-            return mm;
-        }
 
         size_t reserveFrame();
         void freeFrame(addr_t paddr);

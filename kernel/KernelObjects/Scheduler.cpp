@@ -20,7 +20,7 @@ kernel::PCB::Guard kernel::MultiLevelQueue::dequeue() {
         break;
     }
 
-    return ProcessManager::instance[pid];
+    return sharedResources.processes[pid];
 }
 
 void kernel::MultiLevelQueue::boost() {

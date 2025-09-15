@@ -1,9 +1,9 @@
 #ifndef __PROCESS_H__
 #define __PROCESS_H__
-#include "ASMInterface.h"
-#include "kstl/Vector.h"
+#include "../ASMInterface.h"
+#include "../kstl/Vector.h"
 #include "VirtualMemory.h"
-#include "kstl/Optional.h"
+#include "../kstl/Optional.h"
 
 namespace kernel {
 
@@ -85,14 +85,14 @@ namespace kernel {
         void freeProcess( uint32_t pid );
         friend class PCB::Guard; // Only PM, PCB, Guard should use freeProcess
         friend class PCB;
+        friend class SharedResources;
 
     public:
         static constexpr uint32_t KERNEL_PID = 0xFFFFFFFF;
-        static ProcessManager instance;
         PCB kernelProcess;
 
         // Results should be checked for nullptr if the process doesn't exist
-        PCB::Guard operator[](size_t idx);
+        PCB::Guard operator[](unsigned int idx);
         
         // Returns a pid to a created process
         // Returns -1 (basically KERNEL_PID) on failure (i.e., bad filename)

@@ -1,6 +1,6 @@
 #include "ASMInterface.h"
-#include "Process.h"
-#include "Scheduler.h"
+#include "SharedResources/Manager.h"
+#include "KernelObjects/Scheduler.h"
 
 enum ExceptionType : unsigned char {
         INTERRUPT = 0,   // Interrupt (hardware)
@@ -39,7 +39,7 @@ extern "C" void handleTrap() {
     // The register context of the trapping thread is saved to k0. We need to use this context on the stack in case of >1 nested exceptions.
 
     kernel::PCB::Guard oldThread = currentThread->borrow();                                     // save oldThread
-    currentThread = &kernel::ProcessManager::instance.kernelProcess;          // set currentThread to kernel PCB
+    currentThread = &kernel::sharedResources.processes.kernelProcess;          // set currentThread to kernel PCB
 
     ExceptionType cause = ExceptionType(trapCtx->cause >> 2); // need to consider interrupt mask later
 
@@ -100,13 +100,13 @@ extern "C" void handleTrap() {
                     break;
                 }
                 case FORK: {
-                    unsigned int newPID = kernel::ProcessManager::instance.forkProcess( oldThread->getPID(), trapCtx );
-                    kernel::PCB::Guard newProc = kernel::ProcessManager::instance[newPID];
+                    unsigned int newPID = kernel::sharedResources.processes.forkProcess( oldThread->getPID(), trapCtx );
+                    kernel::PCB::Guard newProc = kernel::sharedResources.processes[newPID];
                     
                     newProc->regCtx.accessRegister( kernel::V0 ) = 0;
                     trapCtx->accessRegister( kernel::V0 ) = newPID;
 
-                    kernel::MultiLevelQueue::scheduler.enqueue( kernel::ProcessManager::instance[newPID] );
+                    kernel::MultiLevelQueue::scheduler.enqueue( kernel::sharedResources.processes[newPID] );
                     break;
                 }
                 default:
@@ -147,7 +147,7 @@ extern "C" void handleTrap() {
     }
 
     if ( kernel::MultiLevelQueue::scheduler.empty() ) {
-        currentThread = &kernel::ProcessManager::instance.kernelProcess;
+        currentThread = &kernel::sharedResources.processes.kernelProcess;
         PrintString("No more processes exist! Killing system...\n");
         Halt;
     }

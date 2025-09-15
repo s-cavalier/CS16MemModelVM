@@ -1,4 +1,4 @@
-#include "VirtualMemory.h"
+#include "Manager.h"
 
 extern "C" char _end[];
 
@@ -120,7 +120,7 @@ kernel::KernelPageTable::KernelPageTable() {
         pt[i].global = true;
         pt[i].present = true; // Change later when doing swapping
         pt[i].writable = true; 
-        pt[i].pfn = MemoryManager::instance().reserveFrame() >> 12;
+        pt[i].pfn = sharedResources.memory.reserveFrame() >> 12;
     }
 }
 
@@ -142,7 +142,7 @@ bool kernel::KernelPageTable::mapPTE(const Entry &pte, uint32_t vpn) {
     size_t normalized_vpn = vpn - VPN_KHEAP_BOUNDARY;
     assert(normalized_vpn < KHEAP_PAGES);
 
-    MemoryManager::instance().freeFrame( pt[normalized_vpn].pfn << 12 );
+    sharedResources.memory.freeFrame( pt[normalized_vpn].pfn << 12 );
     (pt[ normalized_vpn ] = pte).global = true; // all kernel pages should be glob
     return true;
 } 
@@ -182,7 +182,7 @@ bool kernel::AddressSpace::updateBrk(uint32_t vaddr) {
     for (size_t i = brk; i < pageBoundary; ++i) {
 
         PageTable::Entry pte{};
-        pte.pfn = MemoryManager::instance().reserveFrame() >> 12;;
+        pte.pfn = sharedResources.memory.reserveFrame() >> 12;;
         pte.global = false;
         pte.writable = true;
         pte.user = true;

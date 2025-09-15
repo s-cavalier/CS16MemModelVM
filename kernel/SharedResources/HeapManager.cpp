@@ -1,20 +1,20 @@
-#include "HeapManager.h"
+#include "Manager.h"
 
 void* heap_ptr = (void*)0xC0000000;
 
 void* sbrk(int offset) { return (heap_ptr = (char*)heap_ptr + offset); }
 void brk(void* addr) { heap_ptr = addr; }
 
-Heap::BlockHeader* Heap::FreeList::getBlock(void* p) {
+kernel::BlockHeader* kernel::FreeList::getBlock(void* p) {
     return (BlockHeader*)((char*)p - BLOCKHEADER_OFFSET);
 
 }
 
-bool Heap::FreeList::validAddr(void* p) {
+bool kernel::FreeList::validAddr(void* p) {
     return (head) && ( p > head ) && ( p < sbrk(0) ) && ( p == getBlock(p)->ptr );
 }
 
-Heap::BlockHeader* Heap::FreeList::findBlock(size_t s) {
+kernel::BlockHeader* kernel::FreeList::findBlock(size_t s) {
     BlockHeader* it = head;
     while (it && !(it->free && it->size >= s)) {
         last_visited = it;
@@ -23,7 +23,7 @@ Heap::BlockHeader* Heap::FreeList::findBlock(size_t s) {
     return it;
 }
 
-Heap::BlockHeader* Heap::FreeList::extendHeap(size_t s) {
+kernel::BlockHeader* kernel::FreeList::extendHeap(size_t s) {
     BlockHeader* it = (BlockHeader*)sbrk(0);
     sbrk(BLOCKHEADER_OFFSET + s);
     
@@ -36,7 +36,7 @@ Heap::BlockHeader* Heap::FreeList::extendHeap(size_t s) {
     return it;
 }
 
-void Heap::FreeList::splitBlock(BlockHeader* block, size_t s) {
+void kernel::FreeList::splitBlock(BlockHeader* block, size_t s) {
     BlockHeader* add = (BlockHeader*)(block->data + s);
     add->size = block->size - s - BLOCKHEADER_OFFSET;
     add->next = block->next;
@@ -47,7 +47,7 @@ void Heap::FreeList::splitBlock(BlockHeader* block, size_t s) {
     if (add->next) add->next->prev = add;
 }
 
-void* Heap::FreeList::malloc(size_t size) {
+void* kernel::FreeList::malloc(size_t size) {
     BlockHeader* it;
     size_t s = align4(size);
     if (head) {
@@ -68,7 +68,7 @@ void* Heap::FreeList::malloc(size_t size) {
     return (it->data);
 }
 
-void* Heap::FreeList::calloc(size_t number, size_t size) {
+void* kernel::FreeList::calloc(size_t number, size_t size) {
     size_t total = number * size;
     void* ptr = malloc(total);
     if (ptr) {
@@ -81,7 +81,7 @@ void* Heap::FreeList::calloc(size_t number, size_t size) {
 }
 
 
-Heap::BlockHeader* Heap::FreeList::fusion(BlockHeader* block) {
+kernel::BlockHeader* kernel::FreeList::fusion(BlockHeader* block) {
     if (block->next && block->next->free) {
         block->size += BLOCKHEADER_OFFSET + block->next->size;
         block->next = block->next->next;
@@ -90,7 +90,7 @@ Heap::BlockHeader* Heap::FreeList::fusion(BlockHeader* block) {
     return block;
 }
 
-void Heap::FreeList::free(void* ptr) {
+void kernel::FreeList::free(void* ptr) {
     BlockHeader* it;
     if (!validAddr(ptr)) return;
     it = getBlock(ptr);
@@ -104,55 +104,9 @@ void Heap::FreeList::free(void* ptr) {
     }
 }
 
-void* operator new(size_t size) { return Heap::freeList.malloc(size); }
-void* operator new[](size_t size) { return Heap::freeList.malloc(size); }
-void operator delete(void* ptr) noexcept { Heap::freeList.free(ptr); }
-void operator delete[](void* ptr) noexcept { Heap::freeList.free(ptr); }
-void operator delete(void* ptr, size_t) noexcept { Heap::freeList.free(ptr); }
-void operator delete[](void* ptr, size_t) noexcept { Heap::freeList.free(ptr); }
-
-extern "C" void* memcpy(void* dest, const void* src, size_t n) {
-    char* d = static_cast<char*>(dest);
-    const char* s = static_cast<const char*>(src);
-    for (size_t i = 0; i < n; ++i) {
-        d[i] = s[i];
-    }
-    return dest;
-}
-
-extern "C" void* memset(void *dest, int c, size_t n) {
-    auto p = static_cast<unsigned char*>(dest);
-    while (n--) *p++ = static_cast<unsigned char>(c);
-    return dest;
-}
-
-
-// TODO WHEN MULTI-THREADED
-extern "C" int __cxa_guard_acquire (unsigned long *g)
-{
-    return !*(volatile unsigned char*)g;
-}
-
-extern "C" void __cxa_guard_release (unsigned long *g)
-{
-    *(volatile unsigned char*)g = 1;
-}
-
-extern "C" void __cxa_guard_abort (unsigned long *g)
-{
-    ++g;
-}
-
-// Runtime stubs
-// Don't need any kind of cleanup yet
-extern "C" {
-    void* __dso_handle = &__dso_handle;
-
-    using dtor_func_t = void (*)(void*);
-    int __cxa_atexit(dtor_func_t, void*, void*) {
-        return 0;
-    }
-
-    void __cxa_finalize(void*) {}
-
-}
+void* operator new(size_t size) { return kernel::sharedResources.freeList.malloc(size); }
+void* operator new[](size_t size) { return kernel::sharedResources.freeList.malloc(size); }
+void operator delete(void* ptr) noexcept { kernel::sharedResources.freeList.free(ptr); }
+void operator delete[](void* ptr) noexcept { kernel::sharedResources.freeList.free(ptr); }
+void operator delete(void* ptr, size_t) noexcept { kernel::sharedResources.freeList.free(ptr); }
+void operator delete[](void* ptr, size_t) noexcept { kernel::sharedResources.freeList.free(ptr); }

@@ -1,8 +1,8 @@
-#include "Process.h"
-#include "kstl/String.h"
-#include "kstl/File.h"
-#include "kstl/Elf.h"
-#include "PageTables.h"
+#include "Manager.h"
+#include "../kstl/String.h"
+#include "../kstl/File.h"
+#include "../kstl/Elf.h"
+#include "../KernelObjects/PageTables.h"
 
 kernel::PCB::Guard::Guard() : ref(nullptr) {}
 kernel::PCB::Guard::Guard(PCB& pcb) : ref(&pcb) {}
@@ -13,7 +13,7 @@ void kernel::PCB::Guard::reset() {
     if (!pcb || pcb->PID == ProcessManager::KERNEL_PID ) return;
     --pcb->refcount;
     if ( pcb->state == ZOMBIE && pcb->refcount == 0 ) {
-        kernel::ProcessManager::instance.freeProcess( pcb->getPID() );
+        sharedResources.processes.freeProcess( pcb->getPID() );
     }
 }
 
@@ -54,10 +54,10 @@ bool kernel::PCB::exec(const char* executableFile, RegisterContext* trapCtx ) {
     // For simplicity/Code reuse sake, we'll just make a new process and take it's page table, since that's the only expensive resource
     // Maybe later make some functions that are dedicated to make page tables?
 
-    uint32_t newPID = ProcessManager::instance.createProcess( executableFile );
+    uint32_t newPID = sharedResources.processes.createProcess( executableFile );
     if (newPID == NOPCBEXISTS) return false;
 
-    PCB::Guard newProc = ProcessManager::instance[newPID];
+    PCB::Guard newProc = sharedResources.processes[newPID];
     addrSpace._pageTable = ministl::move( newProc->addrSpace._pageTable );
     if (trapCtx) *trapCtx = newProc->regCtx;
     else regCtx = newProc->regCtx;
@@ -79,8 +79,6 @@ kernel::PCB::PCB(kernelInit_t, KernelPageTable& kpt)
 }
 
 kernel::ProcessManager::ProcessManager() : kPageTable(), kernelProcess(kernelInitalizer, kPageTable), processes(), freePids() {}
-
-kernel::ProcessManager kernel::ProcessManager::instance;
 
 kernel::PCB::Guard kernel::ProcessManager::operator[](size_t idx) {
     if (idx >= processes.size() || !processes[idx] ) return PCB::Guard();

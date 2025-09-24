@@ -109,6 +109,9 @@ namespace kernel {
 
 }
 
+
+inline unsigned char exceptionDepth = 1; // asmglue.asm will handle this, except in the cppmain boot
+
 // Current thread. When handleTrap returns, run_process(currentThread->regCtx) gets called.
 // Isolated and marked inline to avoid name-mangling.
 inline kernel::PCB* currentThread;

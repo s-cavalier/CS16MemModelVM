@@ -6,6 +6,8 @@ make debug
     make;
 )
 
+python kelfparse.py
+
 (
     cd programs/shell;
     make clean;

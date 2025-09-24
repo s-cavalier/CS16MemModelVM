@@ -68,7 +68,8 @@ namespace kernel {
         FREAD,
         FWRITE,
         FSEEK,
-        FCLOSE
+        FCLOSE,
+        STDIN
     };
 
     enum FileFlags {
@@ -97,6 +98,7 @@ namespace kernel {
             struct { uint32_t fd; uint32_t buffer; uint32_t nbytes; } fwrite;
             struct { uint32_t fd; uint32_t offset; uint32_t whence; } fseek;
             struct { uint32_t fd; } fclose;
+            struct { uint32_t buff; uint32_t num_bytes; } stdin;
         } args;
 
 
@@ -127,5 +129,6 @@ namespace kernel {
 #define PrintWrapped(l, m, r)   PrintString(l); PrintInteger(m); PrintString(r)
 #define PrintInteger(num)       kernel::VMPackage(kernel::PRINT_INTEGER, (num)).send()
 #define ReadInteger             kernel::VMPackage(kernel::READ_INTEGER).send()
+#define ReadString(buf, size)   kernel::VMPackage(kernel::STDIN, (kernel::uint32_t)buf, size).send()
 
 #endif

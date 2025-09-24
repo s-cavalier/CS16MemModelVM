@@ -14,18 +14,37 @@ using HalfWord = unsigned short;
 using Byte = unsigned char;
 
 namespace Hardware {
+
+    // Used to redirect stdin/stdout
+    struct stdIODevice {  
+
+        virtual void write(const std::string& data) = 0;
+        virtual size_t read(char* buf, size_t bytes) = 0;
+
+        virtual ~stdIODevice() = default;
+    };
+
+    struct Terminal : public stdIODevice {
+
+        void write(const std::string& data) override;
+        size_t read(char* buf, size_t bytes) override;
+
+    };
     
     struct Machine {
         Core cpu;
         Memory memory;
         FileSystem fileSystem;
+        std::unique_ptr<stdIODevice> stdio;
         Word trapEntry;
+        
 
-        Machine();
+        Machine( std::unique_ptr<stdIODevice> dev = nullptr );
 
         bool killed;
 
         void loadKernel(const ExternalInfo::KernelBootInformation& kernelInfo, const std::vector<std::string>& kernelArguments);
+        void loadKernel( const std::vector<std::string>& kernelArguments );
 
         void step();
 

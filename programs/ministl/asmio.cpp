@@ -47,6 +47,22 @@ void std::printString(const char* str) {
     );
 };
 
+size_t std::readString(char* buf, size_t numbytes) {
+    size_t bytes;
+    __asm__ volatile (
+        "li   $v0, 6\n"
+        "move   $a0, %1\n"
+        "move   $a1, %2\n"
+        "syscall\n"
+        "move %0, $v0\n"
+        : "=r"(bytes)        
+        : "r"(buf), "r"(numbytes)                    
+        : "$v0", "$a0", "$a1", "memory"
+    );
+    return bytes;
+
+}
+
 unsigned int std::fork() {
     unsigned int value;
     __asm__ volatile (

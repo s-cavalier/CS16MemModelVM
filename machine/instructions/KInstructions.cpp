@@ -2,6 +2,7 @@
 #include "../BinaryUtils.h"
 #include <iostream>
 #include <string>
+#include <unistd.h>
 
 #define EXL_CHECK if (!checkEXL()) throw Hardware::Trap(Hardware::Trap::RI)
 
@@ -88,6 +89,7 @@ void VMTunnel::run() {
     auto& iu = core.iu;
     auto& machine = core.machine();
     auto& asidReg = core.scu.registerFile[Binary::ENTRYHI].ui;
+    auto& stdio = core.machine().stdio;
 
     Word reqAddr = iu.registerFile[Binary::A0].ui;
     Word resAddr = iu.registerFile[Binary::V0].ui;
@@ -109,11 +111,15 @@ void VMTunnel::run() {
 
             break;
 
-        case 2: // printString(const char*)
-            for (Word i = arg0; machine.memory.getByte(i, core.tlb, asidReg & 0xFF) != '\0'; ++i) std::cout << machine.memory.getByte(i, core.tlb, asidReg & 0xFF);
+        case 2: { // printString(const char*)
+
+            std::string out;
+            for (Word i = arg0; machine.memory.getByte(i, core.tlb, asidReg & 0xFF) != '\0'; ++i) out.push_back(machine.memory.getByte(i, core.tlb, asidReg & 0xFF));
+            
+            stdio->write(out);
 
             break;
-
+        }
         case 3: // printInteger(int)
             std::cout << arg0 << std::flush;
 
@@ -150,6 +156,16 @@ void VMTunnel::run() {
             machine.fileSystem.close(arg0);
 
             break;
+
+        case 10: { // stdin(buf, bytes)
+            char buf[arg1];
+
+            res = stdio->read(buf, arg1);
+
+            for (size_t i = 0; i < res; ++i) machine.memory.setByte(arg0 + i, buf[i], core.tlb, asidReg & 0xFF);
+
+
+        }
         default:
             break;
     }

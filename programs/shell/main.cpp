@@ -1,35 +1,32 @@
-#include "../ministl/asmio.h"
-#include "../ministl/Vector.h"
+#include "../ministl/iostream.h"
 
-struct Foo {
+struct Node {
 
-    Foo() { std::printString("fooconstr\n"); }
-    virtual void bar() { std::printString("foo::bar\n"); }
+    Node(int val) : val(val) {}
 
+    Node* next;
+    int val;
 };
 
-struct Bar : public Foo {
 
-    Bar() { std::printString("Barconstrt\n"); }
-    virtual void bar() { std::printString("lgob\n"); }
-
-};
+void func(Node& n) {
+    
+}
 
 int main() {
 
-    std::unique_ptr<Foo> x[] = { std::make_unique<Bar>(), std::make_unique<Bar>(), std::make_unique<Bar>(), std::make_unique<Bar>() };
 
-    for (int i = 0; i < 4; ++i) x[i]->bar();
+    Node* head = new Node(0);
+    head->next = new Node(1);
+    head->next->next = new Node(2);
+    head->next->next->next = new Node(3);
+    head->next->next->next->next = nullptr;
+    
 
-    std::printString("now forking...\n");
-
-    unsigned int pid = std::fork();
-
-    if (pid) {
-        std::printString("i am parent\n");
-    } else {
-        std::printString("i am child\n");
+    for (Node* it = head; it; it = it->next) {
+        std::cout << "Node value: " << it->val << std::endl;
     }
+
 
 
     return 0;

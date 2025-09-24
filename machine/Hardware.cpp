@@ -1,23 +1,32 @@
 #include "Hardware.h"
 #include "BinaryUtils.h"
 #include "instructions/Instruction.h"
+#include "KernelElf.h"
+#include <iostream>
+#include <unistd.h>
 
 #ifdef DEBUG
-    #include <iostream>
     #include <iomanip>
     #define debug(x) x
 #else
     #define debug(x)
 #endif
 
-#define DATA_ENTRY 0x10008000
-#define TEXT_START 0x00400024
-
 // -------------------------------------------------------------
 // Hardware Emulation
 // -------------------------------------------------------------
 
-Hardware::Machine::Machine() : cpu(*this), killed(false) {}
+size_t Hardware::Terminal::read(char* buf, size_t bytes) {
+    return ::read(STDIN_FILENO, buf, bytes);
+}
+void Hardware::Terminal::write(const std::string& data) {
+    std::cout << data << std::flush;
+}
+
+Hardware::Machine::Machine( std::unique_ptr<stdIODevice> stdiodev ) : cpu(*this), killed(false) {
+    if (!stdiodev) stdio = std::make_unique<Terminal>();
+    else stdio = std::move( stdiodev );
+}
 
 void Hardware::Machine::loadKernel(const ExternalInfo::KernelBootInformation& kernelInfo, const std::vector<std::string>& kernelArgs) {
     trapEntry = kernelInfo.trapEntry;
@@ -43,6 +52,32 @@ void Hardware::Machine::loadKernel(const ExternalInfo::KernelBootInformation& ke
 
     cpu.programCounter = kernelInfo.bootEntry;
     cpu.scu.registerFile[Binary::STATUS].ui = 0b10;  // enable exl at boot <- has to be done by hardware
+}
+
+void Hardware::Machine::loadKernel(const std::vector<std::string>& kernelArgs ) {
+    trapEntry = KernelElf::trapEntry;
+    Word at = KernelElf::textStart;
+
+    for (uint8_t byte : KernelElf::kernelText) {
+        memory.setByte(at, byte, cpu.tlb, 0);
+        ++at;
+    }
+
+    at = KernelElf::dataStart;
+    for (uint8_t byte : KernelElf::kernelData) {
+        memory.setByte(at, byte, cpu.tlb, 0);
+        ++at;
+    }
+
+    memory.setWord(KernelElf::argc, kernelArgs.size(), cpu.tlb, 0);
+
+    for (Word i = 0; i < kernelArgs.size(); ++i) {
+        Word indirectPtr = KernelElf::argv + 64 * i;    // argv[i] = *(argv + i)
+        for (Word j = 0; j < kernelArgs[i].size(); ++j) memory.setByte(indirectPtr + j, kernelArgs[i][j], cpu.tlb, 0 ); // argv[i][j]
+    }
+
+    cpu.programCounter = KernelElf::bootEntry;
+    cpu.scu.registerFile[Binary::STATUS].ui = 0b10;
 
 }
 
@@ -55,11 +90,10 @@ void Hardware::Machine::step() {
 
 // Runs with an Interrupt Device.
 void Hardware::Machine::run(instrDebugHook hook, std::chrono::milliseconds IDduration ) {
-    assert(cpu.interDev);
-    cpu.interDev->start(IDduration);
+    if (cpu.interDev) cpu.interDev->start(IDduration);
     while (!killed) {
         step();
         if (hook) hook(*this);
     }
-    cpu.interDev->stop();
+    if (cpu.interDev) cpu.interDev->stop();
 }

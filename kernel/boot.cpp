@@ -26,17 +26,15 @@ void call_global_constructors() {
     }
 }
 
-unsigned char exceptionDepth = 1; // asmglue.asm will handle this, except in the cppmain boot
 
 // Recall that ProcessManager sets currentThread = &kernel::ProcessManager::instace().kernelProcess during call_global_constructors
 
 extern "C" void cppmain() {
     call_global_constructors(); // Should create ProcessManager
     PrintString("Kernel booted!\n");
-    assert((argc > 0) && "Need a first process to run!");
 
 
-    unsigned int firstPID = kernel::sharedResources.processes.createProcess(argv[0]);
+    unsigned int firstPID = kernel::sharedResources.processes.createProcess("programs/shell/shell.elf");
 
     exceptionDepth -= 1;
 

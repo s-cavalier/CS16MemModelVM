@@ -8,7 +8,7 @@ using HalfWord = unsigned short;
 using Word = unsigned int;
 
 #define PAGE_SIZE 4096UL
-#define PHYS_MEM_SIZE 268435456ULL
+#define PHYS_MEM_SIZE 5242880UL
 #define TLB_ENTRIES 64
 
 

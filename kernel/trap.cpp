@@ -24,6 +24,7 @@ enum ExceptionType : unsigned char {
         PRINT_INTEGER = 1,
         PRINT_STRING = 4,
         READ_INTEGER = 5,
+        READ_STRING = 6,
         EXIT = 10,
         EXEC = 11,
         BRK = 45,
@@ -79,6 +80,33 @@ extern "C" void handleTrap() {
                     trapCtx->accessRegister(kernel::V0) = ReadInteger.res;
                     break;
     
+                case READ_STRING: {
+                    size_t bufsize = trapCtx->accessRegister( kernel::A1 );
+                    if ( bufsize > 4096 ) {
+                        PrintString("[KERNEL] Max read is 4096 bytes. Returning with no-op...\n");
+                        trapCtx->accessRegister(kernel::V0) = 0;
+                        break;
+                    }
+
+                    char buf[bufsize];
+                    size_t bytesRead = ReadString(buf, bufsize).res;
+
+                    trapCtx->accessRegister(kernel::V0) = bytesRead;
+                    if (bytesRead == 0 || bytesRead == -1) break;
+
+                    // Currently swap addrspace and thread so any exceptions (TLB misses) get forwarded properly
+                    oldThread.setAsCurrentThread();
+                    kernel::replaceASID( currentThread->addrSpace.getASID() );
+
+                    char* loc = (char*)trapCtx->accessRegister(kernel::A0);
+                    for (size_t i = 0; i < bytesRead; ++i) {
+                        loc[i] = buf[i];
+                    }
+                    
+                    currentThread = &kernel::sharedResources.processes.kernelProcess;
+                    break;
+                }
+
                 case EXIT: {
                     oldThread->markForDeath();
                     oldThread.reset();
@@ -135,7 +163,7 @@ extern "C" void handleTrap() {
     // Special case until we have ASID-based TLB entries and kernel shouldn't be scheduled
 
     if ( oldThread.valid() ) {
-        if (oldThread->getPID() == kernel::ProcessManager::KERNEL_PID || cause == TLB_L || cause == TLB_S ) {
+        if (exceptionDepth > 1 || cause == TLB_L || cause == TLB_S ) {
             oldThread.setAsCurrentThread();
             currentThread->regCtx = *trapCtx;
             return;

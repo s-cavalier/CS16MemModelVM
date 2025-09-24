@@ -9,7 +9,7 @@ namespace kernel {
 
     using addr_t = uint32_t;
 
-    constexpr size_t MEM_AVAIL = 256_mb;
+    constexpr size_t MEM_AVAIL = 5_mb;
     constexpr size_t PAGE_SIZE = 4096;
     constexpr size_t NUM_PAGES = MEM_AVAIL / PAGE_SIZE;
     constexpr size_t BIT_OFFSET = 12;
